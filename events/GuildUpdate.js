@@ -1,6 +1,6 @@
 const {client} = require("../constants");
-const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField } = require("discord.js");
-const {getObjectDiffKey, getObjectDiffValue} = require("../commonFunctions");
+const {Events, EmbedBuilder, AuditLogEvent } = require("discord.js");
+const {getObjectDiffKey} = require("../commonFunctions");
 const servers = require("../servers.json");
 
 client.on(Events.GuildUpdate, async (OldGuild, NewGuild) => {

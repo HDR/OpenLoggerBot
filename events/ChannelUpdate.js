@@ -1,8 +1,7 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField} = require("discord.js");
-const {OverwriteType} = require("discord-api-types/v10");
 const servers = require("../servers.json");
-const {getObjectDiffKey, getObjectDiffValue} = require("../commonFunctions");
+const {getObjectDiffKey} = require("../commonFunctions");
 
 function permissionResolver(permission) {
     const result = [];
@@ -96,7 +95,6 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
             } else {
                 if(index === 0){
                     try {
-                        let channelPermissions = NewGuildChannel.permissionOverwrites.resolve(extra.id)
                         let newPerm = permissionResolver(new PermissionsBitField(changes[0].new))
                         let oldPerm = permissionResolver(new PermissionsBitField(changes[0].old))
 

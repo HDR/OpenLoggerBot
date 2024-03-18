@@ -31,7 +31,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
             })
             Embed.setTimestamp()
 
-            await NewGuildMember.guild.channels.cache.get(log_channel).send({embeds: [Embed]})
+            if(servers[OldGuildMember.guild.id]){await OldGuildMember.guild.channels.cache.get(servers[OldGuildMember.guild.id]).send({embeds: [Embed]});}
 
         } else {
             try {
@@ -74,17 +74,16 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
 
             Embed.setTimestamp()
             Embed.setFooter({text: `${executor.username}#${executor.discriminator}`, iconURL: `${executor.avatarURL()}`})
-            await OldGuildMember.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+            if(servers[OldGuildMember.guild.id]){await OldGuildMember.guild.channels.cache.get(servers[OldGuildMember.guild.id]).send({embeds: [Embed]});}
         }
     }
 
     //Check if user was timed out
     if(NewGuildMember.isCommunicationDisabled()) {
-        const audit = await NewGuildMember.guild.fetchAuditLogs({limit: 1, type: 24});
         const Embed = new EmbedBuilder()
         Embed.setColor('#ff0000')
         Embed.setTitle(`${NewGuildMember.user.tag} has been timed out.`)
-        await OldGuildMember.guild.channels.cache.get(log_channel).send({embeds: [Embed]})
+        if(servers[OldGuildMember.guild.id]){await OldGuildMember.guild.channels.cache.get(servers[OldGuildMember.guild.id]).send({embeds: [Embed]});}
     }
 
     //Track Role Changes

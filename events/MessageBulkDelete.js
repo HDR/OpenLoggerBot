@@ -1,5 +1,5 @@
 const {client} = require("../constants");
-const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField } = require("discord.js");
+const {Events, EmbedBuilder } = require("discord.js");
 const {pastebin_key} = require("../config.json")
 const { PasteClient, Publicity, ExpireDate } = require("pastebin-api");
 const moment = require("moment");

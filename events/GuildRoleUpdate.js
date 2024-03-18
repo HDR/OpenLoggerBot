@@ -1,5 +1,5 @@
 const {client} = require("../constants");
-const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField } = require("discord.js");
+const {Events, EmbedBuilder, AuditLogEvent } = require("discord.js");
 const {getObjectDiffKey} = require("../commonFunctions");
 const servers = require("../servers.json");
 
@@ -18,7 +18,6 @@ client.on(Events.GuildRoleUpdate, async (oldRole, newRole) => {
 
     for (const [key, value] of Object.entries(getObjectDiffKey(oldRole, newRole))) {
         switch(value) {
-
             default:
                 console.log(value)
                 break;

@@ -1,4 +1,3 @@
-const {client, player} = require("../constants");
 const { PermissionFlagsBits, SlashCommandBuilder} = require("discord.js")
 const fs = require('fs');
 const servers = require("../servers.json");

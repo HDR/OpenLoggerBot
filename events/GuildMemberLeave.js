@@ -11,7 +11,7 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
         });
 
         const auditEntry = auditLog.entries.first();
-        const {executor, target, reason, actionType} = auditEntry;
+        const {executor, target, reason} = auditEntry;
 
         const Embed = new EmbedBuilder();
         Embed.setColor('#ff2828');
