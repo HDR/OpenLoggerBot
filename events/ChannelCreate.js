@@ -3,7 +3,6 @@ const {Events, EmbedBuilder, AuditLogEvent, ChannelType} = require("discord.js")
 const servers = require("../servers.json")
 
 client.on(Events.ChannelCreate, async(GuildChannel) => {
-
     const auditLog = await GuildChannel.guild.fetchAuditLogs({
         limit: 1,
         type: AuditLogEvent.ChannelCreate,
