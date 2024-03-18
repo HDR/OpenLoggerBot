@@ -39,13 +39,6 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
             Embed.setAuthor({name: `${OldGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})
             Embed.setDescription(`<@${OldGuildMember.user.id}>'s nickname was updated`)
 
-            if(NewGuildMember.nickname) {
-                let normalize = NewGuildMember.nickname.normalize("NFKC")
-                if(normalize !== NewGuildMember.nickname) {
-                    NewGuildMember.setNickname(normalize)
-                }
-            }
-
             Embed.addFields(
                 {
                     name: 'New Name',
