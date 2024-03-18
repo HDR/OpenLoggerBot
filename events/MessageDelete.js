@@ -1,6 +1,6 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder, Collection} = require("discord.js");
-const { log_channel } = require("./config/events.json")
+const servers = require("../servers.json");
 
 
 client.on(Events.MessageDelete, async(Message) => {
@@ -30,7 +30,7 @@ client.on(Events.MessageDelete, async(Message) => {
 
         Embed.setTimestamp()
         Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-        await Message.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+        if(servers[Message.guild.id]){await Message.guild.channels.cache.get(servers[Message.guild.id]).send({embeds: [Embed]});}
     }
 
     //Log deleted attachments

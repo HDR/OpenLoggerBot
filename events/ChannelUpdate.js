@@ -1,7 +1,8 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField} = require("discord.js");
-const { log_channel } = require("./config/events.json")
 const {OverwriteType} = require("discord-api-types/v10");
+const servers = require("../servers.json");
+const {getObjectDiffKey, getObjectDiffValue} = require("../commonFunctions");
 
 function permissionResolver(permission) {
     const result = [];
@@ -14,100 +15,135 @@ function permissionResolver(permission) {
     return result;
 }
 
-client.on(Events.ChannelUpdate, async(oldChannel, newChannel) => {
+client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
 
-    let auditLog = await oldChannel.guild.fetchAuditLogs({
-        limit: 1
+    let Embed = new EmbedBuilder()
+    Embed.setColor('#97ff28');
+
+    let audit = await OldGuildChannel.guild.fetchAuditLogs({
+        limit: 1,
+        type: AuditLogEvent.ChannelUpdate
     });
 
-    let auditEntry = auditLog.entries.first();
-    let { executor, changes, extra } = auditEntry;
+    let auditLog = await OldGuildChannel.guild.fetchAuditLogs({
+        limit: 1,
+    });
 
-    if(auditEntry) {
-        let Embed = new EmbedBuilder();
-        Embed.setColor('#97ff28');
-        Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
-        Embed.setDescription(`${executor.tag} edited channel ${newChannel.name} (${newChannel.id})`)
+    let { executor, changes, extra } = auditLog.entries.first();
 
-        if(auditEntry.action === AuditLogEvent.ChannelUpdate) {
-            changes.forEach((item) => {
-                Embed.addFields(
-                    {
-                        name: `${(item.key.charAt(0).toUpperCase()+item.key.slice(1)).replaceAll(`_`,' ')}`,
-                        value: `New: ${item.new}\nOld: ${item.old}`
-                    }
-                )
-            })
-        } else {
-            if (auditEntry.action === AuditLogEvent.ChannelOverwriteCreate || AuditLogEvent.ChannelOverwriteUpdate || AuditLogEvent.ChannelOverwriteDelete) {
-                changes.forEach((item, index) => {
-                    if (changes[0].key === 'id') {
-                        if(changes[0].old === undefined && index === 0) {
-                            Embed.addFields(
-                                {
-                                    name: `A Permission target was added`,
-                                    value: `Role/User: ${extra.name} (${extra.id})`
-                                }
-                            )
-                        }
-                        if(changes[0].new === undefined && index === 0){
-                            Embed.addFields(
-                                {
-                                    name: `A Permission target was removed`,
-                                    value: `Role/User: ${extra.name} (${extra.id})`
-                                }
-                            )
-                        }
+    for (const [key, value] of Object.entries(getObjectDiffKey(OldGuildChannel, NewGuildChannel))) {
+        switch (value) {
 
-                    } else {
-                        if(index === 0){
-                            try {
-                                let channelPermissions = newChannel.permissionOverwrites.resolve(extra.id)
-                                let newPerm = permissionResolver(new PermissionsBitField(changes[0].new))
-                                let oldPerm = permissionResolver(new PermissionsBitField(changes[0].old))
+            default:
+                console.log(value)
+                break;
 
-                                let newString = "";
-                                let oldString = "";
-
-                                for (let [key, value] of Object.entries(newPerm)) {
-                                    newString += `\nAllow: ${value}`
-                                }
-
-                                for (let [key, value] of Object.entries(oldPerm)) {
-                                    oldString += `\nDeny: ${value}`
-                                }
-
-                                if (newString.length === 0) {
-                                    newString = ""
-                                }
-                                if (oldString.length === 0) {
-                                    oldString = ""
-                                }
-
-                                Embed.addFields(
-                                    {
-                                        name: `${OverwriteType[channelPermissions.type]}: ${extra.name} (${extra.id})`,
-                                        value: `${newString}\n ${oldString}`
-                                    }
-                                )
-                            } catch (e) {
-                                console.log(e)
-                            }
-                        }
-                    }
+            case 'topic':
+                Embed.addFields({
+                    name: 'Topic',
+                    value: `Old Topic: \`${OldGuildChannel.topic}\`\nNew Topic: \`${NewGuildChannel.topic}\``
                 })
+                break;
+
+            case 'nsfw':
+                Embed.addFields({
+                    name: 'NSFW',
+                    value: `Old State: \`${OldGuildChannel.nsfw}\`\nNew State: \`${NewGuildChannel.nsfw}\``
+                })
+                break;
+
+            case 'rateLimitPerUser':
+                Embed.addFields({
+                    name: 'Slowmode',
+                    value: `Old Rate Limit: \`${OldGuildChannel.rateLimitPerUser}\`\nNew Rate Limit: \`${NewGuildChannel.rateLimitPerUser}\``
+                })
+                break;
+
+            case 'defaultAutoArchiveDuration':
+                Embed.addFields({
+                    name: 'Thread auto hide interval',
+                    value: `Old Interval: \`${OldGuildChannel.defaultAutoArchiveDuration}\`\nNew Interval: \`${NewGuildChannel.defaultAutoArchiveDuration}\``
+                })
+                break;
 
 
-                Embed.addFields(
-                    {
-                        name: 'ID',
-                        value: `\`\`\`ansi\n[0;33mMember = ${executor.id}\n[0;35mChannel = ${oldChannel.id}\`\`\``,
-                        inline: false
-                    }
-                )
-
-                await oldChannel.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
-            }
+            case 'permissionOverwrites':
+                //Ignore this for now
+                break;
         }
     }
+
+    if (auditLog.entries.first().action === AuditLogEvent.ChannelOverwriteCreate || AuditLogEvent.ChannelOverwriteUpdate || AuditLogEvent.ChannelOverwriteDelete) {
+        changes.forEach((item, index) => {
+            if (changes[0].key === 'id') {
+                if(changes[0].old === undefined && index === 0) {
+                    Embed.addFields(
+                        {
+                            name: `A Permission target was added`,
+                            value: `Role/User: ${extra.user.tag} (${extra.id})`
+                        }
+                    )
+                }
+                if(changes[0].new === undefined && index === 0){
+                    Embed.addFields(
+                        {
+                            name: `A Permission target was removed`,
+                            value: `Role/User: ${extra.user.tag} (${extra.id})`
+                        }
+                    )
+                }
+
+            } else {
+                if(index === 0){
+                    try {
+                        let channelPermissions = NewGuildChannel.permissionOverwrites.resolve(extra.id)
+                        let newPerm = permissionResolver(new PermissionsBitField(changes[0].new))
+                        let oldPerm = permissionResolver(new PermissionsBitField(changes[0].old))
+
+                        let newString = "";
+                        let oldString = "";
+
+                        for (let [key, value] of Object.entries(newPerm)) {
+                            newString += `\nAllow: ${value}`
+                        }
+
+                        for (let [key, value] of Object.entries(oldPerm)) {
+                            oldString += `\nDeny: ${value}`
+                        }
+
+                        if (newString.length === 0) {
+                            newString = ""
+                        }
+                        if (oldString.length === 0) {
+                            oldString = ""
+                        }
+
+                        Embed.addFields(
+                            {
+                                name: `Permissions`,
+                                value: `${newString}\n ${oldString}`
+                            }
+                        )
+                    } catch (e) {
+                        console.log(e)
+                    }
+                }
+            }
+        })
+    }
+
+
+    Embed.setDescription(`Channel ${NewGuildChannel} (${NewGuildChannel.id}) was updated`)
+    Embed.addFields(
+        {
+            name: 'ID',
+            value: `\`\`\`ansi\n[0;33mMember = ${audit.entries.first().executorId}\n[0;35mChannel = ${OldGuildChannel.id}\`\`\``,
+            inline: false
+        }
+    )
+
+    Embed.setAuthor({name: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
+    Embed.setTimestamp()
+    Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
+    if(servers[OldGuildChannel.guild.id]){await OldGuildChannel.guild.channels.cache.get(servers[OldGuildChannel.guild.id]).send({embeds: [Embed]});}
 });

@@ -1,6 +1,6 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder} = require("discord.js");
-const { log_channel } = require("./config/events.json")
+const servers = require("../servers.json");
 
 
 client.on(Events.MessageUpdate, async(oldMessage, newMessage) => {
@@ -32,8 +32,7 @@ client.on(Events.MessageUpdate, async(oldMessage, newMessage) => {
 
                 Embed.setTimestamp()
                 Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-
-                await oldMessage.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+                if(servers[oldMessage.guild.id]){await oldMessage.guild.channels.cache.get(servers[oldMessage.guild.id]).send({embeds: [Embed]});}
             } catch (e) {
                 console.log(oldMessage)
                 console.log(e)

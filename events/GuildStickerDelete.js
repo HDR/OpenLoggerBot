@@ -1,6 +1,6 @@
 const {client} = require("../constants");
 const {Events, AuditLogEvent, EmbedBuilder} = require("discord.js");
-const { log_channel } = require("./config/events.json")
+const servers = require("../servers.json");
 
 client.on(Events.GuildStickerDelete, async (GuildSticker ) => {
 
@@ -43,5 +43,5 @@ client.on(Events.GuildStickerDelete, async (GuildSticker ) => {
     Embed.setThumbnail(GuildSticker.url)
     Embed.setTimestamp()
     Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-    GuildSticker.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+    if(servers[GuildSticker.guild.id]){await GuildSticker.guild.channels.cache.get(servers[GuildSticker.guild.id]).send({embeds: [Embed]});}
 })

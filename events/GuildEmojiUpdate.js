@@ -1,7 +1,7 @@
 const {client} = require("../constants");
 const {Events, AuditLogEvent, EmbedBuilder} = require("discord.js");
-const { log_channel } = require("./config/events.json")
 const {getObjectDiffKey} = require("../commonFunctions");
+const servers = require("../servers.json");
 
 client.on(Events.GuildEmojiUpdate, async (OldGuildEmoji, NewGuildEmoji) => {
 
@@ -35,5 +35,5 @@ client.on(Events.GuildEmojiUpdate, async (OldGuildEmoji, NewGuildEmoji) => {
     Embed.setThumbnail(NewGuildEmoji.imageURL())
     Embed.setTimestamp()
     Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-    OldGuildEmoji.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+    if(servers[OldGuildEmoji.guild.id]){await OldGuildEmoji.guild.channels.cache.get(servers[OldGuildEmoji.guild.id]).send({embeds: [Embed]});}
 })

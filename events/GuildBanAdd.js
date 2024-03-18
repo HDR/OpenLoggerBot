@@ -1,6 +1,6 @@
 const {client} = require("../constants");
 const {AuditLogEvent, EmbedBuilder, Events} = require('discord.js');
-const { log_channel } = require("./config/events.json")
+const servers = require("../servers.json");
 
 
 client.on(Events.GuildBanAdd, async (GuildBan) => {
@@ -29,5 +29,5 @@ client.on(Events.GuildBanAdd, async (GuildBan) => {
     )
     Embed.setTimestamp()
     Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-    GuildBan.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+    if(servers[GuildBan.guild.id]){await GuildBan.guild.channels.cache.get(servers[GuildBan.guild.id]).send({embeds: [Embed]});}
 })

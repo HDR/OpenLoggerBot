@@ -1,6 +1,6 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder, AuditLogEvent} = require("discord.js");
-const {log_channel} = require("./config/events.json");
+const servers = require("../servers.json");
 
 
 
@@ -26,5 +26,5 @@ client.on(Events.GuildRoleDelete, async (Role) => {
     )
     Embed.setTimestamp()
     Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-    Role.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+    if(servers[Role.guild.id]){await Role.guild.channels.cache.get(servers[Role.guild.id]).send({embeds: [Embed]});}
 })

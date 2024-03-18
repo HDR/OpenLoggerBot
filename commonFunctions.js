@@ -33,6 +33,10 @@ module.exports = {
             }
             return result
         }, Object.values(object2));
+    },
+
+    guildLogChannel: function(guildId) {
+
     }
 }
 

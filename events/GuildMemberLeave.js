@@ -1,6 +1,6 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder, AuditLogEvent} = require("discord.js");
-const { log_channel } = require("./config/events.json")
+const servers = require("../servers.json");
 
 client.on(Events.GuildMemberRemove, async(GuildMember) => {
 
@@ -66,6 +66,6 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
 
         Embed.setTimestamp()
         Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-        await GuildMember.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+        if(servers[GuildMember.guild.id]){await GuildMember.guild.channels.cache.get(servers[GuildMember.guild.id]).send({embeds: [Embed]});}
     })
 });

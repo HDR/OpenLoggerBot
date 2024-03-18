@@ -1,6 +1,6 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder, AuditLogEvent, ChannelType} = require("discord.js");
-const { log_channel } = require("./config/events.json")
+const servers = require("../servers.json")
 
 client.on(Events.ChannelCreate, async(GuildChannel) => {
 
@@ -34,6 +34,6 @@ client.on(Events.ChannelCreate, async(GuildChannel) => {
             }
         )
 
-        await GuildChannel.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+        if(servers[GuildChannel.guild.id]){await GuildChannel.guild.channels.cache.get(servers[GuildChannel.guild.id]).send({embeds: [Embed]});}
     }
 });

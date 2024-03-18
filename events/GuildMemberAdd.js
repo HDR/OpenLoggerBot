@@ -1,7 +1,7 @@
 const {client} = require("../constants");
 const { EmbedBuilder, Collection, Events } = require("discord.js");
 const itrack = require('@androz2091/discord-invites-tracker')
-const { log_channel } = require("./config/events.json")
+const servers = require("../servers.json");
 
 const guildInvites = new Collection();
 
@@ -32,40 +32,40 @@ const tracker = itrack.init(client, {
     fetchAuditLogs: true
 });
 
-tracker.on('guildMemberAdd', async (member, type, invite) => {
+tracker.on('guildMemberAdd', async (GuildMember, type, invite) => {
 
     //Handle unreadable names
-    let normalize = member.user.username.normalize("NFKC")
-    if(normalize !== member.user.username) {
-        await member.setNickname(normalize)
+    let normalize = GuildMember.user.username.normalize("NFKC")
+    if(normalize !== GuildMember.user.username) {
+        await GuildMember.setNickname(normalize)
     }
 
     const Embed = new EmbedBuilder();
     Embed.setColor('#2cff00');
-    Embed.setDescription(`<@${member.user.id}> joined`)
-    Embed.setAuthor({name: `${member.user.tag}`, iconURL: `${member.displayAvatarURL()}`})
+    Embed.setDescription(`<@${GuildMember.user.id}> joined`)
+    Embed.setAuthor({name: `${GuildMember.user.tag}`, iconURL: `${GuildMember.displayAvatarURL()}`})
     let currentDate = new Date();
-    if(Math.trunc(Math.ceil(currentDate.getTime() - member.user.createdAt.getTime()) / (1000 * 3600 * 24)) < 7 && !member.user.bot) {
-        member.kick('Account is too new (less than 7 days old)')
+    if(Math.trunc(Math.ceil(currentDate.getTime() - GuildMember.user.createdAt.getTime()) / (1000 * 3600 * 24)) < 7 && !GuildMember.user.bot) {
+        GuildMember.kick('Account is too new (less than 7 days old)')
     } else {
         Embed.addFields({
                 name: 'Name',
-                value: `${member.user.tag} (${member.user.id}) <@${member.user.id}>`,
+                value: `${GuildMember.user.tag} (${GuildMember.user.id}) <@${GuildMember.user.id}>`,
                 inline: false
             },
             {
                 name: 'Joined At',
-                value: `<t:${Math.trunc(member.joinedTimestamp/1000)}:F>`,
+                value: `<t:${Math.trunc(GuildMember.joinedTimestamp/1000)}:F>`,
                 inline: false
             },
             {
                 name: 'Account Age',
-                value: `**${Math.trunc(Math.ceil(currentDate.getTime() - member.user.createdAt.getTime()) / (1000 * 3600 * 24))}** days`,
+                value: `**${Math.trunc(Math.ceil(currentDate.getTime() - GuildMember.user.createdAt.getTime()) / (1000 * 3600 * 24))}** days`,
                 inline: true
             },
             {
                 name: 'Member Count',
-                value: `${member.guild.memberCount}`,
+                value: `${GuildMember.guild.memberCount}`,
                 inline: true
             })
 
@@ -84,11 +84,11 @@ tracker.on('guildMemberAdd', async (member, type, invite) => {
 
         Embed.addFields({
             name: 'ID',
-            value: `\`\`\`ansi\n[0;33mMember = ${member.user.id}\n[0;34mGuild = ${member.guild.id}\`\`\``
+            value: `\`\`\`ansi\n[0;33mMember = ${GuildMember.user.id}\n[0;34mGuild = ${GuildMember.guild.id}\`\`\``
         })
 
         Embed.setTimestamp()
         Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-        await member.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+        if(servers[GuildMember.guild.id]){await GuildMember.guild.channels.cache.get(servers[GuildMember.guild.id]).send({embeds: [Embed]});}
     }
 });

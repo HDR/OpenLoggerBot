@@ -1,6 +1,6 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder} = require("discord.js");
-const { log_channel } = require("./config/events.json")
+const servers = require("../servers.json");
 
 
 client.on(Events.VoiceStateUpdate, async(oldState, newState) => {
@@ -45,8 +45,7 @@ client.on(Events.VoiceStateUpdate, async(oldState, newState) => {
         )
         Embed.setTimestamp()
         Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-
-        await newState.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+        if(servers[newState.guild.id]){await newState.guild.channels.cache.get(servers[newState.guild.id]).send({embeds: [Embed]});}
     }
 
 })

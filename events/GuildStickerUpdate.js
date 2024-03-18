@@ -1,7 +1,7 @@
 const {client} = require("../constants");
 const {Events, AuditLogEvent, EmbedBuilder} = require("discord.js");
-const { log_channel } = require("./config/events.json")
 const {getObjectDiffKey} = require("../commonFunctions");
+const servers = require("../servers.json");
 
 client.on(Events.GuildStickerUpdate, async (OldGuildSticker, NewGuildSticker ) => {
 
@@ -52,5 +52,5 @@ client.on(Events.GuildStickerUpdate, async (OldGuildSticker, NewGuildSticker ) =
     Embed.setThumbnail(NewGuildSticker.url)
     Embed.setTimestamp()
     Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-    NewGuildSticker.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+    if(servers[NewGuildSticker.guild.id]){await NewGuildSticker.guild.channels.cache.get(servers[NewGuildSticker.guild.id]).send({embeds: [Embed]});}
 })

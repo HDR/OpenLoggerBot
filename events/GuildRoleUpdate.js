@@ -1,8 +1,7 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField } = require("discord.js");
-const {log_channel} = require("./config/events.json");
-const _ = require('lodash');
 const {getObjectDiffKey} = require("../commonFunctions");
+const servers = require("../servers.json");
 
 
 client.on(Events.GuildRoleUpdate, async (oldRole, newRole) => {
@@ -88,5 +87,5 @@ client.on(Events.GuildRoleUpdate, async (oldRole, newRole) => {
     Embed.setAuthor({name: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
     Embed.setTimestamp()
     Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-    oldRole.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
+    if(servers[oldRole.guild.id]){await oldRole.guild.channels.cache.get(servers[oldRole.guild.id]).send({embeds: [Embed]});}
 })
