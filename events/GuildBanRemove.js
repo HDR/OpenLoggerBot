@@ -3,7 +3,6 @@ const {Events, EmbedBuilder, AuditLogEvent} = require("discord.js");
 const servers = require("../servers.json");
 
 client.on(Events.GuildBanRemove, async (GuildBan) => {
-
     const audit = await GuildBan.guild.fetchAuditLogs({
         type: AuditLogEvent.MemberBanRemove,
         limit: 1,

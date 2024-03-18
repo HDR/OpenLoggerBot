@@ -4,7 +4,6 @@ const moment = require("moment");
 const servers = require("../servers.json");
 
 client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
-
     const auditLog = await OldGuildMember.guild.fetchAuditLogs({
         limit: 1,
         type: AuditLogEvent.MemberUpdate,

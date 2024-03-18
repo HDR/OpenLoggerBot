@@ -4,9 +4,7 @@ const {getObjectDiffKey} = require("../commonFunctions");
 const servers = require("../servers.json");
 
 client.on(Events.GuildEmojiUpdate, async (OldGuildEmoji, NewGuildEmoji) => {
-
     let Embed = new EmbedBuilder()
-
     const audit = await OldGuildEmoji.guild.fetchAuditLogs({
         type: AuditLogEvent.EmojiUpdate,
         limit: 1,

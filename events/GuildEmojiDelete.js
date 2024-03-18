@@ -3,7 +3,6 @@ const {Events, AuditLogEvent, EmbedBuilder} = require("discord.js");
 const servers = require("../servers.json");
 
 client.on(Events.GuildEmojiDelete, async (GuildEmoji ) => {
-
     const audit = await GuildEmoji.guild.fetchAuditLogs({
         type: AuditLogEvent.EmojiDelete,
         limit: 1,

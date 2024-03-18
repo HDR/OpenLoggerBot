@@ -1,8 +1,6 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder} = require("discord.js");
 const servers = require("../servers.json");
-
-
 client.on(Events.VoiceStateUpdate, async(oldState, newState) => {
 
     if(newState.channelId !== null && !newState.member.user.bot) {

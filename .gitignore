@@ -1,3 +1,9 @@
 /config.json
 /node_modules/
 /events/config/events.json
+.idea/discord.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+package-lock.json
+OpenLoggerBot.iml

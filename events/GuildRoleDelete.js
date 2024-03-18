@@ -5,7 +5,6 @@ const servers = require("../servers.json");
 
 
 client.on(Events.GuildRoleDelete, async (Role) => {
-
     const audit = await Role.guild.fetchAuditLogs({
         limit: 1,
         type: AuditLogEvent.RoleDelete,

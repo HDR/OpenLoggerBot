@@ -2,7 +2,6 @@ const {client} = require("../constants");
 const {Events, EmbedBuilder} = require("discord.js");
 const servers = require("../servers.json");
 
-
 client.on(Events.MessageUpdate, async(oldMessage, newMessage) => {
     if(!oldMessage.thread) {
         if(oldMessage.guild && newMessage.author.id !== client.user.id && oldMessage.content !== '' && oldMessage.content !== newMessage.content){

@@ -3,7 +3,6 @@ const {Events, AuditLogEvent, EmbedBuilder} = require("discord.js");
 const servers = require("../servers.json");
 
 client.on(Events.GuildStickerCreate, async (GuildSticker ) => {
-
     const audit = await GuildSticker.guild.fetchAuditLogs({
         type: AuditLogEvent.StickerCreate,
         limit: 1,

@@ -5,7 +5,6 @@ const { PasteClient, Publicity, ExpireDate } = require("pastebin-api");
 const moment = require("moment");
 
 client.on(Events.MessageBulkDelete, async (Messages, Channel) => {
-
     const pb_c = new PasteClient(pastebin_key)
     let Embed = new EmbedBuilder()
     let format = ''

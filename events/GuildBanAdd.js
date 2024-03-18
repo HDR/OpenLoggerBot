@@ -4,7 +4,6 @@ const servers = require("../servers.json");
 
 
 client.on(Events.GuildBanAdd, async (GuildBan) => {
-
     const audit = await GuildBan.guild.fetchAuditLogs({
         type: AuditLogEvent.MemberBanAdd,
         limit: 1,

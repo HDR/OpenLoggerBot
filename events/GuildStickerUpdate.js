@@ -4,7 +4,6 @@ const {getObjectDiffKey} = require("../commonFunctions");
 const servers = require("../servers.json");
 
 client.on(Events.GuildStickerUpdate, async (OldGuildSticker, NewGuildSticker ) => {
-
     let Embed = new EmbedBuilder()
     const audit = await NewGuildSticker.guild.fetchAuditLogs({
         type: AuditLogEvent.StickerUpdate,

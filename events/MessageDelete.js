@@ -20,7 +20,6 @@ client.on(Events.MessageDelete, async(Message) => {
             }
         )
 
-
         Embed.addFields(
             {
                 name: 'ID',

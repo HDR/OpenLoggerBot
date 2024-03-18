@@ -15,7 +15,6 @@ function permissionResolver(permission) {
 }
 
 client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
-
     let Embed = new EmbedBuilder()
     Embed.setColor('#97ff28');
 

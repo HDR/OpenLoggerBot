@@ -5,7 +5,6 @@ const servers = require("../servers.json");
 
 client.on(Events.GuildUpdate, async (OldGuild, NewGuild) => {
     let Embed = new EmbedBuilder()
-
     const audit = await OldGuild.fetchAuditLogs({
         limit: 1,
         type: AuditLogEvent.GuildUpdate,
