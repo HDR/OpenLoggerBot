@@ -15,31 +15,21 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
     //Track people passing onboarding
     if(OldGuildMember.pending && !NewGuildMember.pending) {
         let clear_time = moment.duration(moment(moment().now).diff(NewGuildMember.joinedAt))
-        if(clear_time.seconds() > 20) {
-            let Embed = new EmbedBuilder();
-            Embed.setColor('#90EE90')
-            Embed.setAuthor({name: `${OldGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})
-            Embed.setDescription(`<@${OldGuildMember.user.id}> Cleared the rules`)
-            Embed.addFields({
-                name: 'Time Taken:',
-                value: clear_time.humanize()
-            },
-            {
-                name: 'ID',
-                value: `\`\`\`ansi\n[0;33mMember = ${OldGuildMember.id}\`\`\``
-            })
-            Embed.setTimestamp()
+        let Embed = new EmbedBuilder();
+        Embed.setColor('#90EE90')
+        Embed.setAuthor({name: `${OldGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})
+        Embed.setDescription(`<@${OldGuildMember.user.id}> Cleared the rules`)
+        Embed.addFields({
+            name: 'Time Taken:',
+            value: clear_time.humanize()
+        },
+        {
+            name: 'ID',
+            value: `\`\`\`ansi\n[0;33mMember = ${OldGuildMember.id}\`\`\``
+        })
+        Embed.setTimestamp()
 
-            if(servers[OldGuildMember.guild.id]){await OldGuildMember.guild.channels.cache.get(servers[OldGuildMember.guild.id]).send({embeds: [Embed]});}
-
-        } else {
-            try {
-                await NewGuildMember.send({content: `[${OldGuildMember.guild.name}] You have been automatically kicked, Please make sure you've read the rules properly.`})
-            } catch(e) {
-                console.log(e)
-            }
-            await NewGuildMember.kick('Cleared rules too fast')
-        }
+        if(servers[OldGuildMember.guild.id]){await OldGuildMember.guild.channels.cache.get(servers[OldGuildMember.guild.id]).send({embeds: [Embed]});}
     }
 
     //Track Nickname Changes
