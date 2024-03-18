@@ -65,6 +65,13 @@ client.on(Events.GuildRoleUpdate, async (oldRole, newRole) => {
                 })
                 break;
 
+            case 'rawPosition':
+                Embed.addFields({
+                    name: 'Role Position',
+                    value: `Old Position: \`${oldRole.rawPosition}\`\nNew Position: \`${newRole.rawPosition}\``
+                })
+                break;
+
             case 'icon':
             case 'unicodeEmoji':
                 Embed.addFields({
