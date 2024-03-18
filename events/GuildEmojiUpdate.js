@@ -1,7 +1,7 @@
 const {client} = require("../constants");
 const {Events, AuditLogEvent, EmbedBuilder} = require("discord.js");
 const { log_channel } = require("./config/events.json")
-const {getObjectDiff} = require("../commonFunctions");
+const {getObjectDiffKey} = require("../commonFunctions");
 
 client.on(Events.GuildEmojiUpdate, async (OldGuildEmoji, NewGuildEmoji) => {
 
@@ -12,7 +12,7 @@ client.on(Events.GuildEmojiUpdate, async (OldGuildEmoji, NewGuildEmoji) => {
         limit: 1,
     });
 
-    for (const [key, value] of Object.entries(getObjectDiff(OldGuildEmoji, NewGuildEmoji))) {
+    for (const [key, value] of Object.entries(getObjectDiffKey(OldGuildEmoji, NewGuildEmoji))) {
         switch(value) {
             case 'name':
                 Embed.addFields({

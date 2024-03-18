@@ -2,7 +2,7 @@ const {client} = require("../constants");
 const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField } = require("discord.js");
 const {log_channel} = require("./config/events.json");
 const _ = require('lodash');
-const {getObjectDiff} = require("../commonFunctions");
+const {getObjectDiffKey} = require("../commonFunctions");
 
 
 client.on(Events.GuildRoleUpdate, async (oldRole, newRole) => {
@@ -17,7 +17,7 @@ client.on(Events.GuildRoleUpdate, async (oldRole, newRole) => {
     let addedPerm= newRole.permissions.toArray().filter((e) => !oldRole.permissions.toArray().includes(e))
     let removedPerm = oldRole.permissions.toArray().filter((e) => !newRole.permissions.toArray().includes(e))
 
-    for (const [key, value] of Object.entries(getObjectDiff(oldRole, newRole))) {
+    for (const [key, value] of Object.entries(getObjectDiffKey(oldRole, newRole))) {
         switch(value) {
 
             default:

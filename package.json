@@ -1,37 +1,17 @@
 {
   "name": "openloggerbot",
   "version": "1.0.0",
-  "description": "",
+  "description": "An open source Discord Logger bot",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
-  "author": "",
+  "author": "HDR",
   "license": "GPL-3.0",
   "dependencies": {
     "@androz2091/discord-invites-tracker": "^1.2.3",
-    "@discordjs/rest": "^1.5.0",
-    "bad-words": "^3.0.4",
-    "bard-ai": "^2.0.3",
-    "cheerio": "^1.0.0-rc.12",
-    "compromise": "^14.9.0",
     "discord-api-types": "^0.37.32",
-    "discord-fetch-messages": "^2.5.0",
     "discord.js": "^14.14.1",
-    "fix-esm": "^1.0.1",
-    "leap-year": "^4.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "money": "^0.2.0",
-    "natural": "^6.5.0",
-    "node-cron": "^3.0.2",
-    "open-exchange-rates": "^0.3.0",
-    "pastebin-api": "^7.0.0",
-    "request": "^2.88.2",
-    "sentiment": "^5.0.2",
-    "sqlite3": "^5.1.2",
-    "table-scraper": "^1.0.3",
-    "xmlhttprequest": "^1.8.0"
+    "pastebin-api": "^7.0.0"
   }
 }
