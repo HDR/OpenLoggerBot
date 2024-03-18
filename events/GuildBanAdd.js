@@ -2,7 +2,6 @@ const {client} = require("../constants");
 const {AuditLogEvent, EmbedBuilder, Events} = require('discord.js');
 const servers = require("../servers.json");
 
-
 client.on(Events.GuildBanAdd, async (GuildBan) => {
     const audit = await GuildBan.guild.fetchAuditLogs({
         type: AuditLogEvent.MemberBanAdd,
