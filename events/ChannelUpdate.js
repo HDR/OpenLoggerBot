@@ -1,5 +1,5 @@
 const {client} = require("../constants");
-const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField, Role} = require("discord.js");
+const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField} = require("discord.js");
 const servers = require("../servers.json");
 const {getObjectDiffKey} = require("../commonFunctions");
 
