@@ -4,19 +4,19 @@ const {getObjectDiffKey} = require("../commonFunctions");
 const servers = require("../servers.json");
 
 
-client.on(Events.GuildRoleUpdate, async (oldRole, newRole) => {
+client.on(Events.GuildRoleUpdate, async (OldGuildRole, NewGuildRole) => {
     let Embed = new EmbedBuilder()
-    Embed.setColor(newRole.color)
+    Embed.setColor(NewGuildRole.color)
 
-    const audit = await oldRole.guild.fetchAuditLogs({
+    const audit = await OldGuildRole.guild.fetchAuditLogs({
         limit: 1,
         type: AuditLogEvent.RoleUpdate,
     });
 
-    let addedPerm= newRole.permissions.toArray().filter((e) => !oldRole.permissions.toArray().includes(e))
-    let removedPerm = oldRole.permissions.toArray().filter((e) => !newRole.permissions.toArray().includes(e))
+    let addedPerm= NewGuildRole.permissions.toArray().filter((e) => !OldGuildRole.permissions.toArray().includes(e))
+    let removedPerm = OldGuildRole.permissions.toArray().filter((e) => !NewGuildRole.permissions.toArray().includes(e))
 
-    for (const [key, value] of Object.entries(getObjectDiffKey(oldRole, newRole))) {
+    for (const [key, value] of Object.entries(getObjectDiffKey(OldGuildRole, NewGuildRole))) {
         switch(value) {
             default:
                 console.log(value)
@@ -25,15 +25,15 @@ client.on(Events.GuildRoleUpdate, async (oldRole, newRole) => {
             case 'name':
                 Embed.addFields({
                     name: 'Name',
-                    value: `Old Name: \`${oldRole.name}\`\nNew Name: \`${newRole.name}\``
+                    value: `Old Name: \`${OldGuildRole.name}\`\nNew Name: \`${NewGuildRole.name}\``
                 })
                 break;
 
             case 'color':
-                Embed.setColor(newRole.color)
+                Embed.setColor(NewGuildRole.color)
                 Embed.addFields({
                     name: 'Color',
-                    value: `Old Color: \`#${oldRole.color.toString(16)}\`\nNew Color: \`#${newRole.color.toString(16)}\``
+                    value: `Old Color: \`#${OldGuildRole.color.toString(16)}\`\nNew Color: \`#${NewGuildRole.color.toString(16)}\``
                 })
                 break;
 
@@ -55,28 +55,28 @@ client.on(Events.GuildRoleUpdate, async (oldRole, newRole) => {
             case 'managed':
                 Embed.addFields({
                     name: 'Managed',
-                    value: `Was: \`${oldRole.managed}\`\nIs: \`${newRole.managed}\``
+                    value: `Was: \`${OldGuildRole.managed}\`\nIs: \`${NewGuildRole.managed}\``
                 })
                 break;
 
             case 'mentionable':
                 Embed.addFields({
                     name: 'Mentionable',
-                    value: `Old State: \`${oldRole.mentionable}\`\nNew State: \`${newRole.mentionable}\``
+                    value: `Old State: \`${OldGuildRole.mentionable}\`\nNew State: \`${NewGuildRole.mentionable}\``
                 })
                 break;
 
             case 'hoist':
                 Embed.addFields({
                     name: 'Display role separately',
-                    value: `Old State: \`${oldRole.hoist}\`\nNew State: \`${newRole.hoist}\``
+                    value: `Old State: \`${OldGuildRole.hoist}\`\nNew State: \`${NewGuildRole.hoist}\``
                 })
                 break;
 
             case 'rawPosition':
                 Embed.addFields({
                     name: 'Role Position',
-                    value: `Old Position: \`${oldRole.rawPosition}\`\nNew Position: \`${newRole.rawPosition}\``
+                    value: `Old Position: \`${OldGuildRole.rawPosition}\`\nNew Position: \`${NewGuildRole.rawPosition}\``
                 })
                 break;
 
@@ -84,22 +84,22 @@ client.on(Events.GuildRoleUpdate, async (oldRole, newRole) => {
             case 'unicodeEmoji':
                 Embed.addFields({
                     name: 'Role Icon',
-                    value: `Old Icon: ${oldRole.iconURL()}\n\nNew Icon: ${newRole.iconURL()}`
+                    value: `Old Icon: ${OldGuildRole.iconURL()}\n\nNew Icon: ${NewGuildRole.iconURL()}`
                 })
                 break;
         }
     }
 
-    Embed.setDescription(`Role \`${newRole.name}\` (${newRole.id}) was updated`)
+    Embed.setDescription(`Role \`${NewGuildRole.name}\` (${NewGuildRole.id}) was updated`)
     Embed.addFields(
        {
            name: 'ID',
-           value: `\`\`\`ansi\n[0;33mRole = ${newRole.id}\n[0;34mPerpetrator = ${audit.entries.first().executorId}\`\`\``
+           value: `\`\`\`ansi\n[0;33mRole = ${NewGuildRole.id}\n[0;34mPerpetrator = ${audit.entries.first().executorId}\`\`\``
        }
     )
 
     Embed.setAuthor({name: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
     Embed.setTimestamp()
     Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-    if(servers[oldRole.guild.id]){await oldRole.guild.channels.cache.get(servers[oldRole.guild.id]).send({embeds: [Embed]});}
+    if(servers[OldGuildRole.guild.id]){await OldGuildRole.guild.channels.cache.get(servers[OldGuildRole.guild.id]).send({embeds: [Embed]});}
 })
