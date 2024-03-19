@@ -38,9 +38,17 @@ client.on(Events.GuildRoleUpdate, async (oldRole, newRole) => {
                 break;
 
             case 'permissions':
+                let permString = '';
+                if(addedPerm.length > 0){
+                    permString += `**Added** ${addedPerm.toString().replaceAll(",","\n**Added** ")}\n\n`
+                }
+                if(removedPerm.length > 0){
+                    permString += `**Removed** ${removedPerm.toString().replaceAll(",","\n**Removed** ")}`
+                }
+
                 Embed.addFields({
                     name: 'Permissions',
-                    value: `Added ${addedPerm.toString().replaceAll(",","\nAdded ")}\n\nRemoved ${removedPerm.toString().replaceAll(",","\nRemoved ")}`
+                    value: `${permString}`
                 })
                 break;
 
