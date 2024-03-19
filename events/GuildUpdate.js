@@ -176,7 +176,7 @@ client.on(Events.GuildUpdate, async (OldGuild, NewGuild) => {
     Embed.setAuthor({name: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
     Embed.setTimestamp()
     Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-    if(servers[OldGuild.id]){await OldGuild.guild.channels.cache.get(servers[OldGuild.id]).send({embeds: [Embed]});}
+    if(servers[OldGuild.id]){await OldGuild.channels.cache.get(servers[OldGuild.id]).send({embeds: [Embed]});}
 })
 
 function notificationState(state) {
