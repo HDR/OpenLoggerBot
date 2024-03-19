@@ -43,10 +43,14 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
         } else {
             if (target.id === GuildMember.id && auditEntry.createdAt > GuildMember.joinedAt && auditEntry.action === AuditLogEvent.MemberKick) {
                 Embed.setDescription(`<@${GuildMember.user.id}> was kicked by ${executor.tag} (${executor.id})`)
+                let kickReason = 'None'
+                if(reason){
+                    kickReason = reason.toString()
+                }
                 Embed.addFields(
                     {
                         name: 'Reason',
-                        value: reason,
+                        value: kickReason,
                         inline: false
                     })
             } else {
