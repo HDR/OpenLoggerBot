@@ -1,5 +1,5 @@
 const {client} = require("../constants");
-const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField} = require("discord.js");
+const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField, Role} = require("discord.js");
 const servers = require("../servers.json");
 const {getObjectDiffKey} = require("../commonFunctions");
 
@@ -72,13 +72,23 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
     }
 
     if (auditLog.entries.first().action === AuditLogEvent.ChannelOverwriteCreate || AuditLogEvent.ChannelOverwriteUpdate || AuditLogEvent.ChannelOverwriteDelete) {
+        let target;
+        let typeString;
+        if(extra.name) {
+            typeString = `GuildRole`
+            target = extra.name
+        } else {
+            typeString = `User`
+            target = `<@${extra.id}>`
+        }
+
         changes.forEach((item, index) => {
             if (changes[0].key === 'id') {
                 if(changes[0].old === undefined && index === 0) {
                     Embed.addFields(
                         {
                             name: `A Permission target was added`,
-                            value: `Role/User: ${extra.user.tag} (${extra.id})`
+                            value: `${typeString}: ${target} (${extra.id})`
                         }
                     )
                 }
@@ -86,7 +96,7 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                     Embed.addFields(
                         {
                             name: `A Permission target was removed`,
-                            value: `Role/User: ${extra.user.tag} (${extra.id})`
+                            value: `${typeString}: ${target} (${extra.id})`
                         }
                     )
                 }
