@@ -68,11 +68,12 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
         }
     }
 
-    if(changes[0].key === "id") {
+    if(changes[0].key === "id" || changes[0].key === "allow" || changes[0].key === "deny") {
+        console.log(changes[0].key)
         if (audit.entries.first().action === AuditLogEvent.ChannelOverwriteCreate || AuditLogEvent.ChannelOverwriteUpdate || AuditLogEvent.ChannelOverwriteDelete) {
             let target;
             let typeString;
-            if(extra.name) {
+            if(extra) {
                 typeString = `GuildRole`
                 target = extra.name
             } else {
@@ -124,6 +125,10 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                             }
 
                             Embed.addFields(
+                                {
+                                    name: `Role`,
+                                    value: `<@&${extra.id}> (${extra.id})`
+                                },
                                 {
                                     name: `Permissions`,
                                     value: `${newString}\n ${oldString}`

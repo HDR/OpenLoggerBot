@@ -36,7 +36,7 @@ module.exports = {
     },
 
     isStringEmpty: function(string) {
-        if(string.length > 1) {
+        if(string) {
             return string
         } else {
             return 'None'
