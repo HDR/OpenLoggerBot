@@ -8,8 +8,6 @@ client.on(Events.GuildEmojiCreate, async (GuildEmoji ) => {
         limit: 1,
     });
 
-    console.log(audit.entries.first())
-
     let Embed = new EmbedBuilder()
     Embed.addFields(
         {
