@@ -1,7 +1,7 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField} = require("discord.js");
 const servers = require("../servers.json");
-const {getObjectDiffKey} = require("../commonFunctions");
+const {getObjectDiffKey, isStringEmpty} = require("../commonFunctions");
 
 function permissionResolver(permission) {
     const result = [];
@@ -35,7 +35,7 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                 case 'topic':
                     Embed.addFields({
                         name: 'Topic',
-                        value: `Old Topic: \`${OldGuildChannel.topic}\`\nNew Topic: \`${NewGuildChannel.topic}\``
+                        value: `Old Topic: \`${isStringEmpty(OldGuildChannel.topic)}\`\nNew Topic: \`${isStringEmpty(NewGuildChannel.topic)}\``
                     })
                     break;
 
@@ -67,8 +67,6 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
             }
         }
     }
-
-    console.log(changes[0].key)
 
     if(changes[0].key === "id") {
         if (audit.entries.first().action === AuditLogEvent.ChannelOverwriteCreate || AuditLogEvent.ChannelOverwriteUpdate || AuditLogEvent.ChannelOverwriteDelete) {

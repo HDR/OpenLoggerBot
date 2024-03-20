@@ -35,8 +35,12 @@ module.exports = {
         }, Object.values(object2));
     },
 
-    guildLogChannel: function(guildId) {
-
+    isStringEmpty: function(string) {
+        if(string.length > 1) {
+            return string
+        } else {
+            return 'None'
+        }
     }
 }
 
