@@ -15,7 +15,6 @@ module.exports = Object.freeze({
             GatewayIntentBits.GuildModeration
         ], partials: [
             Partials.Channel,
-            Partials.Message,
             Partials.Reaction
         ] })
 });
