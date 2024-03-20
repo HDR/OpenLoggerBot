@@ -16,8 +16,6 @@
 | GuildMemberUpdate         | Implemented     |
 | GuildRoleCreate           | Implemented     |
 | GuildRoleDelete           | Implemented     |
-| InviteCreate              | Not Implemented |
-| InviteDelete              | Not Implemented |
 | GuildRoleUpdate           | Implemented     |
 | GuildEmojiCreate          | Implemented     |
 | GuildEmojiDelete          | Implemented     |
@@ -32,14 +30,8 @@
 | MessageDelete             | Implemented     |
 | MessageUpdate             | Implemented     |
 | MessageBulkDelete         | Implemented     |
-| ThreadCreate              | Not Implemented |
-| ThreadDelete              | Not Implemented |
-| ThreadUpdate              | Not Implemented |
 | VoiceStateUpdate          | Implemented     |
 | WebhooksUpdate            | Not Implemented |
-| StageInstanceCreate       | Not Implemented |
-| StageInstanceUpdate       | Not Implemented |
-| StageInstanceDelete       | Not Implemented |
 | GuildStickerCreate        | Implemented     |
 | GuildStickerDelete        | Implemented     |
 | GuildStickerUpdate        | Implemented     |
@@ -48,3 +40,7 @@
 | GuildScheduledEventDelete | Not Implemented |
 
 ![OLB-example](https://github.com/HDR/OpenLoggerBot/assets/20230450/8e5964d2-0680-48c2-8b43-b60d48836f57)
+
+### Credits
+
+Makes use of [Androz2091's](https://github.com/Androz2091/) [Invite Tracker](https://github.com/Androz2091/discord-invites-tracker)
