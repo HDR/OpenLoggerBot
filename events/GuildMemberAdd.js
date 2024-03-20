@@ -34,60 +34,49 @@ const tracker = itrack.init(client, {
 
 tracker.on('guildMemberAdd', async (GuildMember, type, invite) => {
 
-    //Handle unreadable names
-    let normalize = GuildMember.user.username.normalize("NFKC")
-    if(normalize !== GuildMember.user.username) {
-        await GuildMember.setNickname(normalize)
-    }
-
     const Embed = new EmbedBuilder();
     Embed.setColor('#2cff00');
     Embed.setDescription(`<@${GuildMember.user.id}> joined`)
     Embed.setAuthor({name: `${GuildMember.user.tag}`, iconURL: `${GuildMember.displayAvatarURL()}`})
-    let currentDate = new Date();
-    if(Math.trunc(Math.ceil(currentDate.getTime() - GuildMember.user.createdAt.getTime()) / (1000 * 3600 * 24)) < 7 && !GuildMember.user.bot) {
-        GuildMember.kick('Account is too new (less than 7 days old)')
-    } else {
-        Embed.addFields({
-                name: 'Name',
-                value: `${GuildMember.user.tag} (${GuildMember.user.id}) <@${GuildMember.user.id}>`,
-                inline: false
-            },
-            {
-                name: 'Joined At',
-                value: `<t:${Math.trunc(GuildMember.joinedTimestamp/1000)}:F>`,
-                inline: false
-            },
-            {
-                name: 'Account Age',
-                value: `**${Math.trunc(Math.ceil(currentDate.getTime() - GuildMember.user.createdAt.getTime()) / (1000 * 3600 * 24))}** days`,
-                inline: true
-            },
-            {
-                name: 'Member Count',
-                value: `${GuildMember.guild.memberCount}`,
-                inline: true
-            })
-
-        switch (type) {
-            case 'normal':
-                Embed.addFields( {name: 'Invite Used', value: `${invite.code} by ${invite.inviter.tag} with ${invite.uses} uses`, inline: true})
-                break;
-            case 'vanity':
-                Embed.addFields({name: 'Invite Used', value: 'gameboy', inline: true})
-                break;
-            case 'unknown':
-                Embed.addFields({name: 'Invite Used', value: 'unknown', inline: true})
-                break;
-        }
-
-        Embed.addFields({
-            name: 'ID',
-            value: `\`\`\`ansi\n[0;33mMember = ${GuildMember.user.id}\n[0;34mGuild = ${GuildMember.guild.id}\`\`\``
+    Embed.addFields({
+            name: 'Name',
+            value: `${GuildMember.user.tag} (${GuildMember.user.id}) <@${GuildMember.user.id}>`,
+            inline: false
+        },
+        {
+            name: 'Joined At',
+            value: `<t:${Math.trunc(GuildMember.joinedTimestamp/1000)}:F>`,
+            inline: false
+        },
+        {
+            name: 'Account Age',
+            value: `**${Math.trunc(Math.ceil(currentDate.getTime() - GuildMember.user.createdAt.getTime()) / (1000 * 3600 * 24))}** days`,
+            inline: true
+        },
+        {
+            name: 'Member Count',
+            value: `${GuildMember.guild.memberCount}`,
+            inline: true
         })
 
-        Embed.setTimestamp()
-        Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-        if(servers[GuildMember.guild.id]){await GuildMember.guild.channels.cache.get(servers[GuildMember.guild.id]).send({embeds: [Embed]});}
+    switch (type) {
+        case 'normal':
+            Embed.addFields( {name: 'Invite Used', value: `${invite.code} by ${invite.inviter.tag} with ${invite.uses} uses`, inline: true})
+            break;
+        case 'vanity':
+            Embed.addFields({name: 'Invite Used', value: 'gameboy', inline: true})
+            break;
+        case 'unknown':
+            Embed.addFields({name: 'Invite Used', value: 'unknown', inline: true})
+            break;
     }
+
+    Embed.addFields({
+        name: 'ID',
+        value: `\`\`\`ansi\n[0;33mMember = ${GuildMember.user.id}\n[0;34mGuild = ${GuildMember.guild.id}\`\`\``
+    })
+
+    Embed.setTimestamp()
+    Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
+    if(servers[GuildMember.guild.id]){await GuildMember.guild.channels.cache.get(servers[GuildMember.guild.id]).send({embeds: [Embed]});}
 });
