@@ -18,7 +18,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
         let Embed = new EmbedBuilder();
         Embed.setColor('#90EE90')
         Embed.setAuthor({name: `${OldGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})
-        Embed.setDescription(`<@${OldGuildMember.user.id}> Cleared the rules`)
+        Embed.setDescription(`<@${OldGuildMember.user.id}> Cleared Onboarding`)
         Embed.addFields({
             name: 'Time Taken:',
             value: clear_time.humanize()
