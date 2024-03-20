@@ -39,7 +39,7 @@
 | GuildScheduledEventUpdate | Not Implemented |
 | GuildScheduledEventDelete | Not Implemented |
 
-![OLB-example](https://github.com/HDR/OpenLoggerBot/assets/20230450/9170fa05-9cd0-436e-b5e2-474955659d53)
+![OLB-example](https://github.com/HDR/OpenLoggerBot/assets/20230450/dd91eb1c-7e17-4744-b4ad-ca0fafc86398)
 
 ### Credits
 
