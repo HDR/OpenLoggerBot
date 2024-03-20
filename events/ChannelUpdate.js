@@ -27,7 +27,7 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
         limit: 1,
     });
 
-    let { executor, changes, extra } = auditLog.entries.first();
+    let { executor, changes } = auditLog.entries.first();
 
     if (audit.entries.first().action === AuditLogEvent.ChannelUpdate) {
         for (const [key, value] of Object.entries(getObjectDiffKey(OldGuildChannel, NewGuildChannel))) {
@@ -80,6 +80,8 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
         if (auditLog.entries.first().action === AuditLogEvent.ChannelOverwriteCreate || AuditLogEvent.ChannelOverwriteUpdate || AuditLogEvent.ChannelOverwriteDelete) {
             let target;
             let typeString;
+            let { extra } = auditLog.entries.first();
+
             if(extra) {
                 typeString = `GuildRole`
                 target = extra.name
@@ -131,11 +133,19 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                                 oldString = ""
                             }
 
-                            Embed.addFields(
-                                {
+                            if(extra.type) {
+                                Embed.addFields({
+                                    name: `User`,
+                                    value: `<@${extra.id}> (${extra.id})`
+                                })
+                            } else {
+                                Embed.addFields({
                                     name: `Role`,
                                     value: `<@&${extra.id}> (${extra.id})`
-                                },
+                                })
+                            }
+
+                            Embed.addFields(
                                 {
                                     name: `Permissions`,
                                     value: `${newString}\n ${oldString}`
