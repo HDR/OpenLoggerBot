@@ -19,10 +19,15 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
     Embed.setColor('#97ff28');
 
     let audit = await OldGuildChannel.guild.fetchAuditLogs({
-        limit: 1
+        limit: 1,
+        type: AuditLogEvent.ChannelUpdate
     });
 
-    let { executor, changes, extra } = audit.entries.first();
+    let auditLog = await OldGuildChannel.guild.fetchAuditLogs({
+        limit: 1,
+    });
+
+    let { executor, changes, extra } = auditLog.entries.first();
 
     if (audit.entries.first().action === AuditLogEvent.ChannelUpdate) {
         for (const [key, value] of Object.entries(getObjectDiffKey(OldGuildChannel, NewGuildChannel))) {
@@ -60,6 +65,9 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                     })
                     break;
 
+                case 'rawPosition':
+                    //Ignore otherwise we will just have a bunch of spam
+                    break;
 
                 case 'permissionOverwrites':
                     //Ignore this for now
@@ -69,8 +77,7 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
     }
 
     if(changes[0].key === "id" || changes[0].key === "allow" || changes[0].key === "deny") {
-        console.log(changes[0].key)
-        if (audit.entries.first().action === AuditLogEvent.ChannelOverwriteCreate || AuditLogEvent.ChannelOverwriteUpdate || AuditLogEvent.ChannelOverwriteDelete) {
+        if (auditLog.entries.first().action === AuditLogEvent.ChannelOverwriteCreate || AuditLogEvent.ChannelOverwriteUpdate || AuditLogEvent.ChannelOverwriteDelete) {
             let target;
             let typeString;
             if(extra) {
@@ -143,18 +150,20 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
         }
     }
 
+    if(Embed.data.fields) {
 
-    Embed.setDescription(`Channel ${NewGuildChannel} (${NewGuildChannel.id}) was updated`)
-    Embed.addFields(
-        {
-            name: 'ID',
-            value: `\`\`\`ansi\n[0;33mMember = ${audit.entries.first().executorId}\n[0;35mChannel = ${OldGuildChannel.id}\`\`\``,
-            inline: false
-        }
-    )
+        Embed.setDescription(`Channel ${NewGuildChannel} (${NewGuildChannel.id}) was updated`)
+        Embed.addFields(
+            {
+                name: 'ID',
+                value: `\`\`\`ansi\n[0;33mMember = ${audit.entries.first().executorId}\n[0;35mChannel = ${OldGuildChannel.id}\`\`\``,
+                inline: false
+            }
+        )
 
-    Embed.setAuthor({name: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-    Embed.setTimestamp()
-    Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-    if(servers[OldGuildChannel.guild.id]){await OldGuildChannel.guild.channels.cache.get(servers[OldGuildChannel.guild.id]).send({embeds: [Embed]});}
+        Embed.setAuthor({name: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
+        Embed.setTimestamp()
+        Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
+        if(servers[OldGuildChannel.guild.id]){await OldGuildChannel.guild.channels.cache.get(servers[OldGuildChannel.guild.id]).send({embeds: [Embed]});}
+    }
 });
