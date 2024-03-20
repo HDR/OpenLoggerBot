@@ -64,3 +64,7 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.login(token).then(registerCommands);
+
+client.on('ready', async () => {
+    client.user.setPresence({ activities: [{ name: `Keeping an eye on events across ${client.guilds.cache.size} servers` }] });
+})
