@@ -34,6 +34,7 @@ const tracker = itrack.init(client, {
 
 tracker.on('guildMemberAdd', async (GuildMember, type, invite) => {
 
+    let currentDate = new Date();
     const Embed = new EmbedBuilder();
     Embed.setColor('#2cff00');
     Embed.setDescription(`<@${GuildMember.user.id}> joined`)
