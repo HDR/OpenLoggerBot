@@ -139,8 +139,7 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                 }
             }
 
-            if(Embed.data.fields) {
-
+            if(Embed.data.fields && Embed.data.fields.length > 1) {
                 Embed.setDescription(`Channel ${NewGuildChannel} (${NewGuildChannel.id}) was updated`)
                 Embed.addFields(
                     {
