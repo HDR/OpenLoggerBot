@@ -108,4 +108,5 @@
 
 - [Androz2091](https://github.com/Androz2091/) for his [Invite Tracker](https://github.com/Androz2091/discord-invites-tracker)
 - [Zipplet](https://github.com/zipplet) for helping me test OpenLoggerBot
+- [JetBrains](https://www.jetbrains.com/?from=DMG-Bot) for providing a non-commercial open source licence to their products
 - Inspired by [Logger](https://logger.bot/)
