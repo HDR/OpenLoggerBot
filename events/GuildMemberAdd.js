@@ -80,7 +80,12 @@ tracker.on('guildMemberAdd', async (GuildMember, type, invite) => {
 
             Embed.setTimestamp()
             Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-            await GuildMember.guild.channels.cache.get(await eventState(GuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+            try {
+                await GuildMember.guild.channels.cache.get(await eventState(GuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+            } catch (e) {
+                e.guild = GuildMember.guild
+                console.log(e)
+            }
         }
     }
 });

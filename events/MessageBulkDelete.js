@@ -33,7 +33,12 @@ client.on(Events.MessageBulkDelete, async (Messages, Channel) => {
 
             Embed.setTimestamp()
             Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-            await Channel.guild.channels.cache.get(await eventState(Channel.guild.id, 'logChannel')).send({embeds: [Embed]});
+            try {
+                await Channel.guild.channels.cache.get(await eventState(Channel.guild.id, 'logChannel')).send({embeds: [Embed]});
+            } catch (e) {
+                e.guild = Channel.guild
+                console.log(e)
+            }
         }
     }
 })

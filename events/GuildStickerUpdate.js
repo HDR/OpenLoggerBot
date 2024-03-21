@@ -64,7 +64,12 @@ client.on(Events.GuildStickerUpdate, async (OldGuildSticker, NewGuildSticker ) =
             Embed.setThumbnail(NewGuildSticker.url)
             Embed.setTimestamp()
             Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-            await NewGuildSticker.guild.channels.cache.get(await eventState(NewGuildSticker.guildId, 'logChannel')).send({embeds: [Embed]});
+            try {
+                await NewGuildSticker.guild.channels.cache.get(await eventState(NewGuildSticker.guildId, 'logChannel')).send({embeds: [Embed]});
+            } catch (e) {
+                e.guild = NewGuildSticker.guild
+                console.log(e)
+            }
         }
     }
 })

@@ -32,7 +32,12 @@ client.on(Events.MessageUpdate, async(OldMessage, NewMessage) => {
 
                     Embed.setTimestamp()
                     Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-                    await NewMessage.guild.channels.cache.get(await eventState(NewMessage.guildId, 'logChannel')).send({embeds: [Embed]});
+                    try {
+                        await NewMessage.guild.channels.cache.get(await eventState(NewMessage.guildId, 'logChannel')).send({embeds: [Embed]});
+                    } catch (e) {
+                        e.guild = NewMessage.guild
+                        console.log(e)
+                    }
                 } catch (e) {
                     console.log(OldMessage)
                     console.log(e)

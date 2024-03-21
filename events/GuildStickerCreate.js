@@ -52,7 +52,12 @@ client.on(Events.GuildStickerCreate, async (GuildSticker ) => {
             Embed.setThumbnail(GuildSticker.url)
             Embed.setTimestamp()
             Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-            await GuildSticker.guild.channels.cache.get(await eventState(GuildSticker.guildId, 'logChannel')).send({embeds: [Embed]});
+            try {
+                await GuildSticker.guild.channels.cache.get(await eventState(GuildSticker.guildId, 'logChannel')).send({embeds: [Embed]});
+            } catch (e) {
+                e.guild = GuildSticker.guild
+                console.log(e)
+            }
         }
     }
 })

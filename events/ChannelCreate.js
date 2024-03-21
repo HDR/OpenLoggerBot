@@ -35,7 +35,12 @@ client.on(Events.ChannelCreate, async(GuildChannel) => {
                     }
                 )
 
-                await GuildChannel.guild.channels.cache.get(await eventState(GuildChannel.guildId, 'logChannel')).send({embeds: [Embed]});
+                try {
+                    await GuildChannel.guild.channels.cache.get(await eventState(GuildChannel.guildId, 'logChannel')).send({embeds: [Embed]});
+                } catch (e) {
+                    e.guild = GuildChannel.guild
+                    console.log(e)
+                }
             }
         }
     }

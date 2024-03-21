@@ -30,8 +30,12 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                         value: `\`\`\`ansi\n[0;33mMember = ${NewGuildMember.id}\`\`\``
                     })
                 Embed.setTimestamp()
-
-                await NewGuildMember.guild.channels.cache.get(await eventState(NewGuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+                try {
+                    await NewGuildMember.guild.channels.cache.get(await eventState(NewGuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+                } catch (e) {
+                    e.guild = NewGuildMember.guild
+                    console.log(e)
+                }
             }
 
             //Track Nickname Changes
@@ -58,7 +62,12 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
 
                     Embed.setTimestamp()
                     Embed.setFooter({text: `${executor.username}#${executor.discriminator}`, iconURL: `${executor.avatarURL()}`})
-                    await NewGuildMember.guild.channels.cache.get(await eventState(NewGuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+                    try {
+                        await NewGuildMember.guild.channels.cache.get(await eventState(NewGuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+                    } catch (e) {
+                        e.guild = NewGuildMember.guild
+                        console.log(e)
+                    }
                 }
             }
 
@@ -67,7 +76,12 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                 const Embed = new EmbedBuilder()
                 Embed.setColor('#ff0000')
                 Embed.setTitle(`${NewGuildMember.user.tag} has been timed out.`)
-                await NewGuildMember.guild.channels.cache.get(await eventState(NewGuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+                try {
+                    await NewGuildMember.guild.channels.cache.get(await eventState(NewGuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+                } catch (e) {
+                    e.guild = NewGuildMember.guild
+                    console.log(e)
+                }
             }
 
             //Track Role Changes
@@ -100,7 +114,12 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                 )
                 Embed.setTimestamp()
                 Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-                await NewGuildMember.guild.channels.cache.get(await eventState(NewGuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+                try {
+                    await NewGuildMember.guild.channels.cache.get(await eventState(NewGuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+                } catch (e) {
+                    e.guild = NewGuildMember.guild
+                    console.log(e)
+                }
             }
         }
     }

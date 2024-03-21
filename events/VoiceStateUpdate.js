@@ -43,7 +43,12 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
                 )
                 Embed.setTimestamp()
                 Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-                await NewState.guild.channels.cache.get(await eventState(NewState.guild.id, 'logChannel')).send({embeds: [Embed]});
+                try {
+                    await NewState.guild.channels.cache.get(await eventState(NewState.guild.id, 'logChannel')).send({embeds: [Embed]});
+                } catch (e) {
+                    e.guild = NewState.guild
+                    console.log(e)
+                }
             }
         }
     }

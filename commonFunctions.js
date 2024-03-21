@@ -1,5 +1,6 @@
 const _ = require("lodash");
 const sqlite3 = require("sqlite3");
+const {PermissionsBitField} = require("discord.js");
 
 module.exports = {
     getObjectDiffKey: function (object1, object2, compareRef = false) {
@@ -44,7 +45,7 @@ module.exports = {
         }
     },
 
-    eventState(guild, event) {
+    eventState: function(guild, event) {
         let db = new sqlite3.Database('config.db', sqlite3.OPEN_READONLY ,(err) => {if (err) {console.log(err.message);}});
         return new Promise((resolve, reject) => {
             db.serialize(() => {
@@ -65,7 +66,7 @@ module.exports = {
         })
     },
 
-    async tableExists(guild) {
+    tableExists: async function (guild) {
         let ex = true;
         let db = new sqlite3.Database('config.db', sqlite3.OPEN_READONLY ,(err) => {if (err) {console.log(err.message);}});
         return new Promise((resolve, reject) => {

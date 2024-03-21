@@ -27,7 +27,12 @@ client.on(Events.GuildRoleDelete, async (Role) => {
             )
             Embed.setTimestamp()
             Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-            await Role.guild.channels.cache.get(await eventState(Role.guild.id, 'logChannel')).send({embeds: [Embed]});
+            try {
+                await Role.guild.channels.cache.get(await eventState(Role.guild.id, 'logChannel')).send({embeds: [Embed]});
+            } catch (e) {
+                e.guild = Role.guild
+                console.log(e)
+            }
         }
     }
 })

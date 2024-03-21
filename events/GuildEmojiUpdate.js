@@ -34,7 +34,12 @@ client.on(Events.GuildEmojiUpdate, async (OldGuildEmoji, NewGuildEmoji) => {
             Embed.setThumbnail(NewGuildEmoji.imageURL())
             Embed.setTimestamp()
             Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-            await NewGuildEmoji.guild.channels.cache.get(await eventState(NewGuildEmoji.guild.id, 'logChannel')).send({embeds: [Embed]});
+            try {
+                await NewGuildEmoji.guild.channels.cache.get(await eventState(NewGuildEmoji.guild.id, 'logChannel')).send({embeds: [Embed]});
+            } catch (e) {
+                e.guild = NewGuildEmoji.guild
+                console.log(e)
+            }
         }
     }
 })

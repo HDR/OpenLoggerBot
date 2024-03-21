@@ -1,17 +1,6 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField} = require("discord.js");
-const {getObjectDiffKey, isStringEmpty, tableExists, eventState} = require("../commonFunctions");
-
-function permissionResolver(permission) {
-    const result = [];
-
-    for (const perm of Object.keys(PermissionsBitField.Flags)) {
-        if(permission.has(PermissionsBitField.Flags[perm])) {
-            result.push(perm);
-        }
-    }
-    return result;
-}
+const {getObjectDiffKey, isStringEmpty, tableExists, eventState, getObjectDiffValue} = require("../commonFunctions");
 
 client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
     if (await tableExists(NewGuildChannel.guildId)) {
@@ -81,83 +70,64 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                 if (auditLog.entries.first().action === AuditLogEvent.ChannelOverwriteCreate || AuditLogEvent.ChannelOverwriteUpdate || AuditLogEvent.ChannelOverwriteDelete) {
                     let target;
                     let typeString;
-                    let { extra } = auditLog.entries.first();
+                    let {extra} = auditLog.entries.first();
 
-                    if(extra) {
+                    if (!extra.type) {
                         typeString = `GuildRole`
-                        target = extra.name
+                        target = `<@&${extra.id}>`
                     } else {
                         typeString = `User`
                         target = `<@${extra.id}>`
                     }
 
+                    let APerms = []
+                    let DPerms = []
+
                     changes.forEach((item, index) => {
-                        if (changes[0].key === 'id') {
-                            if(changes[0].old === undefined && index === 0) {
-                                Embed.addFields(
-                                    {
-                                        name: `A Permission target was added`,
-                                        value: `${typeString}: ${target} (${extra.id})`
-                                    }
-                                )
-                            }
-                            if(changes[0].new === undefined && index === 0){
-                                Embed.addFields(
-                                    {
-                                        name: `A Permission target was removed`,
-                                        value: `${typeString}: ${target} (${extra.id})`
-                                    }
-                                )
-                            }
+                        switch (changes[index].key) {
+                            case 'allow':
+                                APerms = (new PermissionsBitField(item.new).toArray()).filter(x => !(new PermissionsBitField(item.old).toArray()).includes(x));
+                                break;
 
-                        } else {
-                            if(index === 0){
-                                try {
-                                    let newPerm = permissionResolver(new PermissionsBitField(changes[0].new))
-                                    let oldPerm = permissionResolver(new PermissionsBitField(changes[0].old))
+                            case 'deny':
+                                DPerms = (new PermissionsBitField(item.new).toArray()).filter(x => !(new PermissionsBitField(item.old).toArray()).includes(x));
+                                break;
 
-                                    let newString = "";
-                                    let oldString = "";
-
-                                    for (let [key, value] of Object.entries(newPerm)) {
-                                        newString += `\nAllow: ${value}`
-                                    }
-
-                                    for (let [key, value] of Object.entries(oldPerm)) {
-                                        oldString += `\nDeny: ${value}`
-                                    }
-
-                                    if (newString.length === 0) {
-                                        newString = ""
-                                    }
-                                    if (oldString.length === 0) {
-                                        oldString = ""
-                                    }
-
-                                    if(extra.type) {
-                                        Embed.addFields({
-                                            name: `User`,
-                                            value: `<@${extra.id}> (${extra.id})`
-                                        })
-                                    } else {
-                                        Embed.addFields({
-                                            name: `Role`,
-                                            value: `<@&${extra.id}> (${extra.id})`
-                                        })
-                                    }
-
+                            case 'id':
+                                if (changes[index].old === undefined && index === 0) {
                                     Embed.addFields(
                                         {
-                                            name: `Permissions`,
-                                            value: `${newString}\n ${oldString}`
+                                            name: `A Permission target was added`,
+                                            value: `${typeString}: ${target} (${extra.id})`
                                         }
                                     )
-                                } catch (e) {
-                                    console.log(e)
                                 }
-                            }
+                                if (changes[index].new === undefined && index === 0) {
+                                    Embed.addFields(
+                                        {
+                                            name: `A Permission target was removed`,
+                                            value: `${typeString}: ${target} (${extra.id})`
+                                        }
+                                    )
+                                }
+                                break;
                         }
                     })
+
+                    let permString = '';
+                    if (APerms.length > 0) {
+                        permString += `**Allowed** ${APerms.toString().replaceAll(",", "\n**Allowed** ")}\n\n`
+                    }
+                    if (DPerms.length > 0) {
+                        permString += `**Denied** ${DPerms.toString().replaceAll(",", "\n**Denied** ")}`
+                    }
+
+                    if (permString.length > 0) {
+                        Embed.addFields({
+                            name: 'Permission Changes',
+                            value: `${permString}`
+                        })
+                    }
                 }
             }
 
@@ -175,7 +145,13 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                 Embed.setAuthor({name: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
                 Embed.setTimestamp()
                 Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-                await NewGuildChannel.guild.channels.cache.get(await eventState(NewGuildChannel.guildId, 'logChannel')).send({embeds: [Embed]});
+
+                try {
+                    await NewGuildChannel.guild.channels.cache.get(await eventState(NewGuildChannel.guildId, 'logChannel')).send({embeds: [Embed]});
+                } catch (e) {
+                    e.guild = NewGuildChannel.guild
+                    console.log(e)
+                }
             }
         }
     }

@@ -23,7 +23,12 @@ client.on(Events.GuildEmojiDelete, async (GuildEmoji ) => {
             Embed.setThumbnail(GuildEmoji.imageURL())
             Embed.setTimestamp()
             Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-            await GuildEmoji.guild.channels.cache.get(await eventState(GuildEmoji.guild.id, 'logChannel')).send({embeds: [Embed]});
+            try {
+                await GuildEmoji.guild.channels.cache.get(await eventState(GuildEmoji.guild.id, 'logChannel')).send({embeds: [Embed]});
+            } catch (e) {
+                e.guild = GuildEmoji.guild
+                console.log(e)
+            }
         }
     }
 })

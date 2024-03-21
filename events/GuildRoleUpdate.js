@@ -101,7 +101,12 @@ client.on(Events.GuildRoleUpdate, async (OldGuildRole, NewGuildRole) => {
                 Embed.setAuthor({name: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
                 Embed.setTimestamp()
                 Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-                await NewGuildRole.guild.channels.cache.get(await eventState(NewGuildRole.guild.id, 'logChannel')).send({embeds: [Embed]});
+                try {
+                    await NewGuildRole.guild.channels.cache.get(await eventState(NewGuildRole.guild.id, 'logChannel')).send({embeds: [Embed]});
+                } catch (e) {
+                    e.guild = NewGuildRole.guild
+                    console.log(e)
+                }
             }
         }
     }

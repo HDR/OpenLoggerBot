@@ -25,7 +25,13 @@ client.on(Events.GuildBanRemove, async (GuildBan) => {
             )
             Embed.setTimestamp()
             Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-            await GuildBan.guild.channels.cache.get(await eventState(GuildBan.guild.id, 'logChannel')).send({embeds: [Embed]});
+
+            try {
+                await GuildBan.guild.channels.cache.get(await eventState(GuildBan.guild.id, 'logChannel')).send({embeds: [Embed]});
+            } catch (e) {
+                e.guild = GuildBan.guild
+                console.log(e)
+            }
         }
     }
 })
