@@ -17,7 +17,10 @@
 
 ## Commands
 - To get started run `/setchannel <#channel>`
-- All events are logged by default, this can be changed via the `/config` command (Example:`/config channelCreate false`)
+- All events are logged by default, this can be changed via the `/config` command 
+
+**Example Usage:**
+- `/config channelCreate false` (This would cause the bot to stop logging channelCreate events)
 
 **Both commands require the manage server permission**
 
