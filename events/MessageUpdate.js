@@ -12,7 +12,7 @@ client.on(Events.MessageUpdate, async(oldMessage, newMessage) => {
             Embed.addFields(
                 {
                     name: 'Channel',
-                    value: `<#${oldMessage.channel.id}> (${oldMessage.channel.name})\n[Go to message](${oldMessage.url})`
+                    value: `<#${oldMessage.channel.id}> (${oldMessage.channel.id})\n[Go to message](${oldMessage.url})`
                 },
                 {
                     name: 'New Message',
