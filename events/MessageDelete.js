@@ -47,7 +47,7 @@ client.on(Events.MessageDelete, async(Message) => {
                     embeds.set(attachment.id, new EmbedBuilder().setColor('#ae3ffd').setDescription(`Attachments for deleted message in <#${Message.channel.id}>`).setAuthor({name: `${Message.author.username}#${Message.author.discriminator}`, iconURL: `${Message.author.displayAvatarURL()}`}).addFields( { name: 'ID', value: `\`\`\`ansi\n[0;33mMember = ${Message.author.id}\n[0;32mMessage = ${Message.id}\`\`\`` }).setURL('https://discord.gg/gameboy').setImage(attachment.url).setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`}).setTimestamp())
                 })
                 try {
-                    await Message.guild.channels.cache.get(await eventState(Message.guildId, 'logChannel')).send({embeds: [Embed]});
+                    await Message.guild.channels.cache.get(await eventState(Message.guildId, 'logChannel')).send({embeds: Array.from(embeds.values())});
                 } catch (e) {
                     console.log(e)
                 }
