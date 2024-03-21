@@ -73,11 +73,19 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                     let {extra} = auditLog.entries.first();
 
                     if (!extra.type) {
-                        typeString = `GuildRole`
+                        typeString = `Role`
                         target = `<@&${extra.id}>`
+                        Embed.addFields({
+                            name: `Role`,
+                            value: `<@&${extra.id}> (${extra.id})`
+                        })
                     } else {
                         typeString = `User`
                         target = `<@${extra.id}>`
+                        Embed.addFields({
+                            name: `User`,
+                            value: `<@${extra.id}> (${extra.id})`
+                        })
                     }
 
                     let APerms = []
