@@ -2,6 +2,7 @@ const {client} = require("./constants");
 const { Collection, REST, Routes, Events } = require('discord.js');
 const { token } = require('./config.json')
 const fs = require('fs')
+const sqlite3 = require("sqlite3");
 const commands = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const events = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
@@ -11,6 +12,8 @@ for (const file of commands) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.data.name, command)
 }
+
+new sqlite3.Database('./config.db', (err) => {if (err) {console.log(err.message);}});
 
 async function registerCommands(){
     const commandData = []
@@ -55,6 +58,21 @@ client.on(Events.InteractionCreate, async interaction => {
 
         try {
             await command.execute(interaction);
+        } catch (error) {
+            console.error(`Error executing ${interaction.commandName}`);
+            console.error(error);
+        }
+    }
+
+    if(interaction.isAutocomplete()) {
+        const command = interaction.client.commands.get(interaction.commandName)
+
+        if (!command) {
+            console.error(`No command matching ${interaction.commandName} was found.`);
+            return;
+        }
+        try {
+            await command.autocomplete(interaction);
         } catch (error) {
             console.error(`Error executing ${interaction.commandName}`);
             console.error(error);
