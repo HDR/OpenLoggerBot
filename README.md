@@ -37,32 +37,32 @@
 ## Configuration
 <center>
 
-  | Event | Details                                                          |
-  |---------------------|------------------------------------------------------------------|
-  | channelCreate       | Triggered when a channel is created                              |
-  | channelDelete       | Triggered when a channel is deleted                              |
-  | channelUpdate       | Triggered when a channel is updated                              |
-  | guildBanAdd         | Triggered when a user is banned                                  |
-  | guildBanRemove      | Triggered when a user is unbanned                                |
-  | guildEmojiCreate    | Triggered when an emoji is created                               |
-  | guildEmojiDelete    | Triggered when an emoji is deleted                               |
-  | guildEmojiUpdate    | Triggered when an emoji is updated                               |
-  | guildInviteCreate   | Triggered when an invite is created                              |
-  | guildMemberAdd      | Triggered when a member joins                                    |
-  | guildMemberRemove   | Triggered when a member leaves                                   |
-  | guildMemberOnboarding | Triggered when a member clears onboarding                        |
-  | guildMemberUpdate   | Triggered when a member is update                                |
-  | guildRoleCreate     | Triggered when a role is created                                 |
-  | guildRoleDelete     | Triggered when a role is deleted                                 |
-  | guildRoleUpdate     | Triggered when a role is updated                                 |
-  | guildStickerCreate  | Triggered when a sticker is created                            \ |
-  | guildStickerDelete  | Not Triggered when a sticker is deleted                          |
-  | guildStickerUpdate  | Triggered when a sticker is updated                              |
-  | guildUpdate         | Triggered when the guild is updated                              |
-  | messageBulkDelete   | Triggered when a bot deleted bulk messages or a user is banned   |
-  | messageDelete       | Triggered when a message is deleted                              |
-  | messageDeleteAttachments | Triggered when a message that has attachments is deleted         |
-  | messageUpdate       | Triggered when a message is updated                              |
+  | Event | Details                                                         |
+  |---------------------|-----------------------------------------------------------------|
+  | channelCreate       | Triggered when a channel is created                             |
+  | channelDelete       | Triggered when a channel is deleted                             |
+  | channelUpdate       | Triggered when a channel is updated                             |
+  | guildBanAdd         | Triggered when a user is banned                                 |
+  | guildBanRemove      | Triggered when a user is unbanned                               |
+  | guildEmojiCreate    | Triggered when an emoji is created                              |
+  | guildEmojiDelete    | Triggered when an emoji is deleted                              |
+  | guildEmojiUpdate    | Triggered when an emoji is updated                              |
+  | guildInviteCreate   | Triggered when an invite is created                             |
+  | guildMemberAdd      | Triggered when a member joins                                   |
+  | guildMemberRemove   | Triggered when a member leaves                                  |
+  | guildMemberOnboarding | Triggered when a member clears onboarding                       |
+  | guildMemberUpdate   | Triggered when a member is update                               |
+  | guildRoleCreate     | Triggered when a role is created                                |
+  | guildRoleDelete     | Triggered when a role is deleted                                |
+  | guildRoleUpdate     | Triggered when a role is updated                                |
+  | guildStickerCreate  | Triggered when a sticker is created                             |
+  | guildStickerDelete  | Not Triggered when a sticker is deleted                         |
+  | guildStickerUpdate  | Triggered when a sticker is updated                             |
+  | guildUpdate         | Triggered when the guild is updated                             |
+  | messageBulkDelete   | Triggered when a bot deleted bulk messages or a user is banned  |
+  | messageDelete       | Triggered when a message is deleted                             |
+  | messageDeleteAttachments | Triggered when a message that has attachments is deleted        |
+  | messageUpdate       | Triggered when a message is updated                             |
   | voiceStateUpdate    | Triggered when a  user joins, leaves or moves in a voice channel |
 </center>
 
