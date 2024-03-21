@@ -40,9 +40,9 @@ module.exports = {
             db.close()
         }
         if(eventbool) {
-            interaction.reply({content: `Started logging ${interaction.guild.name}`, ephemeral: true });
+            interaction.reply({content: `Started logging ${event} in ${interaction.guild.name}`, ephemeral: true });
         } else {
-            interaction.reply({content: `Stopped logging ${interaction.guild.name}`, ephemeral: true });
+            interaction.reply({content: `Stopped logging ${event} in ${interaction.guild.name}`, ephemeral: true });
         }
     }
 }

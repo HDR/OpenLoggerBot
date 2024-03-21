@@ -8,3 +8,5 @@
 package-lock.json
 OpenLoggerBot.iml
 config.db
+.idea/sqldialects.xml
+/.idea
