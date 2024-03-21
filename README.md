@@ -31,7 +31,6 @@
 | MessageUpdate             | Implemented     |
 | MessageBulkDelete         | Implemented     |
 | VoiceStateUpdate          | Implemented     |
-| WebhooksUpdate            | Not Implemented |
 | GuildStickerCreate        | Implemented     |
 | GuildStickerDelete        | Implemented     |
 | GuildStickerUpdate        | Implemented     |
