@@ -1,6 +1,7 @@
 const {client} = require("../constants");
-const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField} = require("discord.js");
-const {getObjectDiffKey, isStringEmpty, tableExists, eventState, getObjectDiffValue} = require("../commonFunctions");
+const {Events, EmbedBuilder, AuditLogEvent, PermissionsBitField, Collection} = require("discord.js");
+const {getObjectDiffKey, isStringEmpty, tableExists, eventState} = require("../commonFunctions");
+const {ChannelType} = require("discord-api-types/v10");
 
 client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
     if (await tableExists(NewGuildChannel.guildId)) {
@@ -52,6 +53,71 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                             Embed.addFields({
                                 name: 'Thread auto hide interval',
                                 value: `Old Interval: \`${OldGuildChannel.defaultAutoArchiveDuration}\`\nNew Interval: \`${NewGuildChannel.defaultAutoArchiveDuration}\``
+                            })
+                            break;
+
+                        case 'availableTags':
+                            let oldTags = new Collection();
+                            OldGuildChannel.availableTags.forEach(function(tag) {
+                                if(tag.emoji.name){
+                                    oldTags.set(tag.emoji.name)
+                                } else {
+                                    oldTags.set(`<:emoji:${tag.emoji.id}>`)
+                                }
+                            })
+                            let newTags = new Collection();
+                            NewGuildChannel.availableTags.forEach(function(tag) {
+                                if(tag.emoji.name){
+                                    newTags.set(tag.emoji.name)
+                                } else {
+                                    newTags.set(`<:emoji:${tag.emoji.id}>`)
+                                }
+                            })
+                            Embed.addFields({
+                                name: 'Tags',
+                                value: `Old Tags: ${Array.from(oldTags.keys()).toString().replaceAll(',', ' ')}\nNew Tags: ${Array.from(newTags.keys()).toString().replaceAll(',', ' ')}`
+                            })
+                            break;
+
+                        case 'defaultThreadRateLimitPerUser':
+                            Embed.addFields({
+                                name: 'Thread Rate Limit',
+                                value: `Old Rate Limit: \`${OldGuildChannel.rateLimitPerUser}\`\nNew Rate Limit: \`${NewGuildChannel.rateLimitPerUser}\``
+                            })
+                            break;
+
+                        case 'defaultForumLayout':
+                            let defForumLay = ['Default', 'List View', 'Gallery View']
+                            Embed.addFields({
+                                name: 'Default Forum Layout',
+                                value: `Old Forum Layout: \`${defForumLay[OldGuildChannel.defaultForumLayout]}\`\nNew Forum Layout: \`${defForumLay[NewGuildChannel.defaultForumLayout]}\``
+                            })
+                            break;
+
+                        case 'defaultReactionEmoji':
+                            let oldReactEmoji = ''
+                            let newReactEmoji = ''
+                            if(OldGuildChannel.defaultReactionEmoji.name){
+                                oldReactEmoji = OldGuildChannel.defaultReactionEmoji.name
+                            } else {
+                                oldReactEmoji = `<:emoji:${OldGuildChannel.defaultReactionEmoji.id}>`
+                            }
+                            if(NewGuildChannel.defaultReactionEmoji.name){
+                                newReactEmoji = NewGuildChannel.defaultReactionEmoji.name
+                            } else {
+                                newReactEmoji = `<:emoji:${NewGuildChannel.defaultReactionEmoji.id}>`
+                            }
+                            Embed.addFields({
+                                name: 'Default Reaction Emoji',
+                                value: `Old Reaction Emoji: ${oldReactEmoji}\nNew Reaction Emoji: ${newReactEmoji}`
+                            })
+                            break;
+
+                        case 'defaultSortOrder':
+                            let defSortOrder = ['Recent Activity', 'Creation Time']
+                            Embed.addFields({
+                                name: 'Default Sort Order',
+                                value: `Old Sort Order: \`${defSortOrder[OldGuildChannel.defaultSortOrder]}\`\nNew Sort Order: \`${defSortOrder[NewGuildChannel.defaultSortOrder]}\``
                             })
                             break;
 
@@ -139,8 +205,8 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                 }
             }
 
-            if(Embed.data.fields && Embed.data.fields.length > 1) {
-                Embed.setDescription(`Channel ${NewGuildChannel} (${NewGuildChannel.id}) was updated`)
+            if(Embed.data.fields && Embed.data.fields.length >= 1) {
+                Embed.setDescription(`${ChannelType[NewGuildChannel.type]} ${NewGuildChannel} (${NewGuildChannel.id}) was updated`)
                 Embed.addFields(
                     {
                         name: 'ID',
