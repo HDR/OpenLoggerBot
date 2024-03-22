@@ -5,7 +5,7 @@
 ### Requirements:
 - [NodeJS](https://nodejs.org)
 - [A Discord Application](https://discord.com/developers/applications)
-- [A Pastenbin Account](https://pastebin.com/)
+- [A Pastebin Account](https://pastebin.com/)
 
 ### Setup:
 1. `git clone https://github.com/HDR/OpenLoggerBot.git`
