@@ -10,7 +10,7 @@ client.on(Events.MessageBulkDelete, async (Messages, Channel) => {
             let format = ''
 
             Messages.forEach(message => {
-                format += `${message.author.tag} (${message.author.id}) | (${message.author.displayAvatarURL()}) | ${moment(message.createdTimestamp).format('MMMM Do YYYY, H:mm:ss')}(UTC+1): ${message.content}\n`
+                format += `${message.author.tag} (${message.author.id}) | (${message.author.displayAvatarURL()}) | ${moment(message.createdTimestamp).utc().format('MMMM Do YYYY, H:mm:ss')}(UTC): ${message.content}\n`
             })
 
             let logFile = new AttachmentBuilder(Buffer.from(format), {name: `${Messages.first().author.id}.log`})
