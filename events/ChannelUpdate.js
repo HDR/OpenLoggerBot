@@ -132,75 +132,79 @@ client.on(Events.ChannelUpdate, async(OldGuildChannel, NewGuildChannel) => {
                 }
             }
 
-            if(changes[0].key === "id" || changes[0].key === "allow" || changes[0].key === "deny") {
-                if (auditLog.entries.first().action === AuditLogEvent.ChannelOverwriteCreate || AuditLogEvent.ChannelOverwriteUpdate || AuditLogEvent.ChannelOverwriteDelete) {
-                    let target;
-                    let typeString;
-                    let {extra} = auditLog.entries.first();
+            if(changes[0]) {
+                if(changes[0].key === "id" || changes[0].key === "allow" || changes[0].key === "deny") {
+                    if (auditLog.entries.first().action === AuditLogEvent.ChannelOverwriteCreate || AuditLogEvent.ChannelOverwriteUpdate || AuditLogEvent.ChannelOverwriteDelete) {
+                        let target;
+                        let typeString;
+                        let {extra} = auditLog.entries.first();
 
-                    if (!extra.type) {
-                        typeString = `Role`
-                        target = `<@&${extra.id}>`
-                        Embed.addFields({
-                            name: `Role`,
-                            value: `<@&${extra.id}> (${extra.id})`
-                        })
-                    } else {
-                        typeString = `User`
-                        target = `<@${extra.id}>`
-                        Embed.addFields({
-                            name: `User`,
-                            value: `<@${extra.id}> (${extra.id})`
-                        })
-                    }
+                        let APerms = []
+                        let DPerms = []
 
-                    let APerms = []
-                    let DPerms = []
+                        changes.forEach((item, index) => {
+                            switch (changes[index].key) {
+                                case 'allow':
+                                    APerms = (new PermissionsBitField(item.new).toArray()).filter(x => !(new PermissionsBitField(item.old).toArray()).includes(x));
+                                    break;
 
-                    changes.forEach((item, index) => {
-                        switch (changes[index].key) {
-                            case 'allow':
-                                APerms = (new PermissionsBitField(item.new).toArray()).filter(x => !(new PermissionsBitField(item.old).toArray()).includes(x));
-                                break;
+                                case 'deny':
+                                    DPerms = (new PermissionsBitField(item.new).toArray()).filter(x => !(new PermissionsBitField(item.old).toArray()).includes(x));
+                                    break;
 
-                            case 'deny':
-                                DPerms = (new PermissionsBitField(item.new).toArray()).filter(x => !(new PermissionsBitField(item.old).toArray()).includes(x));
-                                break;
-
-                            case 'id':
-                                if (changes[index].old === undefined && index === 0) {
-                                    Embed.addFields(
-                                        {
-                                            name: `A Permission target was added`,
-                                            value: `${typeString}: ${target} (${extra.id})`
+                                case 'id':
+                                    if (changes[index].old === undefined && index === 0) {
+                                        if (!extra.type) {
+                                            typeString = `Role`
+                                            target = `<@&${extra.id}>`
+                                            Embed.addFields({
+                                                name: `Role`,
+                                                value: `<@&${extra.id}> (${extra.id}) was added`
+                                            })
+                                        } else {
+                                            typeString = `User`
+                                            target = `<@${extra.id}>`
+                                            Embed.addFields({
+                                                name: `User`,
+                                                value: `<@${extra.id}> (${extra.id}) was added`
+                                            })
                                         }
-                                    )
-                                }
-                                if (changes[index].new === undefined && index === 0) {
-                                    Embed.addFields(
-                                        {
-                                            name: `A Permission target was removed`,
-                                            value: `${typeString}: ${target} (${extra.id})`
+                                    }
+                                    if (changes[index].new === undefined && index === 0) {
+                                        if (!extra.type) {
+                                            typeString = `Role`
+                                            target = `<@&${extra.id}>`
+                                            Embed.addFields({
+                                                name: `Role`,
+                                                value: `<@&${extra.id}> (${extra.id}) was removed`
+                                            })
+                                        } else {
+                                            typeString = `User`
+                                            target = `<@${extra.id}>`
+                                            Embed.addFields({
+                                                name: `User`,
+                                                value: `<@${extra.id}> (${extra.id}) was removed`
+                                            })
                                         }
-                                    )
-                                }
-                                break;
+                                    }
+                                    break;
+                            }
+                        })
+
+                        let permString = '';
+                        if (APerms.length > 0) {
+                            permString += `**Allowed** ${APerms.toString().replaceAll(",", "\n**Allowed** ")}\n\n`
                         }
-                    })
+                        if (DPerms.length > 0) {
+                            permString += `**Denied** ${DPerms.toString().replaceAll(",", "\n**Denied** ")}`
+                        }
 
-                    let permString = '';
-                    if (APerms.length > 0) {
-                        permString += `**Allowed** ${APerms.toString().replaceAll(",", "\n**Allowed** ")}\n\n`
-                    }
-                    if (DPerms.length > 0) {
-                        permString += `**Denied** ${DPerms.toString().replaceAll(",", "\n**Denied** ")}`
-                    }
-
-                    if (permString.length > 0) {
-                        Embed.addFields({
-                            name: 'Permission Changes',
-                            value: `${permString}`
-                        })
+                        if (permString.length > 0) {
+                            Embed.addFields({
+                                name: 'Permission Changes',
+                                value: `${permString}`
+                            })
+                        }
                     }
                 }
             }

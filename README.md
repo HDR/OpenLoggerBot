@@ -5,12 +5,11 @@
 ### Requirements:
 - [NodeJS](https://nodejs.org)
 - [A Discord Application](https://discord.com/developers/applications)
-- [A Pastebin Account](https://pastebin.com/)
 
 ### Setup:
 1. `git clone https://github.com/HDR/OpenLoggerBot.git`
 2. `cd OpenLoggerBot`
-2. Rename `config-example.json` to `config.json` and populate the `token` and `pastebin_key`
+2. Rename `config-example.json` to `config.json` and populate the `token`
 3. `npm install`
 4. `node index.js`
 
@@ -34,7 +33,7 @@
 | Read Messages        | Required to view public channels       |
 | Send Messages        | Required to post logs                  |
 | Embed Links          | Required to embed media                |
-| Attach Files         | Required to upload media               |
+| Attach Files         | Required to log bulk deleted messages  |
 | Read Message History | Required to read messages              |
 
 ## Configuration

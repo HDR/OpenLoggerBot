@@ -7,8 +7,7 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
         if(await eventState(GuildMember.guild.id, 'guildMemberRemove')) {
             GuildMember.guild.bans.fetch(GuildMember.id).then(e=> {}).catch(async e => {
                 const auditLog = await GuildMember.guild.fetchAuditLogs({
-                    limit: 1,
-                    type: AuditLogEvent.MemberKick
+                    limit: 1
                 });
 
                 const auditEntry = auditLog.entries.first();
@@ -40,42 +39,45 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
                     }
                 )
 
-                if (!auditEntry) {
-                    Embed.setDescription(`<@${GuildMember.user.id}> left the server`)
-                } else {
-                    if (target.id === GuildMember.id && auditEntry.createdAt > GuildMember.joinedAt && auditEntry.action === AuditLogEvent.MemberKick) {
-                        Embed.setDescription(`<@${GuildMember.user.id}> was kicked by ${executor.tag} (${executor.id})`)
-                        let kickReason = 'None'
-                        if(reason){
-                            kickReason = reason.toString()
+                if(auditLog.entries.first().action === AuditLogEvent.MemberBanAdd || AuditLogEvent.MemberKick) {
+                    if(auditLog.entries.first().action !== AuditLogEvent.MemberBanAdd) {
+                        if (target.id === GuildMember.id && auditEntry.createdAt > GuildMember.joinedAt && auditEntry.action === AuditLogEvent.MemberKick) {
+                            Embed.setDescription(`<@${GuildMember.user.id}> was kicked by ${executor.tag} (${executor.id})`)
+                            let kickReason = 'None'
+                            if(reason){
+                                kickReason = reason.toString()
+                            }
+                            Embed.addFields(
+                                {
+                                    name: 'Reason',
+                                    value: kickReason,
+                                    inline: false
+                                })
+                        } else {
+                            Embed.setDescription(`<@${GuildMember.user.id}> left the server`)
                         }
-                        Embed.addFields(
-                            {
-                                name: 'Reason',
-                                value: kickReason,
-                                inline: false
-                            })
-                    } else {
-                        Embed.setDescription(`<@${GuildMember.user.id}> left the server`)
                     }
+                } else {
+                    Embed.setDescription(`<@${GuildMember.user.id}> left the server`)
                 }
 
-                Embed.addFields(
-                    {
-                        name: 'ID',
-                        value: `\`\`\`ansi\n[0;33mMember = ${GuildMember.user.id}\n[0;34mGuild = ${GuildMember.guild.id}\`\`\``,
-                        inline: false
+                if(Embed.data.description) {
+                    Embed.addFields(
+                        {
+                            name: 'ID',
+                            value: `\`\`\`ansi\n[0;33mMember = ${GuildMember.user.id}\n[0;34mGuild = ${GuildMember.guild.id}\`\`\``,
+                            inline: false
+                        }
+                    )
+
+                    Embed.setTimestamp()
+                    Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
+                    try {
+                        await GuildMember.guild.channels.cache.get(await eventState(GuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+                    } catch (e) {
+                        e.guild = GuildMember.guild
+                        console.log(e)
                     }
-                )
-
-
-                Embed.setTimestamp()
-                Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-                try {
-                    await GuildMember.guild.channels.cache.get(await eventState(GuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
-                } catch (e) {
-                    e.guild = GuildMember.guild
-                    console.log(e)
                 }
             })
         }
