@@ -37,6 +37,8 @@
 | Read Message History | Required to read messages              |
 
 ## Configuration
+- Usage:
+    `/config <eventName> <true/false>`
 <center>
 
   | Event | Details                                                         |
