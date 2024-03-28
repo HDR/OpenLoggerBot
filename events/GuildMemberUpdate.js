@@ -74,7 +74,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
             //Check if user was timed out
             if(NewGuildMember.isCommunicationDisabled()) {
                 const Embed = new EmbedBuilder()
-                Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
+                Embed.setAuthor({name: `${NewGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})
                 Embed.setColor('#ff0000')
                 Embed.setTitle(`${NewGuildMember.user.tag} has been timed out.`)
                 Embed.addFields({
@@ -88,7 +88,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                     inline: true
                 })
                 Embed.setTimestamp()
-                Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
+                Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
                 try {
                     await NewGuildMember.guild.channels.cache.get(await eventState(NewGuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
                 } catch (e) {
