@@ -12,7 +12,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
             });
 
             let auditEntry = auditLog.entries.first();
-            let { executor } = auditEntry;
+            let { executor, reason } = auditEntry;
 
             //Track people passing onboarding
             if(OldGuildMember.pending && !NewGuildMember.pending) {
@@ -74,8 +74,21 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
             //Check if user was timed out
             if(NewGuildMember.isCommunicationDisabled()) {
                 const Embed = new EmbedBuilder()
+                Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
                 Embed.setColor('#ff0000')
                 Embed.setTitle(`${NewGuildMember.user.tag} has been timed out.`)
+                Embed.addFields({
+                    name: 'Reason',
+                    value: `${reason}`,
+                    inline: true
+                },
+                {
+                    name: 'Until',
+                    value: `<t:${Math.trunc(NewGuildMember.communicationDisabledUntilTimestamp / 1000)}:R>`,
+                    inline: true
+                })
+                Embed.setTimestamp()
+                Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
                 try {
                     await NewGuildMember.guild.channels.cache.get(await eventState(NewGuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
                 } catch (e) {
