@@ -66,7 +66,7 @@ tracker.on('guildMemberAdd', async (GuildMember, type, invite) => {
                     Embed.addFields( {name: 'Invite Used', value: `${invite.code} by ${invite.inviter.tag} with ${invite.uses} uses`, inline: true})
                     break;
                 case 'vanity':
-                    Embed.addFields({name: 'Invite Used', value: 'gameboy', inline: true})
+                    Embed.addFields({name: 'Invite Used', value: `${GuildMember.guild.vanityURLCode}`, inline: true})
                     break;
                 case 'unknown':
                     Embed.addFields({name: 'Invite Used', value: 'unknown', inline: true})
