@@ -1,5 +1,5 @@
 const {client} = require("../constants");
-const {Events, EmbedBuilder, Collection} = require("discord.js");
+const {Events, EmbedBuilder, Collection, AttachmentBuilder} = require("discord.js");
 const {tableExists, eventState} = require("../commonFunctions");
 
 
@@ -11,18 +11,24 @@ client.on(Events.MessageDelete, async(Message) => {
                 Embed.setColor('#ae3ffd')
                 Embed.setAuthor({name: `${Message.author.username}#${Message.author.discriminator}`, iconURL: `${Message.author.displayAvatarURL()}`})
                 Embed.setDescription(`Message deleted in in <#${Message.channel.id}>`)
-                Embed.addFields(
-                    {
+                let sendData = {};
+                if(Message.content.length > 1024){
+                    sendData.files = [new AttachmentBuilder(Buffer.from(Message.content), {name: `${Message.id}.log`})]
+                    Embed.addFields({
                         name: 'Content',
-                        value: `${Message.content}`
-                    },
+                        value: `Content is above 1024 characters long(${Message.content.length} Characters) and will be embedded as a file`
+                    })
+                } else {
+                    Embed.addFields({
+                            name: 'Content',
+                            value: `${Message.content}`
+                        })
+                }
+                Embed.addFields(
                     {
                         name: 'Date',
                         value: `<t:${Math.trunc(Date.now()/1000)}:F>`
-                    }
-                )
-
-                Embed.addFields(
+                    },
                     {
                         name: 'ID',
                         value: `\`\`\`ansi\n[0;33mMember = ${Message.author.id}\n[0;32mMessage = ${Message.id}\`\`\``
@@ -31,8 +37,9 @@ client.on(Events.MessageDelete, async(Message) => {
 
                 Embed.setTimestamp()
                 Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
+                sendData.embeds = [Embed]
                 try {
-                    await Message.guild.channels.cache.get(await eventState(Message.guildId, 'logChannel')).send({embeds: [Embed]});
+                    await Message.guild.channels.cache.get(await eventState(Message.guildId, 'logChannel')).send(sendData);
                 } catch (e) {
                     e.guild = Message.guild
                     console.log(e)
