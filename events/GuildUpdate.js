@@ -50,9 +50,10 @@ async function GuildUpdate(AuditEntry, Guild, Embed) {
                 break;
 
             case 'default_message_notifications':
+                const notificationState = ['All Messages', 'Only @mentions']
                 Embed.addFields({
                     name: 'Notification Settings',
-                    value: `Old State: \`${notificationState(value.old)}\`\nNew State: \`${notificationState(value.new)}\``
+                    value: `Old State: \`${notificationState[value.old]}\`\nNew State: \`${notificationState[value.new]}\``
                 })
                 break;
 
@@ -92,9 +93,10 @@ async function GuildUpdate(AuditEntry, Guild, Embed) {
                 break;
 
             case 'explicit_content_filter':
+                const contentFilter = ['Do not filter', 'Filter messages from server members without roles', 'Filter messages from all members']
                 Embed.addFields({
                     name: 'Explicit image filter',
-                    value: `Old State: \`${contentFilter(value.old)}\`\nNew State: \`${contentFilter(value.new)}\``
+                    value: `Old State: \`${contentFilter[value.old]}\`\nNew State: \`${contentFilter[value.new]}\``
                 })
                 break;
 
@@ -139,9 +141,10 @@ async function GuildUpdate(AuditEntry, Guild, Embed) {
                 break;
 
             case 'verification_level':
+                const verificationLevel = ['Low', 'Medium', 'High', 'Highest']
                 Embed.addFields({
                     name: 'Verification Level',
-                    value: `Old Verification Level: \`${verificationLevel(value.old)}\`\nNew Verification Level: \`${verificationLevel(value.new)}\``
+                    value: `Old Verification Level: \`${verificationLevel[value.old]}\`\nNew Verification Level: \`${verificationLevel[value.new]}\``
                 })
                 break;
 
@@ -167,43 +170,4 @@ async function GuildUpdate(AuditEntry, Guild, Embed) {
 
     Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;
-}
-
-function notificationState(state) {
-    switch (state){
-        case 0:
-            return 'All Messages'
-
-        case 1:
-            return 'Only @mentions'
-    }
-}
-
-function contentFilter(state) {
-    switch (state){
-        case 0:
-            return 'Do not filter'
-
-        case 1:
-            return 'Filter messages from server members without roles'
-
-        case 2:
-            return 'Filter messages from all members'
-    }
-}
-
-function verificationLevel(state) {
-    switch (state){
-        case 1:
-            return 'Low'
-
-        case 2:
-            return 'Medium'
-
-        case 3:
-            return 'High'
-
-        case 4:
-            return 'Highest'
-    }
 }
