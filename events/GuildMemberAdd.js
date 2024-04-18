@@ -2,7 +2,6 @@ const {client} = require("../constants");
 const { EmbedBuilder, Collection, Events } = require("discord.js");
 const itrack = require('@androz2091/discord-invites-tracker')
 const {tableExists, eventState} = require("../commonFunctions");
-
 const guildInvites = new Collection();
 
 client.on(Events.InviteCreate, async invite => {

@@ -39,7 +39,6 @@ client.on(Events.MessageUpdate, async(OldMessage, NewMessage) => {
                         console.log(e)
                     }
                 } catch (e) {
-                    console.log(OldMessage)
                     console.log(e)
                     console.log('Something went wrong logging the message update event, fix this later')
                 }

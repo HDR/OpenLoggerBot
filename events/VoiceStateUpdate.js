@@ -26,7 +26,6 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
             }
 
             if(NewState.channelId == null && !NewState.member.user.bot) {
-
                 let Embed = new EmbedBuilder()
                 Embed.setColor('#676767')
                 Embed.setAuthor({name: `${NewState.member.user.tag}`, iconURL: `${NewState.member.user.displayAvatarURL()}`})

@@ -1,5 +1,4 @@
 const { PermissionFlagsBits, SlashCommandBuilder} = require("discord.js")
-const fs = require('fs');
 const sqlite3 = require("sqlite3");
 const {tableExists} = require("../commonFunctions");
 const {client} = require("../constants");

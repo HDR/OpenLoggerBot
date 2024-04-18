@@ -104,27 +104,21 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                 Embed.setDescription(`<@${OldGuildMember.user.id}>'s roles were updated`)
                 let diff = OldGuildMember.roles.cache.difference(NewGuildMember.roles.cache)
                 if(NewGuildMember.roles.cache.has(diff.first().id)) {
-                    Embed.addFields(
-                        {
-                            name: 'Changes',
-                            value: `➕ Added **${diff.first().name}**`
-                        }
-                    )
+                    Embed.addFields({
+                        name: 'Changes',
+                        value: `➕ Added **${diff.first().name}**`
+                    })
                 } else {
-                    Embed.addFields(
-                        {
-                            name: 'Changes',
-                            value: `❌ Removed **${diff.first().name}**`
-                        }
-                    )
+                    Embed.addFields({
+                        name: 'Changes',
+                        value: `❌ Removed **${diff.first().name}**`
+                    })
                 }
 
-                Embed.addFields(
-                    {
-                        name: 'ID',
-                        value: `\`\`\`ansi\n[0;33mMember = ${OldGuildMember.id}\n[0;37mRole = ${diff.first().id}\`\`\``
-                    }
-                )
+                Embed.addFields({
+                    name: 'ID',
+                    value: `\`\`\`ansi\n[0;33mMember = ${OldGuildMember.id}\n[0;37mRole = ${diff.first().id}\`\`\``
+                })
                 Embed.setTimestamp()
                 Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
                 try {

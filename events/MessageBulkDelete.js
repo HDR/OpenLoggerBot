@@ -14,7 +14,6 @@ client.on(Events.MessageBulkDelete, async (Messages, Channel) => {
             })
 
             let logFile = new AttachmentBuilder(Buffer.from(format), {name: `${Messages.first().author.id}.log`})
-
             Embed.setDescription(`Deleted **${Messages.size}** message(s)`)
             Embed.setTimestamp()
             Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})

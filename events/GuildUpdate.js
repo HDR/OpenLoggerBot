@@ -1,190 +1,173 @@
-const {client} = require("../constants");
-const {Events, EmbedBuilder, AuditLogEvent } = require("discord.js");
-const {getObjectDiffKey, tableExists, eventState} = require("../commonFunctions");
+const {SystemChannelFlagsBitField} = require("discord.js");
+module.exports = {GuildUpdate};
+async function GuildUpdate(AuditEntry, Guild, Embed) {
+    const {executor, target, executorId, changes} = AuditEntry;
+    for (const [key, value] of Object.entries(changes)) {
+        switch (value.key) {
+            default:
+                console.log(value)
+                break;
+            case 'name':
+                Embed.addFields({
+                    name: 'Name',
+                    value: `Old Name: \`${value.old}\`\nNew Name: \`${value.new}\``
+                })
+                break;
 
-client.on(Events.GuildUpdate, async (OldGuild, NewGuild) => {
-    if (await tableExists(NewGuild.id)) {
-        if(await eventState(NewGuild.id, 'guildUpdate')) {
-            let Embed = new EmbedBuilder()
-            const audit = await NewGuild.fetchAuditLogs({
-                limit: 1,
-                type: AuditLogEvent.GuildUpdate,
-            });
+            case 'afk_timeout':
+                Embed.addFields({
+                    name: 'AFK Timeout',
+                    value: `Old Timeout: \`${value.old}\`\nNew Timeout: \`${value.new}\``
+                })
+                break;
 
-            for (const [key, value] of Object.entries(getObjectDiffKey(OldGuild, NewGuild))) {
-                switch (value) {
-                    default:
-                        console.log(value)
-                        break;
-                    case 'name':
-                        Embed.addFields({
-                            name: 'Name',
-                            value: `Old Name: \`${OldGuild.name}\`\nNew Name: \`${NewGuild.name}\``
-                        })
-                        break;
+            case 'afk_channel_id':
+                Embed.addFields({
+                    name: 'AFK Channel',
+                    value: `Old Afk Channel: <@&${value.old}> (${value.old})\nNew Afk Channel: <@&${value.new}> (${value.new})`
+                })
+                break;
 
-                    case 'afkTimeout':
-                        Embed.addFields({
-                            name: 'AFK Timeout',
-                            value: `Old Timeout: \`${OldGuild.afkTimeout}\`\nNew Timeout: \`${NewGuild.afkTimeout}\``
-                        })
-                        break;
+            case 'premium_progress_bar_enabled':
+                Embed.addFields({
+                    name: 'Boost Progress Bar',
+                    value: `Old State: \`${value.old}\`\nNew State: \`${value.new}\``
+                })
+                break;
 
-                    case 'afkChannelId':
-                        Embed.addFields({
-                            name: 'AFK Channel',
-                            value: `Old Afk Channel: ${OldGuild.afkChannel} (${OldGuild.afkChannelId})\nNew Afk Channel: ${NewGuild.afkChannel} (${NewGuild.afkChannelId})`
-                        })
-                        break;
+            case 'system_channel_id':
+                Embed.addFields({
+                    name: 'System Channel',
+                    value: `Old System Channel: <@&${value.old}> (${value.old})\nNew System Channel: <@&${value.new}> (${value.new})`
+                })
+                break;
 
-                    case 'premiumProgressBarEnabled':
-                        Embed.addFields({
-                            name: 'Boost Progress Bar',
-                            value: `Old State: \`${OldGuild.premiumProgressBarEnabled}\`\nNew State: \`${NewGuild.premiumProgressBarEnabled}\``
-                        })
-                        break;
+            case 'system_channel_flags':
+                Embed.addFields({
+                    name: 'System Channel Flags',
+                    value: `Old State:\n\`${new SystemChannelFlagsBitField(String(value.old)).toArray().toString().replaceAll(',','\n')}\`\nNew State:\n\`${new SystemChannelFlagsBitField(String(value.new)).toArray().toString().replaceAll(',','\n')}\``
+                })
+                break;
 
-                    case 'systemChannelId':
-                        Embed.addFields({
-                            name: 'System Channel',
-                            value: `Old System Channel: ${OldGuild.systemChannel} (${OldGuild.systemChannelId})\nNew System Channel: ${NewGuild.systemChannel} (${NewGuild.systemChannelId})`
-                        })
-                        break;
+            case 'default_message_notifications':
+                Embed.addFields({
+                    name: 'Notification Settings',
+                    value: `Old State: \`${notificationState(value.old)}\`\nNew State: \`${notificationState(value.new)}\``
+                })
+                break;
 
-                    case 'systemChannelFlags':
-                        Embed.addFields({
-                            name: 'System Channel Flags',
-                            value: `Old State:\n\`${OldGuild.systemChannelFlags.toArray().toString().replaceAll(',','\n')}\`\nNew State:\n\`${NewGuild.systemChannelFlags.toArray().toString().replaceAll(',','\n')}\``
-                        })
-                        break;
+            case 'icon':
+                Embed.addFields({
+                    name: 'Icon',
+                    value: `Old Server Icon: \`${value.old}\`\nNew Server Icon: \`${value.new}\``
+                })
+                break;
 
-                    case 'defaultMessageNotifications':
-                        Embed.addFields({
-                            name: 'Notification Settings',
-                            value: `Old State: \`${notificationState(OldGuild.defaultMessageNotifications)}\`\nNew State: \`${notificationState(NewGuild.defaultMessageNotifications)}\``
-                        })
-                        break;
+            case 'banner':
+                Embed.addFields({
+                    name: 'Icon',
+                    value: `Old Server Banner: \`${value.old}\`\nNew Server Banner: \`${value.new}\``
+                })
+                break;
 
-                    case 'icon':
-                        Embed.addFields({
-                            name: 'Icon',
-                            value: `Old Server Icon: \`${OldGuild.iconURL()}\`\nNew Server Icon: \`${NewGuild.iconURL()}\``
-                        })
-                        break;
+            case 'splash':
+                Embed.addFields({
+                    name: 'Icon',
+                    value: `Old Splash Background: \`${value.old}\`\nNew Splash Banner: \`${value.new}\``
+                })
+                break;
 
-                    case 'banner':
-                        Embed.addFields({
-                            name: 'Icon',
-                            value: `Old Server Banner: \`${OldGuild.bannerURL()}\`\nNew Server Banner: \`${NewGuild.bannerURL()}\``
-                        })
-                        break;
+            case 'widget_channel_id':
+                Embed.addFields({
+                    name: 'Widget Channel',
+                    value: `Old Widget Channel: <@&${value.old}> (${value.old})\nNew Widget Channel: <@&${value.new}> (${value.new})`
+                })
+                break;
 
-                    case 'splash':
-                        Embed.addFields({
-                            name: 'Icon',
-                            value: `Old Splash Background: \`${OldGuild.splashURL()}\`\nNew Splash Banner: \`${NewGuild.splashURL()}\``
-                        })
-                        break;
+            case 'widget_enabled':
+                Embed.addFields({
+                    name: 'Widget Settings',
+                    value: `Old State: \`${value.old}\`\nNew State: \`${value.new}\``
+                })
+                break;
 
-                    case 'widgetChannelId':
-                        Embed.addFields({
-                            name: 'Widget Channel',
-                            value: `Old Widget Channel: ${OldGuild.widgetChannel} (${OldGuild.widgetChannelId})\nNew Widget Channel: ${NewGuild.widgetChannel} (${NewGuild.widgetChannelId})`
-                        })
-                        break;
+            case 'explicit_content_filter':
+                Embed.addFields({
+                    name: 'Explicit image filter',
+                    value: `Old State: \`${contentFilter(value.old)}\`\nNew State: \`${contentFilter(value.new)}\``
+                })
+                break;
 
-                    case 'widgetEnabled':
-                        Embed.addFields({
-                            name: 'Widget Settings',
-                            value: `Old State: \`${OldGuild.widgetEnabled}\`\nNew State: \`${NewGuild.widgetEnabled}\``
-                        })
-                        break;
+            case 'safety_alerts_channel_id':
+                Embed.addFields({
+                    name: 'Safety alerts Channel',
+                    value: `Old Safety Alerts Channel: <@&${value.old}> (${value.old})\nNew Safety Alerts Channel: <@&${value.new}> (${value.new})`
+                })
+                break;
 
-                    case 'explicitContentFilter':
-                        Embed.addFields({
-                            name: 'Explicit image filter',
-                            value: `Old State: \`${contentFilter(OldGuild.explicitContentFilter)}\`\nNew State: \`${contentFilter(NewGuild.explicitContentFilter)}\``
-                        })
-                        break;
+            case 'features':
+                console.log(value)
+                //This is currently a hot mess, so we leave it alone for now
+                break;
 
-                    case 'safetyAlertsChannelId':
-                        Embed.addFields({
-                            name: 'Safety alerts Channel',
-                            value: `Old Safety Alerts Channel: ${OldGuild.safetyAlertsChannel} (${OldGuild.safetyAlertsChannelId})\nNew Safety Alerts Channel: ${NewGuild.safetyAlertsChannel} (${NewGuild.safetyAlertsChannelId})`
-                        })
-                        break;
+            case 'rules_channel_id':
+                Embed.addFields({
+                    name: 'Rules Channel',
+                    value: `Old Rules Channel: <@&${value.old}> (${value.old})\nNew Rules Channel: <@&${value.new}> (${value.new})`
+                })
+                break;
 
-                    case 'features':
-                        //This is currently a hot mess, so we leave it alone for now
-                        break;
+            case 'public_updates_channel_id':
+                Embed.addFields({
+                    name: 'Updates Channel',
+                    value: `Old Updates Channel: <@&${value.old}> (${value.old})\nNew Updates Channel: <@&${value.new}> (${value.new})`
+                })
+                break;
 
-                    case 'rulesChannelId':
-                        Embed.addFields({
-                            name: 'Rules Channel',
-                            value: `Old Rules Channel: ${OldGuild.rulesChannel} (${OldGuild.rulesChannelId})\nNew Rules Channel: ${NewGuild.rulesChannel} (${NewGuild.rulesChannelId})`
-                        })
-                        break;
+            case 'preferred_locale':
+                Embed.addFields({
+                    name: 'Preferred Locale',
+                    value: `Old Preferred Locale: \`${value.old}\`\nNew Preferred Locale: \`${value.new}\``
+                })
+                break;
 
-                    case 'publicUpdatesChannelId':
-                        Embed.addFields({
-                            name: 'Updates Channel',
-                            value: `Old Updates Channel: ${OldGuild.publicUpdatesChannel} (${OldGuild.publicUpdatesChannelId})\nNew Updates Channel: ${NewGuild.publicUpdatesChannel} (${NewGuild.publicUpdatesChannelId})`
-                        })
-                        break;
+            case 'description':
+                Embed.addFields({
+                    name: 'Community Description',
+                    value: `Old Description: \`${value.old}\`\nNew Description: \`${value.new}\``
+                })
+                break;
 
-                    case 'preferredLocale':
-                        Embed.addFields({
-                            name: 'Preferred Locale',
-                            value: `Old Preferred Locale: \`${OldGuild.preferredLocale}\`\nNew Preferred Locale: \`${NewGuild.preferredLocale}\``
-                        })
-                        break;
+            case 'verification_level':
+                Embed.addFields({
+                    name: 'Verification Level',
+                    value: `Old Verification Level: \`${verificationLevel(value.old)}\`\nNew Verification Level: \`${verificationLevel(value.new)}\``
+                })
+                break;
 
-                    case 'description':
-                        Embed.addFields({
-                            name: 'Community Description',
-                            value: `Old Description: \`${OldGuild.description}\`\nNew Description: \`${NewGuild.description}\``
-                        })
-                        break;
+            case 'mfa_level':
+                Embed.addFields({
+                    name: 'Moderator 2fa Required',
+                    value: `Old State: \`${Boolean(value.new)}\`\nNew State: \`${Boolean(value.new)}\``
+                })
+                break;
 
-                    case 'verificationLevel':
-                        Embed.addFields({
-                            name: 'Verification Level',
-                            value: `Old Verification Level: \`${verificationLevel(OldGuild.verificationLevel)}\`\nNew Verification Level: \`${verificationLevel(NewGuild.verificationLevel)}\``
-                        })
-                        break;
-
-                    case 'mfaLevel':
-                        Embed.addFields({
-                            name: 'Moderator 2fa Required',
-                            value: `Old State: \`${Boolean(OldGuild.mfaLevel)}\`\nNew State: \`${Boolean(NewGuild.mfaLevel)}\``
-                        })
-                        break;
-
-                }
-            }
-
-
-            Embed.setDescription(`Guild \`${NewGuild.name}\` (${NewGuild.id}) was updated`)
-            if(!Embed.data.fields){return;}
-            Embed.addFields(
-                {
-                    name: 'ID',
-                    value: `\`\`\`ansi\n[0;33mGuild = ${OldGuild.id}\n[0;34mPerpetrator = ${audit.entries.first().executorId}\`\`\``
-                }
-            )
-
-            Embed.setAuthor({name: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-            Embed.setTimestamp()
-            Embed.setFooter({text: `${audit.entries.first().executor.tag}`, iconURL: `${audit.entries.first().executor.displayAvatarURL()}`})
-            try {
-                await NewGuild.channels.cache.get(await eventState(NewGuild.id, 'logChannel')).send({embeds: [Embed]});
-            } catch (e) {
-                e.guild = NewGuild.guild
-                console.log(e)
-            }
         }
     }
-})
+
+
+    Embed.setDescription(`Guild \`${target.name}\` (${target.id}) was updated`)
+    if(!Embed.data.fields){return;}
+    Embed.addFields(
+        {
+            name: 'ID',
+            value: `\`\`\`ansi\n[0;33mGuild = ${target.id}\n[0;34mPerpetrator = ${executorId}\`\`\``
+        }
+    )
+
+    Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
+    return Embed;
+}
 
 function notificationState(state) {
     switch (state){

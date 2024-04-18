@@ -2,20 +2,59 @@ const {client} = require("../constants");
 const {Events, EmbedBuilder, AuditLogEvent} = require("discord.js");
 const {tableExists, eventState} = require("../commonFunctions");
 
+
+module.exports = {GuildMemberKick};
+async function GuildMemberKick(AuditEntry, Guild, Embed) {
+    const {executor, target} = AuditEntry;
+    Embed.setAuthor({name: `${target.tag}`, iconURL: `${target.displayAvatarURL()}`})
+    Embed.setColor('#ff2828');
+    Embed.setDescription(`<@${target.id}> was kicked by ${executor.tag} (${executor.id})`)
+    console.log(Guild.members.cache.get(target.id))
+    Embed.addFields(
+        {
+            name: 'Reason',
+            value: reason,
+            inline: false
+        },
+        {
+            name: 'User Information',
+            value: `${target.tag} (${target.id}) <@${target.id}>`,
+            inline: false
+        },
+        {
+            name: 'Roles',
+            value: `\`\`\`${target.roles.cache.map(r => `${r.name}`)}\`\`\``,
+            inline: false
+        },
+        {
+            name: 'Joined At',
+            value: `<t:${Math.trunc(target.joinedTimestamp / 1000)}:F>`,
+            inline: true
+        },
+        {
+            name: 'Created At',
+            value: `<t:${Math.trunc(target.createdTimestamp / 1000)}:F>`,
+            inline: true
+        },
+        {
+            name: 'ID',
+            value: `\`\`\`ansi\n[0;33mMember = ${target.id}\n[0;34mGuild = ${Guild.id}\`\`\``,
+            inline: false
+        }
+    )
+    Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
+    return Embed;
+}
+
 client.on(Events.GuildMemberRemove, async(GuildMember) => {
     if (await tableExists(GuildMember.guild.id)) {
         if(await eventState(GuildMember.guild.id, 'guildMemberRemove')) {
-            GuildMember.guild.bans.fetch(GuildMember.id).then(e=> {}).catch(async e => {
-                const auditLog = await GuildMember.guild.fetchAuditLogs({
-                    limit: 1
-                });
-
-                const auditEntry = auditLog.entries.first();
-                const {executor, target, reason} = auditEntry;
-
+            const auditLog = await GuildMember.guild.fetchAuditLogs({limit: 1});
+            if(auditLog.entries.first().action !== AuditLogEvent.MemberBanAdd || AuditLogEvent.MemberKick) {
                 const Embed = new EmbedBuilder();
                 Embed.setColor('#ff2828');
                 Embed.setAuthor({name: `${GuildMember.user.tag}`, iconURL: `${GuildMember.displayAvatarURL()}`})
+                Embed.setDescription(`<@${GuildMember.user.id}> left the server`)
                 Embed.addFields(
                     {
                         name: 'User Information',
@@ -36,50 +75,22 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
                         name: 'Created At',
                         value: `<t:${Math.trunc(GuildMember.user.createdTimestamp / 1000)}:F>`,
                         inline: true
+                    },
+                    {
+                        name: 'ID',
+                        value: `\`\`\`ansi\n[0;33mMember = ${GuildMember.user.id}\n[0;34mGuild = ${GuildMember.guild.id}\`\`\``,
+                        inline: false
                     }
                 )
-
-                if(auditLog.entries.first().action === AuditLogEvent.MemberBanAdd || AuditLogEvent.MemberKick) {
-                    if(auditLog.entries.first().action !== AuditLogEvent.MemberBanAdd) {
-                        if (target.id === GuildMember.id && auditEntry.createdAt > GuildMember.joinedAt && auditEntry.action === AuditLogEvent.MemberKick) {
-                            Embed.setDescription(`<@${GuildMember.user.id}> was kicked by ${executor.tag} (${executor.id})`)
-                            let kickReason = 'None'
-                            if(reason){
-                                kickReason = reason.toString()
-                            }
-                            Embed.addFields(
-                                {
-                                    name: 'Reason',
-                                    value: kickReason,
-                                    inline: false
-                                })
-                        } else {
-                            Embed.setDescription(`<@${GuildMember.user.id}> left the server`)
-                        }
-                    }
-                } else {
-                    Embed.setDescription(`<@${GuildMember.user.id}> left the server`)
+                Embed.setTimestamp()
+                Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
+                try {
+                    await GuildMember.guild.channels.cache.get(await eventState(GuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
+                } catch (e) {
+                    e.guild = GuildMember.guild
+                    console.log(e)
                 }
-
-                if(Embed.data.description) {
-                    Embed.addFields(
-                        {
-                            name: 'ID',
-                            value: `\`\`\`ansi\n[0;33mMember = ${GuildMember.user.id}\n[0;34mGuild = ${GuildMember.guild.id}\`\`\``,
-                            inline: false
-                        }
-                    )
-
-                    Embed.setTimestamp()
-                    Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-                    try {
-                        await GuildMember.guild.channels.cache.get(await eventState(GuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
-                    } catch (e) {
-                        e.guild = GuildMember.guild
-                        console.log(e)
-                    }
-                }
-            })
-        }
+            }
+    }
     }
 });
