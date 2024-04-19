@@ -5,7 +5,7 @@ const {tableExists, eventState} = require("../commonFunctions");
 
 module.exports = {GuildMemberKick};
 async function GuildMemberKick(AuditEntry, Guild, Embed) {
-    const {executor, target} = AuditEntry;
+    const {executor, target, reason} = AuditEntry;
     Embed.setAuthor({name: `${target.tag}`, iconURL: `${target.displayAvatarURL()}`})
     Embed.setColor('#ff2828');
     Embed.setDescription(`<@${target.id}> was kicked by ${executor.tag} (${executor.id})`)
