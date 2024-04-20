@@ -5,7 +5,7 @@ const {tableExists, eventState} = require("../commonFunctions");
 client.on(Events.MessageUpdate, async(OldMessage, NewMessage) => {
     if (await tableExists(NewMessage.guildId)) {
         if(await eventState(NewMessage.guildId, 'messageUpdate')) {
-            if(OldMessage.guild && NewMessage.author.id !== client.user.id && OldMessage.content !== '' && OldMessage.content !== NewMessage.content){
+            if(NewMessage.author.id !== client.user.id && OldMessage.content !== '' && OldMessage.content !== NewMessage.content){
                 try {
                     let Embed = new EmbedBuilder()
                     Embed.setColor('#ae3ffd')
