@@ -108,7 +108,6 @@ async function GuildUpdate(AuditEntry, Guild, Embed) {
                 break;
 
             case 'features':
-                console.log(value)
                 //This is currently a hot mess, so we leave it alone for now
                 break;
 
@@ -161,13 +160,10 @@ async function GuildUpdate(AuditEntry, Guild, Embed) {
 
     Embed.setDescription(`Guild \`${target.name}\` (${target.id}) was updated`)
     if(!Embed.data.fields){return;}
-    Embed.addFields(
-        {
-            name: 'ID',
-            value: `\`\`\`ansi\n[0;33mGuild = ${target.id}\n[0;34mPerpetrator = ${executorId}\`\`\``
-        }
-    )
-
+    Embed.addFields({
+        name: 'ID',
+        value: `\`\`\`ansi\n[0;33mGuild = ${target.id}\n[0;34mPerpetrator = ${executorId}\`\`\``
+    })
     Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;
 }

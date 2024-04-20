@@ -10,8 +10,7 @@ client.on(Events.InviteCreate, async invite => {
     Embed.setColor('#ffd400');
     Embed.setTitle("User created new invite")
     Embed.addFields({name: 'User', value: `${invite.inviter.username}#${invite.inviter.discriminator}`}, {name: 'Code', value: invite.code})
-    await invite.guild.channels.cache.get(log_channel).send({embeds: [Embed]});
-
+    await invite.guild.channels.cache.get(await eventState(NewMessage.guildId, 'logChannel')).send({embeds: [Embed]});
 })
 
 client.on(Events.InviteDelete, (invite) => {

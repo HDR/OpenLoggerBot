@@ -13,8 +13,6 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
 
             let auditEntry = auditLog.entries.first();
             let { executor, reason } = auditEntry;
-
-            //Track people passing onboarding
             if(OldGuildMember.pending && !NewGuildMember.pending) {
                 let clear_time = moment.duration(moment(moment().now).diff(NewGuildMember.joinedAt))
                 let Embed = new EmbedBuilder();
@@ -38,7 +36,6 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                 }
             }
 
-            //Track Nickname Changes
             if(executor !== client.user){
                 if(OldGuildMember.nickname !== NewGuildMember.nickname) {
                     let Embed = new EmbedBuilder();
@@ -71,7 +68,6 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                 }
             }
 
-            //Check if user was timed out
             if(NewGuildMember.isCommunicationDisabled()) {
                 const Embed = new EmbedBuilder()
                 Embed.setAuthor({name: `${NewGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})
@@ -97,7 +93,6 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                 }
             }
 
-            //Track Role Changes
             if(OldGuildMember.roles.cache.difference(NewGuildMember.roles.cache).size > 0) {
                 let Embed = new EmbedBuilder();
                 Embed.setAuthor({name: `${OldGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})

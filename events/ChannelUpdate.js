@@ -120,7 +120,6 @@ async function ChannelUpdate(AuditEntry, Guild, Embed) {
         case AuditLogEvent.ChannelOverwriteCreate:
         case AuditLogEvent.ChannelOverwriteDelete:
         case AuditLogEvent.ChannelOverwriteUpdate:
-        //case 'pl':
             let target;
             let typeString;
 
