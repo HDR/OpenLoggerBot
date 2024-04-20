@@ -8,7 +8,7 @@ client.on(Events.MessageDelete, async(Message) => {
         if(await eventState(Message.guildId, 'messageDelete')) {
             if(Message.content) {
                 Embed.setColor('#ae3ffd')
-                Embed.setAuthor({name: `${Message.author.username}#${Message.author.discriminator}`, iconURL: `${Message.author.displayAvatarURL()}`})
+                Embed.setAuthor({name: `${Message.author.tag}`, iconURL: `${Message.author.displayAvatarURL()}`})
                 Embed.setDescription(`Message deleted in in <#${Message.channel.id}>`)
                 let sendData = {};
                 if(Message.content.length > 1024){
