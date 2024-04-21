@@ -1,15 +1,14 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder, AuditLogEvent} = require("discord.js");
 const {tableExists, eventState} = require("../commonFunctions");
-
+const moment = require("moment");
 
 module.exports = {GuildMemberKick};
 async function GuildMemberKick(AuditEntry, Guild, Embed) {
-    const {executor, target, reason} = AuditEntry;
+    const {executor, target, reason} = await AuditEntry;
     Embed.setAuthor({name: `${target.tag}`, iconURL: `${target.displayAvatarURL()}`})
     Embed.setColor('#ff2828');
     Embed.setDescription(`<@${target.id}> was kicked by ${executor.tag} (${executor.id})`)
-    console.log(Guild.members.cache.get(target.id))
     Embed.addFields(
         {
             name: 'Reason',
@@ -20,16 +19,6 @@ async function GuildMemberKick(AuditEntry, Guild, Embed) {
             name: 'User Information',
             value: `${target.tag} (${target.id}) <@${target.id}>`,
             inline: false
-        },
-        {
-            name: 'Roles',
-            value: `\`\`\`${target.roles.cache.map(r => `${r.name}`)}\`\`\``,
-            inline: false
-        },
-        {
-            name: 'Joined At',
-            value: `<t:${Math.trunc(target.joinedTimestamp / 1000)}:F>`,
-            inline: true
         },
         {
             name: 'Created At',
@@ -50,7 +39,7 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
     if (await tableExists(GuildMember.guild.id)) {
         if(await eventState(GuildMember.guild.id, 'guildMemberRemove')) {
             const auditLog = await GuildMember.guild.fetchAuditLogs({limit: 1});
-            if(auditLog.entries.first().action !== AuditLogEvent.MemberBanAdd || AuditLogEvent.MemberKick) {
+            if(moment.duration(moment(moment().now).diff(auditLog.entries.first().createdTimestamp)).seconds() > 5) {
                 const Embed = new EmbedBuilder();
                 Embed.setColor('#ff2828');
                 Embed.setAuthor({name: `${GuildMember.user.tag}`, iconURL: `${GuildMember.displayAvatarURL()}`})
