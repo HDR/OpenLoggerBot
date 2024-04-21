@@ -63,7 +63,7 @@ async function GuildRoleUpdate(AuditEntry, Guild, Embed) {
                 })
                 break;
 
-            case 'rawPosition':
+            case 'position':
                 //Ignore
                 break;
 
