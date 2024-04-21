@@ -68,7 +68,7 @@ async function GuildRoleUpdate(AuditEntry, Guild, Embed) {
                 break;
 
             case 'icon':
-            case 'unicodeEmoji':
+            case 'unicode_emoji':
                 Embed.addFields({
                     name: 'Role Icon',
                     value: `Old Icon: ${value.old}\n\nNew Icon: ${value.new}`
