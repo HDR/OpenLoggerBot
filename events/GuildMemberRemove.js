@@ -38,8 +38,14 @@ async function GuildMemberKick(AuditEntry, Guild, Embed) {
 client.on(Events.GuildMemberRemove, async(GuildMember) => {
     if (await tableExists(GuildMember.guild.id)) {
         if(await eventState(GuildMember.guild.id, 'guildMemberRemove')) {
-            const auditLog = await GuildMember.guild.fetchAuditLogs({limit: 1});
-            if(moment.duration(moment(moment().now).diff(auditLog.entries.first().createdTimestamp)).seconds() > 5) {
+            let kickLog = await GuildMember.guild.fetchAuditLogs({limit: 1, type: AuditLogEvent.MemberKick});
+            let banLog = await GuildMember.guild.fetchAuditLogs({limit: 1, type: AuditLogEvent.MemberBanAdd});
+            const checkLog = (log, type) => {
+                const timeDifference = Math.ceil(moment().diff(log.entries.first().createdTimestamp, 'seconds', true));
+                return log.entries.first().target.id === GuildMember.id && timeDifference < 10;
+            };
+
+            if (!checkLog(kickLog, AuditLogEvent.MemberKick) && !checkLog(banLog, AuditLogEvent.MemberBanAdd)) {
                 const Embed = new EmbedBuilder();
                 Embed.setColor('#ff2828');
                 Embed.setAuthor({name: `${GuildMember.user.tag}`, iconURL: `${GuildMember.displayAvatarURL()}`})
