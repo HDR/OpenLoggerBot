@@ -11,7 +11,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                 type: AuditLogEvent.MemberUpdate,
             });
 
-            let auditEntry = auditLog.entries.first();
+            let auditEntry = await auditLog.entries.first();
             let { executor, reason } = auditEntry;
             if(OldGuildMember.pending && !NewGuildMember.pending) {
                 let clear_time = moment.duration(moment(moment().now).diff(NewGuildMember.joinedAt))

@@ -6,33 +6,35 @@ const moment = require("moment");
 module.exports = {GuildMemberKick};
 async function GuildMemberKick(AuditEntry, Guild, Embed) {
     const {executor, target, reason} = await AuditEntry;
-    Embed.setAuthor({name: `${target.tag}`, iconURL: `${target.displayAvatarURL()}`})
-    Embed.setColor('#ff2828');
-    Embed.setDescription(`<@${target.id}> was kicked by ${executor.tag} (${executor.id})`)
-    Embed.addFields(
-        {
-            name: 'Reason',
-            value: reason,
-            inline: false
-        },
-        {
-            name: 'User Information',
-            value: `${target.tag} (${target.id}) <@${target.id}>`,
-            inline: false
-        },
-        {
-            name: 'Created At',
-            value: `<t:${Math.trunc(target.createdTimestamp / 1000)}:F>`,
-            inline: true
-        },
-        {
-            name: 'ID',
-            value: `\`\`\`ansi\n[0;33mMember = ${target.id}\n[0;34mGuild = ${Guild.id}\`\`\``,
-            inline: false
-        }
-    )
-    Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
-    return Embed;
+    if(target.tag) {
+        Embed.setAuthor({name: `${target.tag}`, iconURL: `${target.displayAvatarURL()}`})
+        Embed.setColor('#ff2828');
+        Embed.setDescription(`<@${target.id}> was kicked by ${executor.tag} (${executor.id})`)
+        Embed.addFields(
+            {
+                name: 'Reason',
+                value: reason,
+                inline: false
+            },
+            {
+                name: 'User Information',
+                value: `${target.tag} (${target.id}) <@${target.id}>`,
+                inline: false
+            },
+            {
+                name: 'Created At',
+                value: `<t:${Math.trunc(target.createdTimestamp / 1000)}:F>`,
+                inline: true
+            },
+            {
+                name: 'ID',
+                value: `\`\`\`ansi\n[0;33mMember = ${target.id}\n[0;34mGuild = ${Guild.id}\`\`\``,
+                inline: false
+            }
+        )
+        Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
+        return Embed;
+    }
 }
 
 client.on(Events.GuildMemberRemove, async(GuildMember) => {
