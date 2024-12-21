@@ -6,7 +6,7 @@ const moment = require("moment");
 module.exports = {GuildMemberKick};
 async function GuildMemberKick(AuditEntry, Guild, Embed) {
     const {executor, target, reason} = await AuditEntry;
-    if(target.tag) {
+    if(target) {
         Embed.setAuthor({name: `${target.tag}`, iconURL: `${target.displayAvatarURL()}`})
         Embed.setColor('#ff2828');
         Embed.setDescription(`<@${target.id}> was kicked by ${executor.tag} (${executor.id})`)
