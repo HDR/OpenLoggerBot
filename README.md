@@ -1,6 +1,9 @@
 # OpenLoggerBot
 **An open source Discord logger bot**
 
+## External Tools
+[.log file viewer for OpenLoggerBot](https://martinrefseth.com/olb/logview/)
+
 ## Installation
 ### Requirements:
 - [NodeJS](https://nodejs.org)
