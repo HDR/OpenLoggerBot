@@ -9,12 +9,14 @@ client.on(Events.InviteCreate, async invite => {
     const Embed = new EmbedBuilder();
     Embed.setColor('#ffd400');
     Embed.setTitle("User created new invite")
-    Embed.addFields({name: 'User', value: `${invite.inviter.username}#${invite.inviter.discriminator}`}, {name: 'Code', value: invite.code})
-    await invite.guild.channels.cache.get(await eventState(NewMessage.guildId, 'logChannel')).send({embeds: [Embed]});
+    Embed.addFields({name: 'User', value: invite.inviter ? `${invite.inviter.tag}` : "Unknown"}, {name: 'Code', value: invite.code})
+    await invite.guild.channels.cache.get(await eventState(NewMessage.guild.id, 'logChannel')).send({embeds: [Embed]});
 })
 
 client.on(Events.InviteDelete, (invite) => {
-    guildInvites.get(invite.guild.id).delete(invite.code)
+    if(guildInvites.has(invite.guild)){
+        guildInvites.get(invite.guild.id).delete(invite.code)
+    }
 })
 
 client.on(Events.ClientReady, () => {
@@ -61,7 +63,7 @@ tracker.on('guildMemberAdd', async (GuildMember, type, invite) => {
 
             switch (type) {
                 case 'normal':
-                    Embed.addFields( {name: 'Invite Used', value: `${invite.code} by ${invite.inviter.tag} with ${invite.uses} uses`, inline: true})
+                    Embed.addFields( {name: 'Invite Used', value: invite?.code ? `${invite.code} by ${invite.inviter?.tag || "Unknown"} with ${invite.uses || "?"} uses` : "Unknown", inline: true})
                     break;
                 case 'vanity':
                     Embed.addFields({name: 'Invite Used', value: `${GuildMember.guild.vanityURLCode}`, inline: true})

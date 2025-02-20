@@ -22,12 +22,10 @@ async function GuildStickerDelete(AuditEntry, Guild, Embed) {
         }
     )
 
-    if(target.description.length > 0){
-        Embed.addFields({
-            name: 'Description',
-            value: `${target.description}`
-        })
-    }
+    Embed.addFields({
+        name: 'Description',
+        value: target?.description?.trim() || 'No description provided'
+    })
 
     Embed.addFields({
         name: 'ID',
