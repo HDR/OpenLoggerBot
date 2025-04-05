@@ -13,20 +13,20 @@ client.on(Events.MessageUpdate, async(OldMessage, NewMessage) => {
                     Embed.setDescription(`**${OldMessage.author.tag}** updated their message in <#${OldMessage.channel.id}>`)
                     Embed.addFields(
                         {
-                            name: 'Channel',
+                            name: '**Channel**',
                             value: `<#${OldMessage.channel.id}> (${OldMessage.channel.id})\n[Go to message](${OldMessage.url})`
                         },
                         {
-                            name: 'New Message',
-                            value: NewMessage.content
-                        },
-                        {
-                            name: 'Old Message',
+                            name: '**Old Message**',
                             value: OldMessage.content
                         },
                         {
-                            name: 'ID',
-                            value: `\`\`\`ansi\n[0;33mMember = ${OldMessage.author.id}\n[0;32mMessage = ${OldMessage.id}\`\`\``
+                            name: '**New Message**',
+                            value: NewMessage.content
+                        },
+                        {
+                            name: '**ID**',
+                            value: `\`\`\`ansi\n[0;33mMember ID: ${OldMessage.author.id}\n[0;32mMessage ID: ${OldMessage.id}\`\`\``
                         }
                     )
 

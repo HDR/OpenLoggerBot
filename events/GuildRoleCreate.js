@@ -1,17 +1,18 @@
 module.exports = {GuildRoleCreate};
+const {client} = require("../constants")
 async function GuildRoleCreate(AuditEntry, Guild, Embed) {
     const {executor, target, executorId} = AuditEntry;
     Embed.setColor('#97ff28');
-    Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
+    Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
     Embed.setDescription(`Role \`${target.name}\` (${target.id}) was created`)
     Embed.addFields(
         {
-            name: 'Name',
+            name: '**Role Name**',
             value: `${target.name}`
         },
         {
-            name: 'ID',
-            value: `\`\`\`ansi\n[0;33mRole = ${target.id}\n[0;34mPerpetrator = ${executorId}\`\`\``
+            name: '**ID**',
+            value: `\`\`\`ansi\n[0;33mRole ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
         }
     )
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})

@@ -9,7 +9,7 @@ client.on(Events.MessageDelete, async(Message) => {
             if(Message.content) {
                 Embed.setColor('#ae3ffd')
                 Embed.setAuthor({name: `${Message.author.tag}`, iconURL: `${Message.author.displayAvatarURL()}`})
-                Embed.setDescription(`Message deleted in <#${Message.channel.id}>`)
+                Embed.setDescription(`A message was deleted in <#${Message.channel.id}>`)
                 let sendData = {};
                 if(Message.content.length > 1024){
                     sendData.files = [new AttachmentBuilder(Buffer.from(Message.content), {name: `${Message.id}.log`})]
@@ -19,18 +19,18 @@ client.on(Events.MessageDelete, async(Message) => {
                     })
                 } else {
                     Embed.addFields({
-                            name: 'Content',
+                            name: '**Content**',
                             value: `${Message.content}`
                         })
                 }
                 Embed.addFields(
                     {
-                        name: 'Date',
+                        name: '**Date**',
                         value: `<t:${Math.trunc(Date.now()/1000)}:F>`
                     },
                     {
-                        name: 'ID',
-                        value: `\`\`\`ansi\n[0;33mMember = ${Message.author.id}\n[0;32mMessage = ${Message.id}\`\`\``
+                        name: '**ID**',
+                        value: `\`\`\`ansi\n[0;33mMember ID: ${Message.author.id}\n[0;32mMessage ID: ${Message.id}\`\`\``
                     }
                 )
 

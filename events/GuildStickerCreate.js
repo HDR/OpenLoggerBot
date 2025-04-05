@@ -1,3 +1,4 @@
+const {client} = require("../constants");
 module.exports = {GuildStickerCreate};
 async function GuildStickerCreate(AuditEntry, Guild, Embed) {
     const {executor, target, executorId} = AuditEntry;
@@ -11,12 +12,12 @@ async function GuildStickerCreate(AuditEntry, Guild, Embed) {
 
     Embed.addFields(
         {
-            name: 'Name',
+            name: '**Sticker Name**',
             value: `${target.name}`,
             inline: true
         },
         {
-            name: 'Tag',
+            name: '**Tag**',
             value: `${tag}`,
             inline: true
         }
@@ -24,17 +25,17 @@ async function GuildStickerCreate(AuditEntry, Guild, Embed) {
 
     if(target.description.length > 0){
         Embed.addFields({
-            name: 'Description',
+            name: '**Description**',
             value: `${target.description}`
         })
     }
 
     Embed.addFields({
-        name: 'ID',
-        value: `\`\`\`ansi\n[0;33mSticker = ${target.id}\n[0;34mPerpetrator = ${executorId}\`\`\``
+        name: '**ID**',
+        value: `\`\`\`ansi\n[0;33mSticker ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
     })
 
-    Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
+    Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
     Embed.setDescription(`Sticker \`${target.name}\` (${target.id}) was created`)
     Embed.setThumbnail(target.url)
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})

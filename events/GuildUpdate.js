@@ -1,4 +1,5 @@
 const {SystemChannelFlagsBitField} = require("discord.js");
+const {client} = require("../constants");
 module.exports = {GuildUpdate};
 async function GuildUpdate(AuditEntry, Guild, Embed) {
     const {executor, target, executorId, changes} = AuditEntry;
@@ -135,7 +136,7 @@ async function GuildUpdate(AuditEntry, Guild, Embed) {
             case 'description':
                 Embed.addFields({
                     name: 'Community Description',
-                    value: `Old Description: \`${value.old}\`\nNew Description: \`${value.new}\``
+                    value: `Old Description: \`${value.old ?? "None"}\`\nNew Description: \`${value.new ?? "None"}\``
                 })
                 break;
 
@@ -161,9 +162,10 @@ async function GuildUpdate(AuditEntry, Guild, Embed) {
     Embed.setDescription(`Guild \`${target.name}\` (${target.id}) was updated`)
     if(!Embed.data.fields){return;}
     Embed.addFields({
-        name: 'ID',
-        value: `\`\`\`ansi\n[0;33mGuild = ${target.id}\n[0;34mPerpetrator = ${executorId}\`\`\``
+        name: '**ID**',
+        value: `\`\`\`ansi\n[0;33mGuild ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
     })
-    Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
+    Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
+    Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;
 }

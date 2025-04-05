@@ -1,4 +1,4 @@
-const {SlashCommandBuilder, PermissionFlagsBits} = require("discord.js");
+const {SlashCommandBuilder, MessageFlags, PermissionFlagsBits} = require("discord.js");
 const sqlite3 = require("sqlite3");
 const {tableExists} = require("../commonFunctions");
 
@@ -40,9 +40,9 @@ module.exports = {
             db.close()
         }
         if(eventbool) {
-            interaction.reply({content: `Started logging ${event} in ${interaction.guild.name}`, ephemeral: true });
+            interaction.reply({content: `Started logging ${event} in ${interaction.guild.name}`, flags: MessageFlags.Ephemeral });
         } else {
-            interaction.reply({content: `Stopped logging ${event} in ${interaction.guild.name}`, ephemeral: true });
+            interaction.reply({content: `Stopped logging ${event} in ${interaction.guild.name}`, flags: MessageFlags.Ephemeral});
         }
     }
 }

@@ -1,6 +1,5 @@
 const {AuditLogEvent, PermissionsBitField, Collection, ChannelType} = require("discord.js");
-const {isStringEmpty} = require("../commonFunctions");
-
+const {client} = require("../constants")
 module.exports = {ChannelUpdate};
 async function ChannelUpdate(AuditEntry, Guild, Embed) {
     const {executor, target, executorId, changes, action, extra} = AuditEntry;
@@ -13,10 +12,30 @@ async function ChannelUpdate(AuditEntry, Guild, Embed) {
                         console.log(value.key)
                         break;
 
+                    case 'name':
+                        Embed.addFields(
+                            {
+                                name: 'Old Name',
+                                value: `\`${value.old ?? "None"}\``,
+                                inline: true
+                            },
+                            {
+                                name: 'New Name',
+                                value: `\`${value.new ?? "None"}\``,
+                                inline: true
+                            }
+                        )
+                        break;
+
                     case 'topic':
-                        Embed.addFields({
-                            name: 'Topic',
-                            value: `Old Topic: \`${isStringEmpty(value.old)}\`\nNew Topic: \`${isStringEmpty(value.new)}\``
+                        Embed.addFields(
+                    {
+                            name: 'Old Topic',
+                            value: `\`${value.old ?? "None"}\``,
+                        },
+                        {
+                            name: 'New Topic',
+                            value: `\`${value.new ?? "None"}\``
                         })
                         break;
 
@@ -208,15 +227,12 @@ async function ChannelUpdate(AuditEntry, Guild, Embed) {
     Embed.addFields(
         {
             name: 'ID',
-            value: `\`\`\`ansi\n[0;33mMember = ${executorId}\n[0;35mChannel = ${target.id}\`\`\``,
+            value: `\`\`\`ansi\n[0;33mExecutor ID: ${executorId}\n[0;35mChannel ID: ${target.id}\`\`\``,
             inline: false
         }
     )
 
-    Embed.setAuthor({
-        name: `${executor.tag}`,
-        iconURL: `${executor.displayAvatarURL()}`
-    })
-
+    Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
+    Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;
 }

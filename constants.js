@@ -5,7 +5,7 @@ module.exports = Object.freeze({
         intents: [
             GatewayIntentBits.Guilds,
             GatewayIntentBits.GuildMembers,
-            GatewayIntentBits.GuildEmojisAndStickers,
+            GatewayIntentBits.GuildExpressions,
             GatewayIntentBits.GuildInvites,
             GatewayIntentBits.GuildVoiceStates,
             GatewayIntentBits.GuildMessages,

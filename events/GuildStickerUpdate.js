@@ -1,3 +1,4 @@
+const {client} = require("../constants");
 module.exports = {GuildStickerUpdate};
 async function GuildStickerUpdate(AuditEntry, Guild, Embed) {
     const {executor, target, executorId, changes} = AuditEntry;
@@ -42,8 +43,9 @@ async function GuildStickerUpdate(AuditEntry, Guild, Embed) {
         name: 'ID',
         value: `\`\`\`ansi\n[0;33mSticker = ${target.id}\n[0;34mPerpetrator = ${executorId}\`\`\``
     })
-    Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
+    Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
     Embed.setDescription(`Sticker \`${target.name}\` (${target.id}) was updated`)
     Embed.setThumbnail(target.url)
+    Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;
 }

@@ -1,4 +1,4 @@
-const { PermissionFlagsBits, SlashCommandBuilder} = require("discord.js")
+const { PermissionFlagsBits, SlashCommandBuilder, MessageFlags} = require("discord.js")
 const sqlite3 = require("sqlite3");
 const {tableExists} = require("../commonFunctions");
 const {client} = require("../constants");
@@ -66,9 +66,9 @@ module.exports = {
                 })
                 db.close()
             }
-            interaction.reply({content: `Log channel for ${interaction.guild.name} has been set to ${interaction.options.getChannel('target')}`, ephemeral: true });
+            interaction.reply({content: `Log channel for ${interaction.guild.name} has been set to ${interaction.options.getChannel('target')}`, flags: MessageFlags.Ephemeral});
         } else {
-            interaction.reply({content: `Please give ${client.user} read access to ${interaction.options.getChannel('target')} before running this command`, ephemeral: true });
+            interaction.reply({content: `Please give ${client.user} read access to ${interaction.options.getChannel('target')} before running this command`, flags: MessageFlags.Ephemeral});
         }
     }
 }

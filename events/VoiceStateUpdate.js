@@ -14,16 +14,16 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
                 Embed.setDescription(`**${NewState.member.user.tag}** switched voice channels from ${OldState.channel} to ${NewState.channel}`)
                 Embed.addFields(
                     {
-                        name: 'Old Channel',
+                        name: '**Old Channel**',
                         value: `${OldState.channel}`
                     },
                     {
-                        name: 'New Channel',
+                        name: '**New Channel**',
                         value: `${NewState.channel}`
                     },
                     {
-                        name: 'ID',
-                        value: `\`\`\`ansi\n[0;33mMember = ${NewState.member.id}\n[0;35mOld Channel = ${OldState.channel.id}\n[0;34mNew Channel = ${NewState.channel.id}\`\`\``
+                        name: '**ID**',
+                        value: `\`\`\`ansi\n[0;33mMember ID: ${NewState.member.id}\n[0;35mOld Channel ID: ${OldState.channel.id}\n[0;34mNew Channel ID: ${NewState.channel.id}\`\`\``
                     }
                 )
             }
@@ -32,12 +32,12 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
                 Embed.setDescription(`**${NewState.member.user.tag}** joined voice channel ${NewState.channel}`)
                 Embed.addFields(
                     {
-                        name: 'Channel',
+                        name: '**Channel**',
                         value: `${NewState.channel}`
                     },
                     {
-                        name: 'ID',
-                        value: `\`\`\`ansi\n[0;33mMember = ${NewState.member.id}\n[0;35mChannel = ${NewState.channel.id}\`\`\``
+                        name: '**ID**',
+                        value: `\`\`\`ansi\n[0;33mMember ID: ${NewState.member.id}\n[0;35mChannel ID: ${NewState.channel.id}\`\`\``
                     }
                 )
             }
@@ -46,12 +46,12 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
                 Embed.setDescription(`**${NewState.member.user.tag}** left voice channel ${OldState.channel}`)
                 Embed.addFields(
                     {
-                        name: 'Channel',
+                        name: '**Channel**',
                         value: `${OldState.channel}`
                     },
                     {
-                        name: 'ID',
-                        value: `\`\`\`ansi\n[0;33mMember = ${NewState.member.id}\n[0;35mChannel = ${OldState.channel.id}\`\`\``
+                        name: '**ID**',
+                        value: `\`\`\`ansi\n[0;33mMember ID: ${NewState.member.id}\n[0;35mChannel ID: ${OldState.channel.id}\`\`\``
                     }
                 )
             }

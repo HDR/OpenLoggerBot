@@ -1,12 +1,14 @@
+const {client} = require("../constants");
 module.exports = {GuildEmojiDelete};
 async function GuildEmojiDelete(AuditEntry, Guild, Embed) {
     const {executor, target, executorId, changes} = AuditEntry;
+    Embed.setColor('#ff2828');
     Embed.addFields({
-        name: 'ID',
-        value: `\`\`\`ansi\n[0;33mEmoji = ${target.id}\n[0;34mPerpetrator = ${executorId}\`\`\``
+        name: '**ID**',
+        value: `\`\`\`ansi\n[0;33mEmoji ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
     })
 
-    Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
+    Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
     Embed.setDescription(`Emoji \`${changes[0].old}\` (${target.id}) was deleted`)
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;

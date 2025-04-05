@@ -41,22 +41,22 @@ tracker.on('guildMemberAdd', async (GuildMember, type, invite) => {
             Embed.setDescription(`<@${GuildMember.user.id}> joined`)
             Embed.setAuthor({name: `${GuildMember.user.tag}`, iconURL: `${GuildMember.displayAvatarURL()}`})
             Embed.addFields({
-                    name: 'Name',
+                    name: '**Name**',
                     value: `${GuildMember.user.tag} (${GuildMember.user.id}) <@${GuildMember.user.id}>`,
                     inline: false
                 },
                 {
-                    name: 'Joined At',
+                    name: '**Joined At**',
                     value: `<t:${Math.trunc(GuildMember.joinedTimestamp/1000)}:F>`,
                     inline: false
                 },
                 {
-                    name: 'Account Age',
+                    name: '**Account Age**',
                     value: `**${Math.trunc(Math.ceil(currentDate.getTime() - GuildMember.user.createdAt.getTime()) / (1000 * 3600 * 24))}** days`,
                     inline: true
                 },
                 {
-                    name: 'Member Count',
+                    name: '**Member Count**',
                     value: `${GuildMember.guild.memberCount}`,
                     inline: true
                 })
@@ -74,8 +74,8 @@ tracker.on('guildMemberAdd', async (GuildMember, type, invite) => {
             }
 
             Embed.addFields({
-                name: 'ID',
-                value: `\`\`\`ansi\n[0;33mMember = ${GuildMember.user.id}\n[0;34mGuild = ${GuildMember.guild.id}\`\`\``
+                name: '**ID**',
+                value: `\`\`\`ansi\n[0;33mMember ID: ${GuildMember.user.id}\n[0;34mGuild ID: ${GuildMember.guild.id}\`\`\``
             })
 
             Embed.setTimestamp()

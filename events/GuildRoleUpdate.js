@@ -79,10 +79,11 @@ async function GuildRoleUpdate(AuditEntry, Guild, Embed) {
 
     Embed.setDescription(`Role ${target} (${target.id}) was updated`)
     Embed.addFields({
-        name: 'ID',
-        value: `\`\`\`ansi\n[0;33mRole = ${target.id}\n[0;34mPerpetrator = ${executorId}\`\`\``
+        name: '**ID**',
+        value: `\`\`\`ansi\n[0;33mRole ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
     })
 
     Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
+    Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;
 }

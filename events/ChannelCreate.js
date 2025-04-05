@@ -1,23 +1,26 @@
 const {ChannelType} = require("discord.js");
+const {client} = require("../constants")
 module.exports = {ChannelCreate};
 async function ChannelCreate(AuditEntry, Guild, Embed) {
     const {executor, target} = AuditEntry;
     Embed.setColor('#97ff28');
-    Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
-    Embed.setDescription(`${executor.tag} created a channel`)
+    Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
+    Embed.setDescription(`A channel has been created`)
+    Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     Embed.addFields(
         {
-            name: 'Name',
-            value: `${target.name} (${target.id})`
+            name: '**Channel Name**',
+            value: `${target.name} (${target.id})`,
+            inline: true
         },
         {
-            name: 'Type',
+            name: '**Channel Type**',
             value:  `${ChannelType[target.type]}`,
-            inline: false
+            inline: true
         },
         {
             name: 'ID',
-            value: `\`\`\`ansi\n[0;33mMember = ${executor.id}\n[0;35mChannel = ${target.id}\`\`\``,
+            value: `\`\`\`ansi\n[0;33mExecutor ID: ${executor.id}\n[0;35mChannel ID: ${target.id}\`\`\``,
             inline: false
         }
     )

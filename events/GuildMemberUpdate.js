@@ -16,17 +16,19 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
             let { executor, reason } = auditEntry;
             if(OldGuildMember.pending && !NewGuildMember.pending) {
                 let clear_time = moment.duration(moment(moment().now).diff(NewGuildMember.joinedAt))
+                let timeToClear = clear_time.asSeconds() < 5 ? `${Math.round(clear_time.asSeconds())} seconds` : clear_time.humanize();
                 let Embed = new EmbedBuilder();
                 Embed.setColor('#90EE90')
                 Embed.setAuthor({name: `${NewGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})
                 Embed.setDescription(`<@${NewGuildMember.user.id}> Cleared Onboarding`)
+                Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
                 Embed.addFields({
-                        name: 'Time Taken:',
-                        value: clear_time.humanize()
+                        name: '**Time Taken:**',
+                        value: timeToClear
                     },
                     {
-                        name: 'ID',
-                        value: `\`\`\`ansi\n[0;33mMember = ${NewGuildMember.id}\`\`\``
+                        name: '**ID**',
+                        value: `\`\`\`ansi\n[0;33mMember ID: ${NewGuildMember.id}\`\`\``
                     })
                 Embed.setTimestamp()
                 try {

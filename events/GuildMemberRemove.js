@@ -12,27 +12,27 @@ async function GuildMemberKick(AuditEntry, Guild, Embed) {
     Embed.setDescription(`<@${target.id}> was kicked by ${executor.tag} (${executor.id})`)
     Embed.addFields(
         {
-            name: 'Reason',
+            name: '**Reason**',
             value: reason ? reason: 'No reason provided',
             inline: false
         },
         {
-            name: 'User Information',
+            name: '**User Information**',
             value: `${target.tag} (${target.id}) <@${target.id}>`,
             inline: false
         },
         {
-            name: 'Created At',
+            name: '**Created At**',
             value: `<t:${Math.trunc(target.createdTimestamp / 1000)}:F>`,
             inline: true
         },
         {
-            name: 'ID',
-            value: `\`\`\`ansi\n[0;33mMember = ${target.id}\n[0;34mGuild = ${Guild.id}\`\`\``,
+            name: '**ID**',
+            value: `\`\`\`ansi\n[0;33mMember ID = ${target.id}\n[0;34mGuild ID = ${Guild.id}\`\`\``,
             inline: false
         }
     )
-    Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
+    Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;
 }
 
@@ -53,28 +53,28 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
                 Embed.setDescription(`<@${GuildMember.user.id}> left the server`)
                 Embed.addFields(
                     {
-                        name: 'User Information',
+                        name: '**User Information**',
                         value: `${GuildMember.user.tag} (${GuildMember.user.id}) <@${GuildMember.user.id}>`,
                         inline: false
                     },
                     {
-                        name: 'Roles',
+                        name: '**Roles**',
                         value: GuildMember.roles.cache.size ? `\`\`\`${GuildMember.roles.cache.map(r => r.name).join(', ')}\`\`\`` : 'No Roles',
                         inline: false
                     },
                     {
-                        name: 'Joined At',
+                        name: '**Joined At**',
                         value: `<t:${Math.trunc(GuildMember.joinedTimestamp / 1000)}:F>`,
                         inline: true
                     },
                     {
-                        name: 'Created At',
+                        name: '**Created At**',
                         value: `<t:${Math.trunc(GuildMember.user.createdTimestamp / 1000)}:F>`,
                         inline: true
                     },
                     {
-                        name: 'ID',
-                        value: `\`\`\`ansi\n[0;33mMember = ${GuildMember.user.id}\n[0;34mGuild = ${GuildMember.guild.id}\`\`\``,
+                        name: '**ID**',
+                        value: `\`\`\`ansi\n[0;33mMember ID: ${GuildMember.user.id}\n[0;34mGuild ID: ${GuildMember.guild.id}\`\`\``,
                         inline: false
                     }
                 )

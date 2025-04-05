@@ -1,27 +1,17 @@
-const {client} = require("./constants");
-const { Collection, REST, Routes, Events, AuditLogEvent, EmbedBuilder} = require('discord.js');
-const { token } = require('./config.json')
 const fs = require('fs')
 const sqlite3 = require("sqlite3");
-const {tableExists, eventState} = require("./commonFunctions");
-const {ChannelCreate} = require("./events/ChannelCreate");
-const {ChannelDelete} = require("./events/ChannelDelete");
-const {GuildBanAdd} = require("./events/GuildBanAdd");
-const {GuildBanRemove} = require("./events/GuildBanRemove");
-const {GuildEmojiCreate} = require("./events/GuildEmojiCreate");
-const {GuildEmojiDelete} = require("./events/GuildEmojiDelete");
-const {GuildMemberKick} = require("./events/GuildMemberRemove");
-const {GuildRoleCreate} = require("./events/GuildRoleCreate");
-const {GuildStickerCreate} = require("./events/GuildStickerCreate");
-const {GuildStickerDelete} = require("./events/GuildStickerDelete");
-const {ChannelUpdate} = require("./events/ChannelUpdate");
-const {GuildEmojiUpdate} = require("./events/GuildEmojiUpdate");
-const {GuildRoleDelete} = require("./events/GuildRoleDelete");
-const {GuildStickerUpdate} = require("./events/GuildStickerUpdate");
-const {GuildRoleUpdate} = require("./events/GuildRoleUpdate");
-const {GuildUpdate} = require("./events/GuildUpdate");
+const { Collection, REST, Routes, Events, AuditLogEvent, EmbedBuilder} = require('discord.js');
+const { client } = require("./constants");
+const { token } = require('./config.json')
+const { tableExists, eventState } = require("./commonFunctions");
+
 const commands = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const events = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+const eventHandlers = {};
+for (const file of eventFiles) {
+    const event = file.replace('.js', '');
+    eventHandlers[event] = require(`./events/${file}`)[event]
+}
 
 client.commands = new Collection;
 
@@ -57,10 +47,6 @@ async function registerCommands(){
             console.error(error);
         }
     })().then();
-}
-
-for (const file of events) {
-    require(`./events/${file}`);
 }
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -104,87 +90,38 @@ client.on('ready', async () => {
     client.user.setPresence({ activities: [{ name: `Keeping an eye on events across ${client.guilds.cache.size} servers` }] });
 })
 
-//Handle Audit log events
 client.on(Events.GuildAuditLogEntryCreate, async (AuditEntry, Guild) => {
-    if (await tableExists(Guild.id)) {
-        let Embed = new EmbedBuilder()
-        let promise = new Promise(async (resolve) => {
-            switch (AuditEntry.action) {
-                case AuditLogEvent.ChannelCreate:
-                    if(await eventState(Guild.id, 'channelCreate')) {resolve(await ChannelCreate(AuditEntry, Guild, Embed))}
-                    break;
+    if(!(await tableExists(Guild.id))) return;
+    let Embed = new EmbedBuilder()
 
-                case AuditLogEvent.ChannelDelete:
-                    if(await eventState(Guild.id, 'channelDelete')) {resolve(await ChannelDelete(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.ChannelUpdate: case AuditLogEvent.ChannelOverwriteCreate: case AuditLogEvent.ChannelOverwriteDelete: case AuditLogEvent.ChannelOverwriteUpdate:
-                    if(await eventState(Guild.id, 'channelUpdate')) {resolve(await ChannelUpdate(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.MemberBanAdd:
-                    if(await eventState(Guild.id, 'guildBanAdd')) {resolve(await GuildBanAdd(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.MemberBanRemove:
-                    if(await eventState(Guild.id, 'guildBanRemove')) {resolve(await GuildBanRemove(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.EmojiCreate:
-                    if(await eventState(Guild.id, 'guildEmojiCreate')) {resolve(await GuildEmojiCreate(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.EmojiDelete:
-                    if(await eventState(Guild.id, 'guildEmojiDelete')) {resolve(await GuildEmojiDelete(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.EmojiUpdate:
-                    if(await eventState(Guild.id, 'guildEmojiUpdate')) {resolve(await GuildEmojiUpdate(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.MemberKick:
-                    //This needs debugging
-                    if(await eventState(Guild.id, 'guildMemberRemove')) {resolve(await GuildMemberKick(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.RoleCreate:
-                    if(await eventState(Guild.id, 'guildRoleCreate')) {resolve(await GuildRoleCreate(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.RoleDelete:
-                    if(await eventState(Guild.id, 'guildRoleDelete')) {resolve(await GuildRoleDelete(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.RoleUpdate:
-                    if(await eventState(Guild.id, 'guildRoleUpdate')) {resolve(await GuildRoleUpdate(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.StickerCreate:
-                    if(await eventState(Guild.id, 'guildStickerCreate')) {resolve(await GuildStickerCreate(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.StickerDelete:
-                    if(await eventState(Guild.id, 'guildStickerDelete')) {resolve(await GuildStickerDelete(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.StickerUpdate:
-                    if(await eventState(Guild.id, 'guildStickerUpdate')) {resolve(await GuildStickerUpdate(AuditEntry, Guild, Embed))}
-                    break;
-
-                case AuditLogEvent.GuildUpdate:
-                    if(await eventState(Guild.id, 'guildUpdate')) {resolve(await GuildUpdate(AuditEntry, Guild, Embed))}
-                    break;
-            }
-        })
-
-        promise.then(async (Embed) => {
-            Embed.setTimestamp()
-            try {
-                await Guild.channels.cache.get(await eventState(Guild.id, 'logChannel')).send({embeds: [Embed]});
-            } catch (e) {
-                e.guild = Guild
-                console.log(e)
-            }
-        })
+    const eventMap = {
+        [AuditLogEvent.ChannelCreate]: { event: 'channelCreate', handler: eventHandlers["ChannelCreate"]},
+        [AuditLogEvent.ChannelDelete]: { event: 'channelDelete', handler: eventHandlers["ChannelDelete"]},
+        [AuditLogEvent.ChannelUpdate]: { event: 'channelUpdate', handler: eventHandlers["ChannelUpdate"]},
+        [AuditLogEvent.MemberBanAdd]: { event: 'guildBanAdd', handler: eventHandlers["GuildBanAdd"]},
+        [AuditLogEvent.MemberBanRemove]: { event: 'guildBanRemove', handler: eventHandlers["GuildBanRemove"]},
+        [AuditLogEvent.EmojiCreate]: { event: 'guildEmojiCreate', handler: eventHandlers["GuildEmojiCreate"]},
+        [AuditLogEvent.EmojiDelete]: { event: 'guildEmojiDelete', handler: eventHandlers["GuildEmojiDelete"]},
+        [AuditLogEvent.EmojiUpdate]: { event: 'guildEmojiUpdate', handler: eventHandlers["GuildEmojiUpdate"]},
+        [AuditLogEvent.MemberKick]: { event: 'guildMemberRemove', handler: eventHandlers["GuildMemberKick"]},
+        [AuditLogEvent.RoleCreate]: { event: 'guildRoleCreate', handler: eventHandlers["GuildRoleCreate"]},
+        [AuditLogEvent.RoleDelete]: { event: 'guildRoleDelete', handler: eventHandlers["GuildRoleDelete"]},
+        [AuditLogEvent.RoleUpdate]: { event: 'guildRoleUpdate', handler: eventHandlers["GuildRoleUpdate"]},
+        [AuditLogEvent.StickerCreate]: { event: 'guildStickerCreate', handler: eventHandlers["GuildStickerCreate"]},
+        [AuditLogEvent.StickerDelete]: { event: 'guildStickerDelete', handler: eventHandlers["GuildStickerDelete"]},
+        [AuditLogEvent.StickerUpdate]: { event: 'guildStickerUpdate', handler: eventHandlers["GuildStickerUpdate"]},
+        [AuditLogEvent.GuildUpdate]: { event: 'guildUpdate', handler: eventHandlers["GuildUpdate"]},
     }
+
+    if (!eventMap[AuditEntry.action] || !(await eventState(Guild.id, eventMap[AuditEntry.action].event))) return;
+
+    try {
+        await eventMap[AuditEntry.action].handler(AuditEntry, Guild, Embed);
+        Embed.setTimestamp()
+        await Guild.channels.cache.get(await eventState(Guild.id, 'logChannel')).send({embeds: [Embed]});
+    } catch (e) {
+        e.guild = Guild;
+        console.log(e)
+    }
+
 })

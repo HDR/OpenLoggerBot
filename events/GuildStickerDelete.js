@@ -1,3 +1,4 @@
+const {client} = require("../constants");
 module.exports = {GuildStickerDelete};
 async function GuildStickerDelete(AuditEntry, Guild, Embed) {
     const {executor, target, executorId} = AuditEntry;
@@ -11,28 +12,28 @@ async function GuildStickerDelete(AuditEntry, Guild, Embed) {
 
     Embed.addFields(
         {
-            name: 'Name',
+            name: '**Sticker Name**',
             value: `${target.name}`,
             inline: true
         },
         {
-            name: 'Tag',
+            name: '**Tag**',
             value: `${tag}`,
             inline: true
         }
     )
 
     Embed.addFields({
-        name: 'Description',
+        name: '**Description**',
         value: target?.description?.trim() || 'No description provided'
     })
 
     Embed.addFields({
-        name: 'ID',
-        value: `\`\`\`ansi\n[0;33mSticker = ${target.id}\n[0;34mPerpetrator = ${executorId}\`\`\``
+        name: '**ID**',
+        value: `\`\`\`ansi\n[0;33mSticker ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
     })
 
-    Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
+    Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
     Embed.setDescription(`Sticker \`${target.name}\` (${target.id}) was deleted`)
     Embed.setThumbnail(target.url)
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})

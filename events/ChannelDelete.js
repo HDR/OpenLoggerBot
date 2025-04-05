@@ -1,27 +1,31 @@
 const {ChannelType} = require("discord.js");
+const {client} = require("../constants")
 module.exports = {ChannelDelete};
 async function ChannelDelete(AuditEntry, Guild, Embed) {
     const {executor, target, createdTimestamp} = AuditEntry;
     Embed.setColor('#ff2828');
-    Embed.setAuthor({name: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
-    Embed.setDescription(`${executor.tag} deleted a channel`)
+    Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
+    Embed.setDescription(`A channel has been deleted`)
+    Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     Embed.addFields(
         {
-            name: 'Name',
-            value: `${target.name} (${target.id})`
+            name: '**Channel Name**',
+            value: `${target.name} (${target.id})`,
+            inline: true
         },
         {
-            name: 'Created At',
-            value: `<t:${Math.trunc(createdTimestamp / 1000)}:F>`
-        },
-        {
-            name: 'Type',
+            name: '**Channel Type**',
             value: `${ChannelType[target.type]}`,
-            inline: false
+            inline: true
         },
         {
-            name: 'ID',
-            value: `\`\`\`ansi\n[0;33mMember = ${executor.id}\n[0;35mChannel = ${target.id}\`\`\``,
+            name: '**Created At**',
+            value: `<t:${Math.trunc(createdTimestamp / 1000)}:F>`,
+            inline: true
+        },
+        {
+            name: '**ID**',
+            value: `\`\`\`ansi\n[0;33mExecutor ID: ${executor.id}\n[0;35mChannel ID: ${target.id}\`\`\``,
             inline: false
         }
     )
