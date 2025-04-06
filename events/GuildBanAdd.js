@@ -14,7 +14,7 @@ async function GuildBanAdd(AuditEntry, Guild, Embed) {
             value: `${reason}`
         },
         {
-            name: '**ID**',
+            name: '**IDs**',
             value: `\`\`\`ansi\n[0;33mMember ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
         }
     )

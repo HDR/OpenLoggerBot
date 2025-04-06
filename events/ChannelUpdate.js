@@ -226,7 +226,7 @@ async function ChannelUpdate(AuditEntry, Guild, Embed) {
     Embed.setDescription(`${ChannelType[target.type]} ${target} (${target.id}) was updated`)
     Embed.addFields(
         {
-            name: 'ID',
+            name: '**IDs**',
             value: `\`\`\`ansi\n[0;33mExecutor ID: ${executorId}\n[0;35mChannel ID: ${target.id}\`\`\``,
             inline: false
         }

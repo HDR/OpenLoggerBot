@@ -10,7 +10,7 @@ client.on(Events.MessageUpdate, async(OldMessage, NewMessage) => {
                     let Embed = new EmbedBuilder()
                     Embed.setColor('#ae3ffd')
                     Embed.setAuthor({name: `${OldMessage.author.tag}`, iconURL: `${OldMessage.author.displayAvatarURL()}`})
-                    Embed.setDescription(`**${OldMessage.author.tag}** updated their message in <#${OldMessage.channel.id}>`)
+                    Embed.setDescription(`📝 **${OldMessage.author.tag}** edited a message in <#${OldMessage.channel.id}>`)
                     Embed.addFields(
                         {
                             name: '**Channel**',
@@ -18,15 +18,18 @@ client.on(Events.MessageUpdate, async(OldMessage, NewMessage) => {
                         },
                         {
                             name: '**Old Message**',
-                            value: OldMessage.content
+                            value: `\`\`\`ansi\n[0;31m- ${OldMessage.content}\`\`\``,
+                            inline: true
                         },
                         {
                             name: '**New Message**',
-                            value: NewMessage.content
+                            value: `\`\`\`ansi\n[0;32m+ ${NewMessage.content}\`\`\``,
+                            inline: true
                         },
                         {
-                            name: '**ID**',
-                            value: `\`\`\`ansi\n[0;33mMember ID: ${OldMessage.author.id}\n[0;32mMessage ID: ${OldMessage.id}\`\`\``
+                            name: '**IDs**',
+                            value: `\`\`\`ansi\n\u001b[91mMember ID: ${OldMessage.author.id}\n[0;32mMessage ID: ${OldMessage.id}\`\`\``,
+                            inline: false
                         }
                     )
 

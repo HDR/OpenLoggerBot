@@ -31,7 +31,7 @@ async function GuildStickerCreate(AuditEntry, Guild, Embed) {
     }
 
     Embed.addFields({
-        name: '**ID**',
+        name: '**IDs**',
         value: `\`\`\`ansi\n[0;33mSticker ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
     })
 

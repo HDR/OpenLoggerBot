@@ -4,7 +4,7 @@ async function GuildEmojiCreate(AuditEntry, Guild, Embed) {
     const {executor, target, executorId} = AuditEntry;
     Embed.setColor('#97ff28');
     Embed.addFields({
-        name: '**ID**',
+        name: '**IDs**',
         value: `\`\`\`ansi\n[0;33mEmoji ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
     })
 

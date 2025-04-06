@@ -50,7 +50,7 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
                         value: `${OldState.channel}`
                     },
                     {
-                        name: '**ID**',
+                        name: '**IDs**',
                         value: `\`\`\`ansi\n[0;33mMember ID: ${NewState.member.id}\n[0;35mChannel ID: ${OldState.channel.id}\`\`\``
                     }
                 )

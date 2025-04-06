@@ -19,7 +19,7 @@ async function ChannelCreate(AuditEntry, Guild, Embed) {
             inline: true
         },
         {
-            name: 'ID',
+            name: '**IDs**',
             value: `\`\`\`ansi\n[0;33mExecutor ID: ${executor.id}\n[0;35mChannel ID: ${target.id}\`\`\``,
             inline: false
         }

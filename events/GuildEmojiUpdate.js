@@ -15,7 +15,7 @@ async function GuildEmojiUpdate(AuditEntry, Guild, Embed) {
             inline: true
         },
         {
-            name: '**ID**',
+            name: '**IDs**',
             value: `\`\`\`ansi\n[0;33mEmoji ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``,
             inline: false
         }

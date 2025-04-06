@@ -11,7 +11,7 @@ async function GuildRoleDelete(AuditEntry, Guild, Embed) {
             value: `${changes[0].old}`
         },
         {
-            name: '**ID**',
+            name: '**IDs**',
             value: `\`\`\`ansi\n[0;33mRole ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
         }
     )

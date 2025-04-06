@@ -10,7 +10,7 @@ async function GuildBanRemove(AuditEntry, Guild, Embed) {
             value: `${target.tag} (${target.id}) <@${target.id}>`
         },
         {
-            name: '**ID**',
+            name: '**IDs**',
             value: `\`\`\`ansi\n[0;33mMember ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
         }
     )

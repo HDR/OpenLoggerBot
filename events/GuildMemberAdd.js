@@ -74,7 +74,7 @@ tracker.on('guildMemberAdd', async (GuildMember, type, invite) => {
             }
 
             Embed.addFields({
-                name: '**ID**',
+                name: '**IDs**',
                 value: `\`\`\`ansi\n[0;33mMember ID: ${GuildMember.user.id}\n[0;34mGuild ID: ${GuildMember.guild.id}\`\`\``
             })
 

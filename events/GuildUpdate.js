@@ -162,7 +162,7 @@ async function GuildUpdate(AuditEntry, Guild, Embed) {
     Embed.setDescription(`Guild \`${target.name}\` (${target.id}) was updated`)
     if(!Embed.data.fields){return;}
     Embed.addFields({
-        name: '**ID**',
+        name: '**IDs**',
         value: `\`\`\`ansi\n[0;33mGuild ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
     })
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})

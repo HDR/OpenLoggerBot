@@ -23,11 +23,11 @@ async function GuildMemberKick(AuditEntry, Guild, Embed) {
         },
         {
             name: '**Created At**',
-            value: `<t:${Math.trunc(target.createdTimestamp / 1000)}:F>`,
+            value: target.createdTimestamp ? `<t:${Math.trunc(target.createdTimestamp / 1000)}:F>` : "Unknown",
             inline: true
         },
         {
-            name: '**ID**',
+            name: '**IDs**',
             value: `\`\`\`ansi\n[0;33mMember ID = ${target.id}\n[0;34mGuild ID = ${Guild.id}\`\`\``,
             inline: false
         }
@@ -73,7 +73,7 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
                         inline: true
                     },
                     {
-                        name: '**ID**',
+                        name: '**IDs**',
                         value: `\`\`\`ansi\n[0;33mMember ID: ${GuildMember.user.id}\n[0;34mGuild ID: ${GuildMember.guild.id}\`\`\``,
                         inline: false
                     }

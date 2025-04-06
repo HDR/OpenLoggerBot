@@ -29,7 +29,7 @@ client.on(Events.MessageDelete, async(Message) => {
                         value: `<t:${Math.trunc(Date.now()/1000)}:F>`
                     },
                     {
-                        name: '**ID**',
+                        name: '**IDs**',
                         value: `\`\`\`ansi\n[0;33mMember ID: ${Message.author.id}\n[0;32mMessage ID: ${Message.id}\`\`\``
                     }
                 )

@@ -16,7 +16,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
             let { executor, reason } = auditEntry;
             if(OldGuildMember.pending && !NewGuildMember.pending) {
                 let clear_time = moment.duration(moment(moment().now).diff(NewGuildMember.joinedAt))
-                let timeToClear = clear_time.asSeconds() < 5 ? `${Math.round(clear_time.asSeconds())} seconds` : clear_time.humanize();
+                let timeToClear = clear_time.asSeconds() < 60 ? `${Math.round(clear_time.asSeconds())} seconds` : clear_time.humanize();
                 let Embed = new EmbedBuilder();
                 Embed.setColor('#90EE90')
                 Embed.setAuthor({name: `${NewGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})

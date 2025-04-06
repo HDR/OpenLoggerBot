@@ -4,7 +4,7 @@ async function GuildEmojiDelete(AuditEntry, Guild, Embed) {
     const {executor, target, executorId, changes} = AuditEntry;
     Embed.setColor('#ff2828');
     Embed.addFields({
-        name: '**ID**',
+        name: '**IDs**',
         value: `\`\`\`ansi\n[0;33mEmoji ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
     })
 

@@ -11,7 +11,7 @@ async function GuildRoleCreate(AuditEntry, Guild, Embed) {
             value: `${target.name}`
         },
         {
-            name: '**ID**',
+            name: '**IDs**',
             value: `\`\`\`ansi\n[0;33mRole ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
         }
     )

@@ -40,7 +40,7 @@ async function GuildStickerUpdate(AuditEntry, Guild, Embed) {
     }
 
     Embed.addFields({
-        name: 'ID',
+        name: '**IDs**',
         value: `\`\`\`ansi\n[0;33mSticker = ${target.id}\n[0;34mPerpetrator = ${executorId}\`\`\``
     })
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
