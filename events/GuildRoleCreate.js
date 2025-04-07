@@ -12,7 +12,7 @@ async function GuildRoleCreate(AuditEntry, Guild, Embed) {
         },
         {
             name: '**IDs**',
-            value: `\`\`\`ansi\n[0;33mRole ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
+            value: `\`\`\`ansi\n[0;35mRole ID: ${target.id}\n[0;33mExecutor ID: ${executorId}\`\`\``
         }
     )
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})

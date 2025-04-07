@@ -74,7 +74,7 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
                     },
                     {
                         name: '**IDs**',
-                        value: `\`\`\`ansi\n[0;33mMember ID: ${GuildMember.user.id}\n[0;34mGuild ID: ${GuildMember.guild.id}\`\`\``,
+                        value: `\`\`\`ansi\n[0;32mMember ID: ${GuildMember.user.id}\n[0;36mGuild ID: ${GuildMember.guild.id}\`\`\``,
                         inline: false
                     }
                 )

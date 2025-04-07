@@ -23,7 +23,7 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
                     },
                     {
                         name: '**ID**',
-                        value: `\`\`\`ansi\n[0;33mMember ID: ${NewState.member.id}\n[0;35mOld Channel ID: ${OldState.channel.id}\n[0;34mNew Channel ID: ${NewState.channel.id}\`\`\``
+                        value: `\`\`\`ansi\n[0;32mMember ID: ${NewState.member.id}\n[0;35mOld Channel ID: ${OldState.channel.id}\n[0;35mNew Channel ID: ${NewState.channel.id}\`\`\``
                     }
                 )
             }
@@ -37,7 +37,7 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
                     },
                     {
                         name: '**ID**',
-                        value: `\`\`\`ansi\n[0;33mMember ID: ${NewState.member.id}\n[0;35mChannel ID: ${NewState.channel.id}\`\`\``
+                        value: `\`\`\`ansi\n[0;32mMember ID: ${NewState.member.id}\n[0;35mChannel ID: ${NewState.channel.id}\`\`\``
                     }
                 )
             }
@@ -51,7 +51,7 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
                     },
                     {
                         name: '**IDs**',
-                        value: `\`\`\`ansi\n[0;33mMember ID: ${NewState.member.id}\n[0;35mChannel ID: ${OldState.channel.id}\`\`\``
+                        value: `\`\`\`ansi\n[0;32mMember ID: ${NewState.member.id}\n[0;35mChannel ID: ${OldState.channel.id}\`\`\``
                     }
                 )
             }

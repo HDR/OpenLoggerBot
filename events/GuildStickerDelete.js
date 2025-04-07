@@ -30,7 +30,7 @@ async function GuildStickerDelete(AuditEntry, Guild, Embed) {
 
     Embed.addFields({
         name: '**IDs**',
-        value: `\`\`\`ansi\n[0;33mSticker ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
+        value: `\`\`\`ansi\n[0;37mSticker ID: ${target.id}\n[0;33mExecutor ID: ${executorId}\`\`\``
     })
 
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})

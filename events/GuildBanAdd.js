@@ -15,7 +15,7 @@ async function GuildBanAdd(AuditEntry, Guild, Embed) {
         },
         {
             name: '**IDs**',
-            value: `\`\`\`ansi\n[0;33mMember ID: ${target.id}\n[0;34mExecutor ID: ${executorId}\`\`\``
+            value: `\`\`\`ansi\n[0;32mMember ID: ${target.id}\n[0;33mExecutor ID: ${executorId}\`\`\``
         }
     )
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})

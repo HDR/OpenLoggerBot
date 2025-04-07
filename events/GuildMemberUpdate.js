@@ -115,7 +115,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
 
                 Embed.addFields({
                     name: 'ID',
-                    value: `\`\`\`ansi\n[0;33mMember = ${OldGuildMember.id}\n[0;37mRole = ${diff.first().id}\`\`\``
+                    value: `\`\`\`ansi\n[0;32mMember ID: ${OldGuildMember.id}\n[0;35mRole ID: ${diff.first().id}\`\`\``
                 })
                 Embed.setTimestamp()
                 Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
