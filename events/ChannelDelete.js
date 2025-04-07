@@ -5,7 +5,7 @@ async function ChannelDelete(AuditEntry, Guild, Embed) {
     const {executor, target, createdTimestamp} = AuditEntry;
     Embed.setColor('#ff2828');
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
-    Embed.setDescription(`A channel has been deleted`)
+    Embed.setDescription(`🗑️ A channel has been deleted`)
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     Embed.addFields(
         {

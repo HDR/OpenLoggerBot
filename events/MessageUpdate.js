@@ -28,7 +28,7 @@ client.on(Events.MessageUpdate, async(OldMessage, NewMessage) => {
                         },
                         {
                             name: '**IDs**',
-                            value: `\`\`\`ansi\n[0;31mMember ID: ${OldMessage.author.id}\n[0;34mMessage ID: ${OldMessage.id}\`\`\``,
+                            value: `\`\`\`ansi\n[0;32mMember ID: ${OldMessage.author.id}\n[0;34mMessage ID: ${OldMessage.id}\`\`\``,
                             inline: false
                         }
                     )

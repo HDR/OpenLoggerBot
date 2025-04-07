@@ -223,7 +223,7 @@ async function ChannelUpdate(AuditEntry, Guild, Embed) {
             break;
     }
 
-    Embed.setDescription(`${ChannelType[target.type]} ${target} (${target.id}) was updated`)
+    Embed.setDescription(`🔄 ${ChannelType[target.type]} ${target} (${target.id}) was updated`)
     Embed.addFields(
         {
             name: '**IDs**',

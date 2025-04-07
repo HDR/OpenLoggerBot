@@ -159,7 +159,7 @@ async function GuildUpdate(AuditEntry, Guild, Embed) {
     }
 
 
-    Embed.setDescription(`Guild \`${target.name}\` (${target.id}) was updated`)
+    Embed.setDescription(`⚙️ Guild \`${target.name}\` (${target.id}) was updated`)
     if(!Embed.data.fields){return;}
     Embed.addFields({
         name: '**IDs**',

@@ -5,7 +5,7 @@ async function ChannelCreate(AuditEntry, Guild, Embed) {
     const {executor, target} = AuditEntry;
     Embed.setColor('#97ff28');
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
-    Embed.setDescription(`A channel has been created`)
+    Embed.setDescription(`🌱 A channel has been created`)
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     Embed.addFields(
         {

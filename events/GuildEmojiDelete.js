@@ -9,7 +9,7 @@ async function GuildEmojiDelete(AuditEntry, Guild, Embed) {
     })
 
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
-    Embed.setDescription(`Emoji \`${changes[0].old}\` (${target.id}) was deleted`)
+    Embed.setDescription(`😞 Emoji \`${changes[0].old}\` (${target.id}) was deleted`)
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;
 }

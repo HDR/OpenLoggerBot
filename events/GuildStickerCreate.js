@@ -36,7 +36,7 @@ async function GuildStickerCreate(AuditEntry, Guild, Embed) {
     })
 
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
-    Embed.setDescription(`Sticker \`${target.name}\` (${target.id}) was created`)
+    Embed.setDescription(`🌱 Sticker \`${target.name}\` (${target.id}) was created`)
     Embed.setThumbnail(target.url)
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;

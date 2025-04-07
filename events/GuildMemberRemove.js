@@ -9,7 +9,7 @@ async function GuildMemberKick(AuditEntry, Guild, Embed) {
     if(!target) return;
     Embed.setAuthor({name: `${target.tag}`, iconURL: `${target.displayAvatarURL()}`})
     Embed.setColor('#ff2828');
-    Embed.setDescription(`<@${target.id}> was kicked by ${executor.tag} (${executor.id})`)
+    Embed.setDescription(`🥾 <@${target.id}> was kicked by ${executor.tag} (${executor.id})`)
     Embed.addFields(
         {
             name: '**Reason**',
@@ -50,7 +50,7 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
                 const Embed = new EmbedBuilder();
                 Embed.setColor('#ff2828');
                 Embed.setAuthor({name: `${GuildMember.user.tag}`, iconURL: `${GuildMember.displayAvatarURL()}`})
-                Embed.setDescription(`<@${GuildMember.user.id}> left the server`)
+                Embed.setDescription(`💨 <@${GuildMember.user.id}> left the server`)
                 Embed.addFields(
                     {
                         name: '**User Information**',

@@ -11,7 +11,7 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
             Embed.setTimestamp()
 
             if(NewState.channelId !== null && OldState.channelId !== null && NewState.channelId !== OldState.channelId) {
-                Embed.setDescription(`**${NewState.member.user.tag}** switched voice channels from ${OldState.channel} to ${NewState.channel}`)
+                Embed.setDescription(`🔁 **${NewState.member.user.tag}** switched voice channels from ${OldState.channel} to ${NewState.channel}`)
                 Embed.addFields(
                     {
                         name: '**Old Channel**',
@@ -29,7 +29,7 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
             }
 
             if(!NewState.member.user.bot && NewState.channelId !== null && OldState.channelId === null && NewState.channelId !== OldState.channelId) {
-                Embed.setDescription(`**${NewState.member.user.tag}** joined voice channel ${NewState.channel}`)
+                Embed.setDescription(`🔊 **${NewState.member.user.tag}** joined voice channel ${NewState.channel}`)
                 Embed.addFields(
                     {
                         name: '**Channel**',
@@ -43,7 +43,7 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
             }
 
             if(!NewState.member.user.bot && NewState.channelId === null & OldState.channelId !== null & NewState.channelId !== OldState.channelId){
-                Embed.setDescription(`**${NewState.member.user.tag}** left voice channel ${OldState.channel}`)
+                Embed.setDescription(`🔇 **${NewState.member.user.tag}** left voice channel ${OldState.channel}`)
                 Embed.addFields(
                     {
                         name: '**Channel**',

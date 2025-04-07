@@ -4,7 +4,7 @@ async function GuildRoleDelete(AuditEntry, Guild, Embed) {
     const {executor, target, executorId, changes} = AuditEntry;
     Embed.setColor('#ff2828');
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
-    Embed.setDescription(`Role \`${changes[0].old}\` (${target.id}) was deleted`)
+    Embed.setDescription(`🗑️ Role \`${changes[0].old}\` (${target.id}) was deleted`)
     Embed.addFields(
         {
             name: '**Role Name**',

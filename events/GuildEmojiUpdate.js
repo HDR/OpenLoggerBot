@@ -22,7 +22,7 @@ async function GuildEmojiUpdate(AuditEntry, Guild, Embed) {
     )
 
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
-    Embed.setDescription(`Emoji \`${target.name}\` (${target.id}) was updated`)
+    Embed.setDescription(`🤔 Emoji \`${target.name}\` (${target.id}) was updated`)
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     Embed.setThumbnail(target.imageURL())
     return Embed;

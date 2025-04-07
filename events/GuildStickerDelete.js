@@ -34,7 +34,7 @@ async function GuildStickerDelete(AuditEntry, Guild, Embed) {
     })
 
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
-    Embed.setDescription(`Sticker \`${target.name}\` (${target.id}) was deleted`)
+    Embed.setDescription(`🗑️ Sticker \`${target.name}\` (${target.id}) was deleted`)
     Embed.setThumbnail(target.url)
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;

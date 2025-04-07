@@ -9,7 +9,7 @@ async function GuildEmojiCreate(AuditEntry, Guild, Embed) {
     })
 
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
-    Embed.setDescription(`Emoji \`${target.name}\` (${target.id}) was created`)
+    Embed.setDescription(`😃 Emoji \`${target.name}\` (${target.id}) was created`)
     Embed.setThumbnail(target.imageURL())
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;

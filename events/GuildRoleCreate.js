@@ -4,7 +4,7 @@ async function GuildRoleCreate(AuditEntry, Guild, Embed) {
     const {executor, target, executorId} = AuditEntry;
     Embed.setColor('#97ff28');
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
-    Embed.setDescription(`Role \`${target.name}\` (${target.id}) was created`)
+    Embed.setDescription(`🌱 Role \`${target.name}\` (${target.id}) was created`)
     Embed.addFields(
         {
             name: '**Role Name**',

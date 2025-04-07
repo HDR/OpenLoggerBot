@@ -2,7 +2,7 @@ module.exports = {GuildBanRemove};
 async function GuildBanRemove(AuditEntry, Guild, Embed) {
     const {executor, target, executorId} = AuditEntry;
     Embed.setAuthor({name: `${target.tag}`, iconURL: `${target.displayAvatarURL()}`})
-    Embed.setDescription(`**${target.tag}** was unbanned`)
+    Embed.setDescription(`🪄 **${target.tag}** was unbanned`)
     Embed.setColor('#97ff28');
     Embed.addFields(
         {

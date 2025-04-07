@@ -44,7 +44,7 @@ async function GuildStickerUpdate(AuditEntry, Guild, Embed) {
         value: `\`\`\`ansi\n[0;37mSticker ID: ${target.id}\n[0;33mExecutor ID: ${executorId}\`\`\``
     })
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
-    Embed.setDescription(`Sticker \`${target.name}\` (${target.id}) was updated`)
+    Embed.setDescription(`🔄 Sticker \`${target.name}\` (${target.id}) was updated`)
     Embed.setThumbnail(target.url)
     Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
     return Embed;

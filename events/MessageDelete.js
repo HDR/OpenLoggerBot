@@ -9,7 +9,7 @@ client.on(Events.MessageDelete, async(Message) => {
             if(Message.content) {
                 Embed.setColor('#ae3ffd')
                 Embed.setAuthor({name: `${Message.author.tag}`, iconURL: `${Message.author.displayAvatarURL()}`})
-                Embed.setDescription(`A message was deleted in <#${Message.channel.id}>`)
+                Embed.setDescription(`🗑️ A message was deleted in <#${Message.channel.id}>`)
                 let sendData = {};
                 if(Message.content.length > 1024){
                     sendData.files = [new AttachmentBuilder(Buffer.from(Message.content), {name: `${Message.id}.log`})]
