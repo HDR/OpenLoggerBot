@@ -9,7 +9,7 @@ async function GuildMemberRemove(AuditEntry, Guild, Embed) {
     if(!target) return;
     Embed.setAuthor({name: `${target.tag}`, iconURL: `${target.displayAvatarURL()}`})
     Embed.setColor('#ff2828');
-    Embed.setDescription(`🥾 <@${target.id}> was kicked by ${executor.tag} (${executor.id})`)
+    Embed.setDescription(`🥾 <@${target.id}> was kicked by <@${executor.id}>`)
     Embed.addFields(
         {
             name: '**Reason**',
