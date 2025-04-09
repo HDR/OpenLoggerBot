@@ -3,8 +3,8 @@ const {Events, EmbedBuilder, AuditLogEvent} = require("discord.js");
 const {tableExists, eventState} = require("../commonFunctions");
 const moment = require("moment");
 
-module.exports = {GuildMemberKick};
-async function GuildMemberKick(AuditEntry, Guild, Embed) {
+module.exports = {GuildMemberRemove};
+async function GuildMemberRemove(AuditEntry, Guild, Embed) {
     const {executor, target, reason} = await AuditEntry;
     if(!target) return;
     Embed.setAuthor({name: `${target.tag}`, iconURL: `${target.displayAvatarURL()}`})
@@ -22,7 +22,7 @@ async function GuildMemberKick(AuditEntry, Guild, Embed) {
             inline: false
         },
         {
-            name: '**Created At**',
+            name: '**Account Creation Date**',
             value: target.createdTimestamp ? `<t:${Math.trunc(target.createdTimestamp / 1000)}:F>` : "Unknown",
             inline: true
         },
@@ -68,7 +68,7 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
                         inline: true
                     },
                     {
-                        name: '**Created At**',
+                        name: '**Account Creation Date**',
                         value: `<t:${Math.trunc(GuildMember.user.createdTimestamp / 1000)}:F>`,
                         inline: true
                     },

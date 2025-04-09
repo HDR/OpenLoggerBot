@@ -103,7 +103,7 @@ client.on(Events.GuildAuditLogEntryCreate, async (AuditEntry, Guild) => {
         [AuditLogEvent.EmojiCreate]: { event: 'guildEmojiCreate', handler: eventHandlers["GuildEmojiCreate"]},
         [AuditLogEvent.EmojiDelete]: { event: 'guildEmojiDelete', handler: eventHandlers["GuildEmojiDelete"]},
         [AuditLogEvent.EmojiUpdate]: { event: 'guildEmojiUpdate', handler: eventHandlers["GuildEmojiUpdate"]},
-        [AuditLogEvent.MemberKick]: { event: 'guildMemberRemove', handler: eventHandlers["GuildMemberKick"]},
+        [AuditLogEvent.MemberKick]: { event: 'guildMemberRemove', handler: eventHandlers["GuildMemberRemove"]},
         [AuditLogEvent.RoleCreate]: { event: 'guildRoleCreate', handler: eventHandlers["GuildRoleCreate"]},
         [AuditLogEvent.RoleDelete]: { event: 'guildRoleDelete', handler: eventHandlers["GuildRoleDelete"]},
         [AuditLogEvent.RoleUpdate]: { event: 'guildRoleUpdate', handler: eventHandlers["GuildRoleUpdate"]},
