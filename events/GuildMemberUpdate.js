@@ -47,16 +47,19 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
 
                     Embed.addFields(
                         {
-                            name: 'New Name',
-                            value: `${NewGuildMember.displayName}`
+                            name: 'Old Name',
+                            value: `\`\`\`ansi\n[0;31m- ${OldGuildMember.displayName}\`\`\``,
+                            inline: true
                         },
                         {
-                            name: 'Old Name',
-                            value: `${OldGuildMember.displayName}`
+                            name: 'New Name',
+                            value: `\`\`\`ansi\n[0;32m+ ${NewGuildMember.displayName}\`\`\``,
+                            inline: true
                         },
                         {
                             name: 'ID',
-                            value: `\`\`\`ansi\n[0;32mMember = ${OldGuildMember.id}\`\`\``
+                            value: `\`\`\`ansi\n[0;32mMember ID: ${OldGuildMember.id}\n[0;33mExecutor ID: ${executor.id}\`\`\``,
+                            inline: false
                         }
                     )
 

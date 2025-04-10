@@ -42,8 +42,10 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
             let kickLog = await GuildMember.guild.fetchAuditLogs({limit: 1, type: AuditLogEvent.MemberKick});
             let banLog = await GuildMember.guild.fetchAuditLogs({limit: 1, type: AuditLogEvent.MemberBanAdd});
             const checkLog = (log, type) => {
-                const timeDifference = Math.ceil(moment().diff(log.entries.first().createdTimestamp, 'seconds', true));
-                return log.entries.first().target.id === GuildMember.id && timeDifference < 10;
+                const entry = log.entries.first();
+                if (!entry) return false;
+                const timeDifference = Math.ceil(moment().diff(entry.createdTimestamp, 'seconds', true));
+                return entry.target.id === GuildMember.id && timeDifference < 10;
             };
 
             if (!checkLog(kickLog, AuditLogEvent.MemberKick) && !checkLog(banLog, AuditLogEvent.MemberBanAdd)) {
