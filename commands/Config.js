@@ -18,14 +18,12 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
         .setDMPermission(false),
 
-
     async autocomplete(interaction){
         const focus = interaction.options.getFocused();
         const Events = ['channelCreate', 'channelDelete', 'channelUpdate', 'guildBanAdd', 'guildBanRemove', 'guildEmojiCreate', 'guildEmojiDelete', 'guildEmojiUpdate', 'guildInviteCreate', 'guildMemberAdd', 'guildMemberRemove', 'guildMemberOnboarding', 'guildMemberUpdate', 'guildRoleCreate', 'guildRoleDelete', 'guildRoleUpdate', 'guildStickerCreate', 'guildStickerDelete', 'guildStickerUpdate', 'guildUpdate', 'messageBulkDelete', 'messageDelete', 'messageDeleteAttachments', 'messageUpdate', 'voiceStateUpdate']
         const filter = Events.filter(Events => Events.startsWith(focus))
         await interaction.respond(filter.map(Event => ({name: Event, value: Event})))
     },
-
 
     execute: async function (interaction) {
         let event = interaction.options.getString('event')

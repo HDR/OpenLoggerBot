@@ -154,10 +154,8 @@ async function GuildUpdate(AuditEntry, Guild, Embed) {
                     value: `Old State: \`${Boolean(value.new)}\`\nNew State: \`${Boolean(value.new)}\``
                 })
                 break;
-
         }
     }
-
 
     Embed.setDescription(`⚙️ Guild \`${target.name}\` (${target.id}) was updated`)
     if(!Embed.data.fields){return;}

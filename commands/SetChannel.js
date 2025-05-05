@@ -14,9 +14,7 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
         .setDMPermission(false),
 
-
     execute: async function (interaction) {
-
         const Data = {
             logChannel: interaction.options.getChannel('target').id,
             channelCreate: true,

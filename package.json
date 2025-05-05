@@ -8,8 +8,9 @@
   "license": "GPL-3.0",
   "dependencies": {
     "@androz2091/discord-invites-tracker": "^1.2.3",
-    "discord-api-types": "^0.37.32",
-    "discord.js": "^14.18.0",
+    "diff": "^7.0.0",
+    "discord-api-types": "^0.38.3",
+    "discord.js": "^14.19.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "pastebin-api": "^7.0.0",

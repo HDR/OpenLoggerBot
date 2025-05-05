@@ -66,5 +66,4 @@ client.on(Events.VoiceStateUpdate, async(OldState, NewState) => {
             }
         }
     }
-
 })

@@ -89,6 +89,6 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
                     console.log(e)
                 }
             }
-    }
+        }
     }
 });

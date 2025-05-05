@@ -1,8 +1,8 @@
+const { Collection, REST, Routes, Events, AuditLogEvent, EmbedBuilder} = require('discord.js');
 const fs = require('fs')
 const sqlite3 = require("sqlite3");
-const { Collection, REST, Routes, Events, AuditLogEvent, EmbedBuilder} = require('discord.js');
-const { client } = require("./constants");
 const { token } = require('./config.json')
+const { client } = require("./constants");
 const { tableExists, eventState } = require("./commonFunctions");
 
 const commands = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -14,13 +14,13 @@ for (const file of eventFiles) {
 }
 
 client.commands = new Collection;
+new sqlite3.Database('./config.db', (err) => {if (err) {console.log(err.message);}});
+const rest = new REST({ version: '10' }).setToken(token);
 
 for (const file of commands) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.data.name, command)
 }
-
-new sqlite3.Database('./config.db', (err) => {if (err) {console.log(err.message);}});
 
 async function registerCommands(){
     const commandData = []
@@ -28,20 +28,15 @@ async function registerCommands(){
         if (!client.application?.owner) await client.application?.fetch();
         const command = require(`./commands/${file}`);
         commandData.push(command.data.toJSON());
-
     }
-
-    const rest = new REST({ version: '10' }).setToken(token);
 
     (async () => {
         try {
             console.log(`Started refreshing ${commandData.length} application (/) commands.`);
-
             const data = await rest.put(
                 Routes.applicationCommands(client.application.id),
                 {body: commandData},
             );
-
             console.log(`Successfully reloaded ${data.length} application (/) commands.`);
         } catch (error) {
             console.error(error);
@@ -50,7 +45,6 @@ async function registerCommands(){
 }
 
 client.on(Events.InteractionCreate, async interaction => {
-
     if (interaction.isChatInputCommand()) {
         const command = interaction.client.commands.get(interaction.commandName);
 

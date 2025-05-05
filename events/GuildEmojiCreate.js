@@ -7,7 +7,6 @@ async function GuildEmojiCreate(AuditEntry, Guild, Embed) {
         name: '**IDs**',
         value: `\`\`\`ansi\n[0;31mEmoji ID: ${target.id}\n[0;33mExecutor ID: ${executorId}\`\`\``
     })
-
     Embed.setAuthor({name: `${client.user.username}`, iconURL: `${client.user.displayAvatarURL()}`})
     Embed.setDescription(`😃 Emoji \`${target.name}\` (${target.id}) was created`)
     Embed.setThumbnail(target.imageURL())
