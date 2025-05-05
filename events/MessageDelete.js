@@ -4,7 +4,7 @@ const {tableExists, eventState} = require("../commonFunctions");
 
 async function buildContainer(Message) {
     const msgContainer = new ContainerBuilder().setAccentColor(11419645);
-    let section = new SectionBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(`**A message was deleted in <#${Message.channel.id}>**\n-# Author: <@${Message.author.id}>\n-# Created: <t:${Math.floor(Message.createdTimestamp / 1000)}:F>`),)
+    let section = new SectionBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(`🗑️ **A message was deleted in <#${Message.channel.id}>**\n-# Author: <@${Message.author.id}>\n-# Created: <t:${Math.floor(Message.createdTimestamp / 1000)}:F>`),)
         .setThumbnailAccessory(new ThumbnailBuilder().setURL(`${Message.author.displayAvatarURL()}`)
     )
 
@@ -13,12 +13,13 @@ async function buildContainer(Message) {
         const logFile = new AttachmentBuilder(Buffer.from(Message.content), {name: `${Message.id}.log`});
         attachments.push(logFile);
         section.addTextDisplayComponents(new TextDisplayBuilder().setContent("**Text Contents:** (Attached as file)"))
+        msgContainer.addSectionComponents(section)
+        msgContainer.addFileComponents(new FileBuilder().setURL(`attachment://${Message.id}.log`))
     } else {
         section.addTextDisplayComponents(new TextDisplayBuilder().setContent(`**Text Contents:**\n${Message.content}`))
+        msgContainer.addSectionComponents(section)
     }
 
-    msgContainer.addSectionComponents(section)
-    msgContainer.addFileComponents(new FileBuilder().setURL(`attachment://${Message.id}.log`))
 
     if(Message.attachments.size > 0 && Message.attachments.first().contentType !== 'audio/ogg') {
         if(await eventState(Message.guildId, 'messageDeleteAttachments')) {
