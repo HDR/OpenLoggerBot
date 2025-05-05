@@ -1,21 +1,12 @@
 const {client} = require("../constants");
 const {Events, EmbedBuilder} = require("discord.js");
 const {tableExists, eventState} = require("../commonFunctions");
-const Diff = require("diff");
 
 client.on(Events.MessageUpdate, async(OldMessage, NewMessage) => {
     if (await tableExists(NewMessage.guildId)) {
         if(await eventState(NewMessage.guildId, 'messageUpdate')) {
             if(NewMessage.author.id !== client.user.id && OldMessage.content !== '' && OldMessage.content !== NewMessage.content){
                 try {
-
-                    const diff = Diff.diffWordsWithSpace(OldMessage.content, NewMessage.content);
-                    let diffString = diff.map(part => {
-                        if (part.added) return `[0;32m+${part.value}`;
-                        if (part.removed) return `[0;31m-${part.value}`;
-                        return `[0;37m${part.value}`;
-                    }).join('');
-
                     let Embed = new EmbedBuilder()
                     Embed.setColor('#ae3ffd')
                     Embed.setAuthor({name: `${OldMessage.author.tag}`, iconURL: `${OldMessage.author.displayAvatarURL()}`})
@@ -26,9 +17,14 @@ client.on(Events.MessageUpdate, async(OldMessage, NewMessage) => {
                             value: `<#${OldMessage.channel.id}> (${OldMessage.channel.id})\n[Go to message](${OldMessage.url})`
                         },
                         {
-                            name: '**Difference**',
-                            value: `\`\`\`ansi\n${diffString}\`\`\``,
-                            inline: false
+                            name: '**Old Message**',
+                            value: `\`\`\`ansi\n[0;31m- ${OldMessage.content}\`\`\``,
+                            inline: true
+                        },
+                        {
+                            name: '**New Message**',
+                            value: `\`\`\`ansi\n[0;32m+ ${NewMessage.content}\`\`\``,
+                            inline: true
                         },
                         {
                             name: '**IDs**',
