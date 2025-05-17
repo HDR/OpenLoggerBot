@@ -26,17 +26,21 @@ async function buildContainer(Message) {
             let mGallery = []
             msgContainer.addTextDisplayComponents(new TextDisplayBuilder().setContent(`**Attachments:**`))
             for (const attachment of Message.attachments.values()) {
-                try {
-                    const res = await fetch(attachment.url);
-                    const arrayBuffer = await res.arrayBuffer();
-                    const buffer = Buffer.from(arrayBuffer);
-                    const ext = attachment.name?.split(".").pop() || 'png';
-                    const fileName = `${attachment.id}.${ext}`
-                    const imgAttachment = new AttachmentBuilder(buffer, { name: fileName });
-                    attachments.push(imgAttachment);
-                    mGallery.push(new MediaGalleryItemBuilder().setURL(`attachment://${fileName}`))
-                } catch (e) {
-                    console.log(e)
+                if (attachment.size > 10 * 1024 * 1024) {
+                    msgContainer.addTextDisplayComponents(new TextDisplayBuilder().setContent(`**[${attachment.name}](${attachment.url})** was too large to upload (${(attachment.size / (1024 * 1024)).toFixed(2)} MB/10 MB)`))
+                } else {
+                    try {
+                        const res = await fetch(attachment.url);
+                        const arrayBuffer = await res.arrayBuffer();
+                        const buffer = Buffer.from(arrayBuffer);
+                        const ext = attachment.name?.split(".").pop() || 'png';
+                        const fileName = `${attachment.id}.${ext}`
+                        const imgAttachment = new AttachmentBuilder(buffer, { name: fileName });
+                        attachments.push(imgAttachment);
+                        mGallery.push(new MediaGalleryItemBuilder().setURL(`attachment://${fileName}`))
+                    } catch (e) {
+                        console.dir(`${Message.guild.name}(${Message.guildId}): \n${e}`)
+                    }
                 }
             }
             msgContainer.addMediaGalleryComponents(new MediaGalleryBuilder().addItems(...mGallery))
@@ -49,6 +53,10 @@ async function buildContainer(Message) {
 client.on(Events.MessageDelete, async (Message) => {
     if (await tableExists(Message.guildId) && await eventState(Message.guildId, 'messageDelete') && !Message.author.bot) {
         const {msgContainer, attachments} = await buildContainer(Message);
-        await Message.guild.channels.cache.get(await eventState(Message.guildId, 'logChannel')).send({components: [msgContainer], files: attachments, allowedMentions: {users: []}, flags: MessageFlags.IsComponentsV2});
+        try {
+            await Message.guild.channels.cache.get(await eventState(Message.guildId, 'logChannel')).send({components: [msgContainer], files: attachments, allowedMentions: {users: []}, flags: MessageFlags.IsComponentsV2});
+        } catch (e) {
+            console.log(e)
+        }
     }
 })

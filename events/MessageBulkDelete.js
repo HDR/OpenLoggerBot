@@ -1,12 +1,11 @@
 const {client} = require("../constants");
-const {Events, EmbedBuilder, AttachmentBuilder} = require("discord.js");
+const {Events, AttachmentBuilder, ContainerBuilder, SectionBuilder, TextDisplayBuilder, ThumbnailBuilder, FileBuilder, MessageFlags} = require("discord.js");
 const moment = require("moment");
 const {tableExists, eventState} = require("../commonFunctions");
 
 client.on(Events.MessageBulkDelete, async (Messages, Channel) => {
     if (await tableExists(Channel.guild.id)) {
         if(await eventState(Channel.guild.id, 'messageBulkDelete')) {
-            let Embed = new EmbedBuilder()
             let format = ''
 
             Messages.forEach(message => {
@@ -14,11 +13,16 @@ client.on(Events.MessageBulkDelete, async (Messages, Channel) => {
             })
 
             let logFile = new AttachmentBuilder(Buffer.from(format), {name: `${Messages.first().author.id}.log`})
-            Embed.setDescription(`Deleted **${Messages.size}** message(s)`)
-            Embed.setTimestamp()
-            Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
+            const msgContainer = new ContainerBuilder().setAccentColor(11419645);
+            let section = new SectionBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(`🗑️ **${Messages.size} Messages were deleted**\n-# Author: <@${Messages.first().author.id}>`),)
+                .setThumbnailAccessory(new ThumbnailBuilder().setURL(`${Messages.first().author.displayAvatarURL()}`)
+                )
+            msgContainer.addSectionComponents(section)
+            msgContainer.addFileComponents(new FileBuilder().setURL(`attachment://${Messages.first().author.id}.log`))
+            msgContainer.addTextDisplayComponents(new TextDisplayBuilder().setContent(`\`\`\`ansi\n[0;32mAuthor ID: ${Messages.first().author.id}\`\`\`\n`))
+
             try {
-                await Channel.guild.channels.cache.get(await eventState(Channel.guild.id, 'logChannel')).send({embeds: [Embed], files: [logFile]});
+                await Channel.guild.channels.cache.get(await eventState(Channel.guild.id, 'logChannel')).send({components: [msgContainer], allowedMentions: {users: []}, files: [logFile], flags: MessageFlags.IsComponentsV2});
             } catch (e) {
                 e.guild = Channel.guild
                 console.log(e)
