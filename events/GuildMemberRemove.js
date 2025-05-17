@@ -52,7 +52,7 @@ client.on(Events.GuildMemberRemove, async(GuildMember) => {
                 const Embed = new EmbedBuilder();
                 Embed.setColor('#ff2828');
                 Embed.setAuthor({name: `${GuildMember.user.tag}`, iconURL: `${GuildMember.displayAvatarURL()}`})
-                Embed.setDescription(`💨 <@${GuildMember.user.id}> left the server`)
+                Embed.setDescription(`💨 ${GuildMember} left the server`)
                 Embed.addFields(
                     {
                         name: '**User Information**',

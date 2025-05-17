@@ -38,7 +38,7 @@ tracker.on('guildMemberAdd', async (GuildMember, type, invite) => {
             let currentDate = new Date();
             const Embed = new EmbedBuilder();
             Embed.setColor('#2cff00');
-            Embed.setDescription(`👋 <@${GuildMember.user.id}> joined`)
+            Embed.setDescription(`👋 ${GuildMember} joined`)
             Embed.setAuthor({name: `${GuildMember.user.tag}`, iconURL: `${GuildMember.displayAvatarURL()}`})
             Embed.addFields({
                     name: '**Name**',

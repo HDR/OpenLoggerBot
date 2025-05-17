@@ -20,7 +20,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                 let Embed = new EmbedBuilder();
                 Embed.setColor('#90EE90')
                 Embed.setAuthor({name: `${NewGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})
-                Embed.setDescription(`🎉 <@${NewGuildMember.user.id}> Cleared Onboarding`)
+                Embed.setDescription(`🎉 ${NewGuildMember} Cleared Onboarding`)
                 Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
                 Embed.addFields({
                         name: '**Time Taken:**',
@@ -43,7 +43,8 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                 if(OldGuildMember.nickname !== NewGuildMember.nickname) {
                     let Embed = new EmbedBuilder();
                     Embed.setAuthor({name: `${OldGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})
-                    Embed.setDescription(`👤 <@${OldGuildMember.user.id}>'s nickname was updated`)
+                    console.log(NewGuildMember)
+                    Embed.setDescription(`👤 ${NewGuildMember} 's nickname was updated`)
 
                     Embed.addFields(
                         {
@@ -78,7 +79,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                 const Embed = new EmbedBuilder()
                 Embed.setAuthor({name: `${NewGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})
                 Embed.setColor('#ff0000')
-                Embed.setTitle(`🤐 ${NewGuildMember.user.tag} has been timed out.`)
+                Embed.setDescription(`🤐 ${NewGuildMember} has been timed out.`)
                 Embed.addFields({
                         name: 'Reason',
                         value: `${reason}`,
@@ -102,7 +103,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
             if(OldGuildMember.roles.cache.difference(NewGuildMember.roles.cache).size > 0) {
                 let Embed = new EmbedBuilder();
                 Embed.setAuthor({name: `${OldGuildMember.user.tag}`, iconURL: `${NewGuildMember.user.displayAvatarURL()}`})
-                Embed.setDescription(`🎭 <@${OldGuildMember.user.id}>'s roles were updated`)
+                Embed.setDescription(`🎭 ${NewGuildMember}'s roles were updated`)
                 let diff = OldGuildMember.roles.cache.difference(NewGuildMember.roles.cache)
                 if(NewGuildMember.roles.cache.has(diff.first().id)) {
                     Embed.addFields({

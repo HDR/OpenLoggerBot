@@ -10,7 +10,7 @@ client.on(Events.MessageUpdate, async(OldMessage, NewMessage) => {
                     let Embed = new EmbedBuilder()
                     Embed.setColor('#ae3ffd')
                     Embed.setAuthor({name: `${OldMessage.author.tag}`, iconURL: `${OldMessage.author.displayAvatarURL()}`})
-                    Embed.setDescription(`📝 **${OldMessage.author.tag}** edited a message in <#${OldMessage.channel.id}>`)
+                    Embed.setDescription(`📝 **${OldMessage.author}** edited a message in <#${OldMessage.channel.id}>`)
                     Embed.addFields(
                         {
                             name: '**Channel**',
