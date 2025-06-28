@@ -122,7 +122,7 @@ client.on(Events.GuildMemberUpdate, async(OldGuildMember, NewGuildMember) => {
                     value: `\`\`\`ansi\n[0;32mMember ID: ${OldGuildMember.id}\n[0;35mRole ID: ${diff.first().id}\`\`\``
                 })
                 Embed.setTimestamp()
-                Embed.setFooter({text: `${client.user.tag}`, iconURL: `${client.user.displayAvatarURL()}`})
+                Embed.setFooter({text: `${executor.tag}`, iconURL: `${executor.displayAvatarURL()}`})
                 try {
                     await NewGuildMember.guild.channels.cache.get(await eventState(NewGuildMember.guild.id, 'logChannel')).send({embeds: [Embed]});
                 } catch (e) {
