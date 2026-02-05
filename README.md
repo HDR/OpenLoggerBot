@@ -15,6 +15,10 @@
 1. `docker pull ghcr.io/hdr/openloggerbot:docker`
 2. `docker run --name OpenLoggerBot -e DISCORD_TOKEN=YOUR_TOKEN_HERE -v /home/docker/olb/.data:/app/.data openloggerbot`
 
+### Updating:
+1. `docker pull ghcr.io/hdr/openloggerbot:docker`
+2. `docker run --name OpenLoggerBot -e DISCORD_TOKEN=YOUR_TOKEN_HERE -v /home/docker/olb/.data:/app/.data openloggerbo`
+
 ---
 ## Manual: 
 ### Requirements:
