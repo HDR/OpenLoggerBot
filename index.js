@@ -1,9 +1,15 @@
 const { Collection, REST, Routes, Events, AuditLogEvent, EmbedBuilder} = require('discord.js');
 const fs = require('fs')
 const sqlite3 = require("sqlite3");
-const { token } = require('./config.json')
 const { client } = require("./constants");
 const { tableExists, eventState } = require("./commonFunctions");
+
+require('dotenv').config();
+const token = process.env.DISCORD_TOKEN;
+
+if (!token) {
+    throw new Error("Please set DISCORD_TOKEN");
+}
 
 const commands = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
@@ -32,12 +38,12 @@ async function registerCommands(){
 
     (async () => {
         try {
-            console.log(`Started refreshing ${commandData.length} application (/) commands.`);
+            console.log(`Started reloading ${commandData.length} slash commands.`);
             const data = await rest.put(
                 Routes.applicationCommands(client.application.id),
                 {body: commandData},
             );
-            console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+            console.log(`Successfully reloaded ${data.length} slash commands.`);
         } catch (error) {
             console.error(error);
         }
@@ -80,7 +86,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
 client.login(token).then(registerCommands);
 
-client.on('ready', async () => {
+client.on(Events.ClientReady, async () => {
     client.user.setPresence({ activities: [{ name: `Keeping an eye on events across ${client.guilds.cache.size} servers` }] });
 })
 
