@@ -1,10 +1,22 @@
-# OpenLoggerBot
+  # OpenLoggerBot
 **An open source Discord logger bot**
 
 ## External Tools
 [.log file viewer for OpenLoggerBot](https://martinrefseth.com/olb/logview/)
 
-## Installation
+# Installation
+---
+## Docker:
+
+#### Requirements:
+- [Docker(duh)](https://www.docker.com/get-started/)
+
+### Setup:
+1. `docker pull ghcr.io/hdr/openloggerbot:docker`
+2. `docker run --name OpenLoggerBot -e DISCORD_TOKEN=YOUR_TOKEN_HERE -v /home/docker/olb/.data:/app/.data openloggerbot`
+
+---
+## Manual: 
 ### Requirements:
 - [NodeJS](https://nodejs.org)
 - [A Discord Application](https://discord.com/developers/applications)
@@ -12,10 +24,12 @@
 ### Setup:
 1. `git clone https://github.com/HDR/OpenLoggerBot.git`
 2. `cd OpenLoggerBot`
-2. Rename `config-example.json` to `config.json` and populate the `token`
+2. Rename `.env.example` to `.env` and add your discord token after `DISCORD_TOKEN=`
 3. `npm install`
 4. `node index.js`
 
+
+---
 
 ## Commands
 - To get started run `/setchannel <#channel>`
@@ -69,48 +83,4 @@
   | messageBulkDelete   | Triggered when a bot deleted bulk messages or a user is banned  |
   | messageDelete       | Triggered when a message is deleted                             |
   | messageDeleteAttachments | Triggered when a message that has attachments is deleted        |
-  | messageUpdate       | Triggered when a message is updated                             |
-  | voiceStateUpdate    | Triggered when a  user joins, leaves or moves in a voice channel |
-</center>
 
-## Supported Events
-* These are the events we can log
-
-| Event                     | State           |
-|---------------------------|-----------------|
-| AutoModerationRuleCreate  | Not Implemented |
-| AutoModerationRuleDelete  | Not Implemented |
-| AutoModerationRuleUpdate  | Not Implemented |
-| GuildMemberAdd            | Implemented     |
-| GuildMemberRemove         | Implemented     |
-| GuildMemberUpdate         | Implemented     |
-| GuildRoleCreate           | Implemented     |
-| GuildRoleDelete           | Implemented     |
-| GuildRoleUpdate           | Implemented     |
-| GuildEmojiCreate          | Implemented     |
-| GuildEmojiDelete          | Implemented     |
-| GuildEmojiUpdate          | Implemented     |
-| GuildBanAdd               | Implemented     |
-| GuildBanRemove            | Implemented     |
-| ChannelCreate             | Implemented     |
-| ChannelDelete             | Implemented     |
-| ChannelUpdate             | Implemented     |
-| ChannelPinsUpdate         | Not Implemented |
-| MessageCreate             | Implemented     |
-| MessageDelete             | Implemented     |
-| MessageUpdate             | Implemented     |
-| MessageBulkDelete         | Implemented     |
-| VoiceStateUpdate          | Implemented     |
-| GuildStickerCreate        | Implemented     |
-| GuildStickerDelete        | Implemented     |
-| GuildStickerUpdate        | Implemented     |
-| GuildScheduledEventCreate | Not Implemented |
-| GuildScheduledEventUpdate | Not Implemented |
-| GuildScheduledEventDelete | Not Implemented |
-
-## Credits
-
-- [Androz2091](https://github.com/Androz2091/) for his [Invite Tracker](https://github.com/Androz2091/discord-invites-tracker)
-- [Zipplet](https://github.com/zipplet) for helping me test OpenLoggerBot
-- [JetBrains](https://www.jetbrains.com/?from=DMG-Bot) for providing a non-commercial open source licence to their products
-- Inspired by [Logger](https://logger.bot/)
